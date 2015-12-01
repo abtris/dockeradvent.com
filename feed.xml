@@ -5,16 +5,43 @@
     <description>A brazen two-column &lt;a href=&quot;http://jekyllrb.com&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt; theme that pairs a prominent sidebar with uncomplicated content. Made by &lt;a href=&quot;https://twitter.com/mdo&quot; target=&quot;_blank&quot;&gt;@mdo&lt;/a&gt;.</description>
     <link>http://hyde.getpoole.com//</link>
     <atom:link href="http://hyde.getpoole.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Dec 2015 10:50:46 +0100</pubDate>
-    <lastBuildDate>Tue, 01 Dec 2015 10:50:46 +0100</lastBuildDate>
+    <pubDate>Tue, 01 Dec 2015 11:08:24 +0100</pubDate>
+    <lastBuildDate>Tue, 01 Dec 2015 11:08:24 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
         <title>Welcome to Docker Advent!</title>
-        <description></description>
+        <description>&lt;p&gt;Welcome to Docker Advent pages. I can introduce docker in short posts about usage and goal this technology. Contribution welcome! Just open &lt;a href=&quot;https://github.com/abtris/dockeradvent.com/pulls&quot;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Regards,
+Ladislav Prskavec&lt;/p&gt;
+
+&lt;p&gt;Twitter: &lt;a href=&quot;https://www.twitter.com/abtris&quot;&gt;@abtris&lt;/a&gt;
+Blog: &lt;a href=&quot;http://www.prskavec.net&quot;&gt;www.prskavec.net&lt;/a&gt;&lt;/p&gt;
+</description>
         <pubDate>Thu, 26 Nov 2015 10:01:18 +0100</pubDate>
         <link>http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</link>
         <guid isPermaLink="true">http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Day One - What&#39;s docker?</title>
+        <description>&lt;p&gt;I see docker as two things.&lt;/p&gt;
+
+&lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
+
+&lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
+
+&lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Thu, 26 Nov 2015 10:01:18 +0100</pubDate>
+        <link>http://hyde.getpoole.com//2015/11/26/day-one-what-is-docker/</link>
+        <guid isPermaLink="true">http://hyde.getpoole.com//2015/11/26/day-one-what-is-docker/</guid>
         
         
       </item>

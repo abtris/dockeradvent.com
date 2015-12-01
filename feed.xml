@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Docker Advent 2015</title>
-    <description>Simple and easy introduction into Docker in 24 days.
-</description>
-    <link>http://www.dockeradvent.com/</link>
-    <atom:link href="http://www.dockeradvent.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 Nov 2015 11:23:13 +0100</pubDate>
-    <lastBuildDate>Thu, 26 Nov 2015 11:23:13 +0100</lastBuildDate>
+    <title>Hyde</title>
+    <description>A brazen two-column &lt;a href=&quot;http://jekyllrb.com&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt; theme that pairs a prominent sidebar with uncomplicated content. Made by &lt;a href=&quot;https://twitter.com/mdo&quot; target=&quot;_blank&quot;&gt;@mdo&lt;/a&gt;.</description>
+    <link>http://hyde.getpoole.com//</link>
+    <atom:link href="http://hyde.getpoole.com//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 01 Dec 2015 10:50:46 +0100</pubDate>
+    <lastBuildDate>Tue, 01 Dec 2015 10:50:46 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
         <title>Welcome to Docker Advent!</title>
-        <description>
-</description>
+        <description></description>
         <pubDate>Thu, 26 Nov 2015 10:01:18 +0100</pubDate>
-        <link>http://www.dockeradvent.com/2015/11/26/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com/2015/11/26/welcome-to-jekyll.html</guid>
+        <link>http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</link>
+        <guid isPermaLink="true">http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</guid>
         
         
       </item>

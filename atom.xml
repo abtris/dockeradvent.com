@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Hyde</title>
+ <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
+ <link href="http://hyde.getpoole.com/"/>
+ <updated>2015-12-01T10:50:46+01:00</updated>
+ <id>http://hyde.getpoole.com</id>
+ <author>
+   <name>Mark Otto</name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Welcome to Docker Advent!</title>
+   <link href="http://hyde.getpoole.com/2015/11/26/welcome-to-jekyll/"/>
+   <updated>2015-11-26T10:01:18+01:00</updated>
+   <id>http://hyde.getpoole.com/2015/11/26/welcome-to-jekyll</id>
+   <content type="html"></content>
+ </entry>
+ 
+
+</feed>

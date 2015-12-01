@@ -4,13 +4,31 @@
  <title>Hyde</title>
  <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
  <link href="http://hyde.getpoole.com/"/>
- <updated>2015-12-01T11:08:24+01:00</updated>
+ <updated>2015-12-01T11:09:34+01:00</updated>
  <id>http://hyde.getpoole.com</id>
  <author>
    <name>Mark Otto</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day One - What's docker?</title>
+   <link href="http://hyde.getpoole.com/2015/12/01/day-one-what-is-docker/"/>
+   <updated>2015-12-01T11:00:00+01:00</updated>
+   <id>http://hyde.getpoole.com/2015/12/01/day-one-what-is-docker</id>
+   <content type="html">&lt;p&gt;I see docker as two things.&lt;/p&gt;
+
+&lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
+
+&lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
+
+&lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Welcome to Docker Advent!</title>
@@ -24,24 +42,6 @@ Ladislav Prskavec&lt;/p&gt;
 
 &lt;p&gt;Twitter: &lt;a href=&quot;https://www.twitter.com/abtris&quot;&gt;@abtris&lt;/a&gt;
 Blog: &lt;a href=&quot;http://www.prskavec.net&quot;&gt;www.prskavec.net&lt;/a&gt;&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Day One - What's docker?</title>
-   <link href="http://hyde.getpoole.com/2015/11/26/day-one-what-is-docker/"/>
-   <updated>2015-11-26T10:01:18+01:00</updated>
-   <id>http://hyde.getpoole.com/2015/11/26/day-one-what-is-docker</id>
-   <content type="html">&lt;p&gt;I see docker as two things.&lt;/p&gt;
-
-&lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
-
-&lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
-
-&lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,
-Ladislav&lt;/p&gt;
 </content>
  </entry>
  

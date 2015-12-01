@@ -13,5 +13,5 @@ Second is [The Open Container Initiative](https://www.opencontainers.org/) about
 
 Open Container ecosystem is huge and you see them in next post.
 
-See you tomorrow,
+See you tomorrow,<br>
 Ladislav

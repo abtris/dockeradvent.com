@@ -5,15 +5,14 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://dockeradvent.com//</link>
     <atom:link href="http://dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Dec 2015 11:15:25 +0100</pubDate>
-    <lastBuildDate>Tue, 01 Dec 2015 11:15:25 +0100</lastBuildDate>
+    <pubDate>Tue, 01 Dec 2015 11:17:34 +0100</pubDate>
+    <lastBuildDate>Tue, 01 Dec 2015 11:17:34 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
         <title>Day One - What&#39;s docker?</title>
-        <description>&lt;p&gt;I see docker as two things.&lt;/p&gt;
-
-&lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+I see docker as two things. First is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker, Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
 
 &lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
 

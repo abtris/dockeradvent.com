@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-01T11:15:25+01:00</updated>
+ <updated>2015-12-01T11:17:34+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -17,9 +17,8 @@
    <link href="http://dockeradvent.com/2015/12/01/day-one-what-is-docker/"/>
    <updated>2015-12-01T11:00:00+01:00</updated>
    <id>http://dockeradvent.com/2015/12/01/day-one-what-is-docker</id>
-   <content type="html">&lt;p&gt;I see docker as two things.&lt;/p&gt;
-
-&lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+I see docker as two things. First is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker, Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
 
 &lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
 

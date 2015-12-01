@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -o errexit #abort if any command fails
 
+bundle exec jekyll build
+
 main() {
 	deploy_directory=${GIT_DEPLOY_DIR:-_site}
 	deploy_branch=${GIT_DEPLOY_BRANCH:-gh-pages}

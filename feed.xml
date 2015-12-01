@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hyde</title>
-    <description>A brazen two-column &lt;a href=&quot;http://jekyllrb.com&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt; theme that pairs a prominent sidebar with uncomplicated content. Made by &lt;a href=&quot;https://twitter.com/mdo&quot; target=&quot;_blank&quot;&gt;@mdo&lt;/a&gt;.</description>
-    <link>http://hyde.getpoole.com//</link>
-    <atom:link href="http://hyde.getpoole.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Dec 2015 11:09:34 +0100</pubDate>
-    <lastBuildDate>Tue, 01 Dec 2015 11:09:34 +0100</lastBuildDate>
+    <title>Docker Advent</title>
+    <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
+    <link>http://dockeradvent.com//</link>
+    <atom:link href="http://dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 01 Dec 2015 11:15:25 +0100</pubDate>
+    <lastBuildDate>Tue, 01 Dec 2015 11:15:25 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -19,29 +19,12 @@
 
 &lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
 
-&lt;p&gt;See you tomorrow,
+&lt;p&gt;See you tomorrow,&lt;br&gt;
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://hyde.getpoole.com//2015/12/01/day-one-what-is-docker/</link>
-        <guid isPermaLink="true">http://hyde.getpoole.com//2015/12/01/day-one-what-is-docker/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Welcome to Docker Advent!</title>
-        <description>&lt;p&gt;Welcome to Docker Advent pages. I can introduce docker in short posts about usage and goal this technology. Contribution welcome! Just open &lt;a href=&quot;https://github.com/abtris/dockeradvent.com/pulls&quot;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Regards,
-Ladislav Prskavec&lt;/p&gt;
-
-&lt;p&gt;Twitter: &lt;a href=&quot;https://www.twitter.com/abtris&quot;&gt;@abtris&lt;/a&gt;
-Blog: &lt;a href=&quot;http://www.prskavec.net&quot;&gt;www.prskavec.net&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 26 Nov 2015 10:01:18 +0100</pubDate>
-        <link>http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</link>
-        <guid isPermaLink="true">http://hyde.getpoole.com//2015/11/26/welcome-to-jekyll/</guid>
+        <link>http://dockeradvent.com//2015/12/01/day-one-what-is-docker/</link>
+        <guid isPermaLink="true">http://dockeradvent.com//2015/12/01/day-one-what-is-docker/</guid>
         
         
       </item>

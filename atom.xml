@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
- <title>Hyde</title>
- <link href="http://hyde.getpoole.com/atom.xml" rel="self"/>
- <link href="http://hyde.getpoole.com/"/>
- <updated>2015-12-01T11:09:34+01:00</updated>
- <id>http://hyde.getpoole.com</id>
+ <title>Docker Advent</title>
+ <link href="http://dockeradvent.com/atom.xml" rel="self"/>
+ <link href="http://dockeradvent.com/"/>
+ <updated>2015-12-01T11:15:25+01:00</updated>
+ <id>http://dockeradvent.com</id>
  <author>
-   <name>Mark Otto</name>
+   <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
  
  <entry>
    <title>Day One - What's docker?</title>
-   <link href="http://hyde.getpoole.com/2015/12/01/day-one-what-is-docker/"/>
+   <link href="http://dockeradvent.com/2015/12/01/day-one-what-is-docker/"/>
    <updated>2015-12-01T11:00:00+01:00</updated>
-   <id>http://hyde.getpoole.com/2015/12/01/day-one-what-is-docker</id>
+   <id>http://dockeradvent.com/2015/12/01/day-one-what-is-docker</id>
    <content type="html">&lt;p&gt;I see docker as two things.&lt;/p&gt;
 
 &lt;p&gt;One is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
@@ -25,23 +25,8 @@
 
 &lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
 
-&lt;p&gt;See you tomorrow,
+&lt;p&gt;See you tomorrow,&lt;br&gt;
 Ladislav&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>Welcome to Docker Advent!</title>
-   <link href="http://hyde.getpoole.com/2015/11/26/welcome-to-jekyll/"/>
-   <updated>2015-11-26T10:01:18+01:00</updated>
-   <id>http://hyde.getpoole.com/2015/11/26/welcome-to-jekyll</id>
-   <content type="html">&lt;p&gt;Welcome to Docker Advent pages. I can introduce docker in short posts about usage and goal this technology. Contribution welcome! Just open &lt;a href=&quot;https://github.com/abtris/dockeradvent.com/pulls&quot;&gt;pull request&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Regards,
-Ladislav Prskavec&lt;/p&gt;
-
-&lt;p&gt;Twitter: &lt;a href=&quot;https://www.twitter.com/abtris&quot;&gt;@abtris&lt;/a&gt;
-Blog: &lt;a href=&quot;http://www.prskavec.net&quot;&gt;www.prskavec.net&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  

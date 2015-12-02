@@ -4,13 +4,46 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-01T11:20:33+01:00</updated>
+ <updated>2015-12-02T09:41:17+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day One - Open Container Ekosystem</title>
+   <link href="http://dockeradvent.com/2015/12/02/day-two-open-container-ecosystem/"/>
+   <updated>2015-12-02T11:00:00+01:00</updated>
+   <id>http://dockeradvent.com/2015/12/02/day-two-open-container-ecosystem</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+ I can talk about &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;Open Container Ecosystem&lt;/a&gt;, today.&lt;/p&gt;
+
+&lt;p&gt;If you look at &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;mindmap&lt;/a&gt; created by &lt;a href=&quot;http://krishworld.com/&quot;&gt;Krishnan Subramanian&lt;/a&gt;. You can see how is open container ecosystem wide.&lt;/p&gt;
+
+&lt;p&gt;You have in mindmap big categories:
+- Container OS
+- Application Deployment/Development platforms
+- Developer tools
+- Hosting/Service providers
+- Database/Big data
+- Config Management Tools with Docker support
+- Networking
+- Image registry
+- Monitoring
+- Security
+- Scheduler/Orchestration/Management/Monitoring
+- Misc&lt;/p&gt;
+
+&lt;p&gt;Some of them are cool and I make some posts about them, some can be split into more categories.&lt;/p&gt;
+
+&lt;p&gt;Tomorrow we introduce how install docker and start our first container.&lt;/p&gt;
+
+&lt;p&gt;Regards,
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day One - What's docker?</title>

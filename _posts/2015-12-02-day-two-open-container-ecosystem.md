@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Day One - Open Container Ekosystem"
+title:  "Day Two - Open Container Ekosystem"
 date:   2015-12-02 11:00:00 +0100
 categories: 2015
 ---

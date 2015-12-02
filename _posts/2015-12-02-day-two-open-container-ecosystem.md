@@ -11,6 +11,7 @@ Hi everyone,<br>
 If you look at [mindmap](https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem) created by [Krishnan Subramanian](http://krishworld.com/). You can see how is open container ecosystem wide.
 
 You have in mindmap big categories:
+
 - Container OS
 - Application Deployment/Development platforms
 - Developer tools

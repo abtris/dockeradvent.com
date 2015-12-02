@@ -6,7 +6,7 @@ categories: 2015
 ---
 
 Hi everyone,<br>
- I can talk about [Open Container Ecosystem](https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem), today.
+ I can write about [Open Container Ecosystem](https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem), today.
 
 If you look at [mindmap](https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem) created by [Krishnan Subramanian](http://krishworld.com/). You can see how is open container ecosystem wide.
 
@@ -27,7 +27,7 @@ You have in mindmap big categories:
 
 Some of them are cool and I make some posts about them, some can be split into more categories.
 
-Tomorrow we introduce how install docker and start our first container.
+Next, I will write about how install docker and start our first container.
 
-Regards,
+Regards,<br>
 Ladislav

@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-02T09:43:17+01:00</updated>
+ <updated>2015-12-02T09:46:08+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -41,9 +41,9 @@
 
 &lt;p&gt;Some of them are cool and I make some posts about them, some can be split into more categories.&lt;/p&gt;
 
-&lt;p&gt;Tomorrow we introduce how install docker and start our first container.&lt;/p&gt;
+&lt;p&gt;Next, I will write about how install docker and start our first container.&lt;/p&gt;
 
-&lt;p&gt;Regards,
+&lt;p&gt;Regards,&lt;br&gt;
 Ladislav&lt;/p&gt;
 </content>
  </entry>

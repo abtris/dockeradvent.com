@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-02T09:46:08+01:00</updated>
+ <updated>2015-12-02T09:47:17+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -18,7 +18,7 @@
    <updated>2015-12-02T11:00:00+01:00</updated>
    <id>http://dockeradvent.com/2015/12/02/day-two-open-container-ecosystem</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
- I can talk about &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;Open Container Ecosystem&lt;/a&gt;, today.&lt;/p&gt;
+ I can write about &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;Open Container Ecosystem&lt;/a&gt;, today.&lt;/p&gt;
 
 &lt;p&gt;If you look at &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;mindmap&lt;/a&gt; created by &lt;a href=&quot;http://krishworld.com/&quot;&gt;Krishnan Subramanian&lt;/a&gt;. You can see how is open container ecosystem wide.&lt;/p&gt;
 

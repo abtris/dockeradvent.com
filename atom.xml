@@ -4,13 +4,85 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-03T09:11:02+01:00</updated>
+ <updated>2015-12-03T09:28:36+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Three - Docker install and upgrade</title>
+   <link href="http://dockeradvent.com/2015/12/03/day-three-docker-install-upgrade/"/>
+   <updated>2015-12-03T11:00:00+01:00</updated>
+   <id>http://dockeradvent.com/2015/12/03/day-three-docker-install-upgrade</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+ you need use stable docker version. Be careful about upgrade. For example from 1.8 to 1.9 was big problem with performance and network bridge had change default IP address from &lt;code&gt;172.17.42.1/24&lt;/code&gt; to &lt;code&gt;172.17.0.1/24&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Install Docker&lt;/h2&gt;
+
+&lt;p&gt;I don&amp;#39;t like &lt;a href=&quot;https://kitematic.com/&quot;&gt;Docker Kitematic&lt;/a&gt;. This isn&amp;#39;t tool for developers. But you can try if you helps. It&amp;#39;s available as part Docker Toolbox.&lt;/p&gt;
+
+&lt;h3&gt;Mac&lt;/h3&gt;
+
+&lt;p&gt;Use homebrew, you can &lt;a href=&quot;https://www.docker.com/docker-toolbox&quot;&gt;install Docker Toolbox&lt;/a&gt;, but I recommend install tools separately.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install docker
+brew install docker-machine
+brew install docker-compose
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Windows&lt;/h3&gt;
+
+&lt;p&gt;Download &lt;a href=&quot;https://www.docker.com/docker-toolbox&quot;&gt;Docker Toolbox&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Linux&lt;/h3&gt;
+
+&lt;p&gt;Install Docker by &lt;a href=&quot;https://docs.docker.com/engine/installation/&quot;&gt;your distribution&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Test it&lt;/h2&gt;
+
+&lt;p&gt;For test we run docker hello-world image.&lt;/p&gt;
+
+&lt;p&gt;Run this command from terminal:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$docker run hello-world
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and you can see this output:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Unable to find image &amp;#39;hello-world:latest&amp;#39; locally
+latest: Pulling from library/hello-world
+
+b901d36b6f2f: Pull complete
+0a6ba66e537a: Pull complete
+Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker.
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the &amp;quot;hello-world&amp;quot; image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker Hub account:
+ https://hub.docker.com
+
+For more examples and ideas, visit:
+ https://docs.docker.com/userguide/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Again, be careful about upgrade. Test, test, test every major docker version before you upgrade.&lt;/p&gt;
+
+&lt;p&gt;This is all folks. See you tomorrow.&lt;/p&gt;
+
+&lt;p&gt;Regards,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Two - Open Container Ekosystem</title>

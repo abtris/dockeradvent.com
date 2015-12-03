@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 # Need Bash 4.x (brew install bash)
-set -x
+# set -x
 DATE=`date +"%Y-%m-%d"`
 YEAR=`date +"%Y"`
 declare -A hashmap

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Day Four - Docker Machine &middot; Docker Advent
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Docker Advent
+        </a>
+      </h1>
+      <p class="lead">Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
+    </nav>
+
+    <p>&copy; 2015. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Day Four - Docker Machine</h1>
+  <span class="post-date">04 Dec 2015</span>
+  <p>Hi everyone,<br>
+ if you install docker. I recommend install docker-machine. If you are using Mac or Windows you need virtualization for working with docker.
+Docker machine (DM) created virtual machine for you and setup docker daemon there. This works for list of cloud services too.</p>
+
+<p>First for local development at Mac, Windows or Linux. In linux you can use this but you don&#39;t need it.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">docker-machine create --driver virtualbox &lt;VM-name&gt;
+</code></pre></div>
+<p>I&#39;m using as <code>VM-name</code> name <code>dev</code>.</p>
+
+<p>For manage more VM you can use <code>docker-machine ls</code>, you see all your VMs. For activate VM you have to use <code>eval &quot;$(docker-machine env dev)&quot;</code></p>
+
+<p>We use for active docker-machine these script that check if you have installed docker-machine, if exists and start them do you. You can have alias to script as <code>dkactivate</code> or <code>dsetup</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
+
+# Starts docker-machine VM called DEV if down, resets the environment variables
+
+# Run this before using docker
+
+which docker-machine &gt; /dev/null 2&gt;&amp;1
+if [ $? -eq 1 ]; then
+  echo &quot;docker-machine is not installed. Run docker-install-dockertoolbox first&quot;
+  exit 1
+fi
+
+NAME=$1
+
+if [ ! $NAME ]; then
+  echo &quot;Please supply a VM name&quot;
+  exit 1
+fi
+
+docker-machine ls | grep $NAME &gt; /dev/null 2&gt;&amp;1
+if [ $? -eq 1 ]; then
+  echo &quot;$NAME VM not found. Create the VM first (e.g. run docker-machine create --driver virtualbox $NAME)&quot;
+  exit 1
+fi
+
+if [ `docker-machine status $NAME` != &quot;running&quot; ]; then
+    docker-machine start $NAME
+fi
+
+echo &quot;Running docker-machine env for the $NAME VM...&quot;
+eval &quot;$(docker-machine env $NAME)&quot;
+</code></pre></div>
+<p>This is local development, for example I use AWS for docker too. If you have account at AWS you can create new instances in EC2 for docker by this script. Just add your parameters.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
+AWS_ACCESS_KEY_ID=`cat ~/.aws/credentials | grep aws_access_key_id | cut -d&#39;=&#39; -f2`
+AWS_SECRET_ACCESS_KEY=`cat ~/.aws/credentials | grep aws_secret_access_key | cut -d&#39;=&#39; -f2`
+INSTANCE_TYPE=&#39;m3.xlarge&#39;
+REGION=&#39;us-east-1&#39;
+NAME=$1
+AWS_VPC_ID=$2
+AWS_SUBNET_ID=$3
+
+if [ ! $NAME == &quot;&quot; ]; then
+  docker-machine create \
+      -d amazonec2 \
+      --amazonec2-access-key $AWS_ACCESS_KEY_ID \
+      --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
+      --amazonec2-vpc-id $AWS_VPC_ID \
+      --amazonec2-subnet-id $AWS_SUBNET_ID \
+      --amazonec2-region $AWS_REGION \
+      --amazonec2-zone c \
+      --amazonec2-instance-type $INSTANCE_TYPE \
+      $NAME-dev
+else
+  echo &quot;Missing name&quot;
+fi
+</code></pre></div>
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/12/03/day-three-docker-install-upgrade/">
+            Day Three - Docker install and upgrade
+            <small>03 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/02/day-two-open-container-ecosystem/">
+            Day Two - Open Container Ekosystem
+            <small>02 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/01/day-one-what-is-docker/">
+            Day One - What's docker?
+            <small>01 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37693925-3', 'dockeradvent.com');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

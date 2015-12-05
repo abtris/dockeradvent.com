@@ -4,13 +4,54 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-04T14:11:28+01:00</updated>
+ <updated>2015-12-05T08:41:19+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Five - Docker Compose Part 1</title>
+   <link href="http://dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/"/>
+   <updated>2015-12-05T11:00:00+01:00</updated>
+   <id>http://dockeradvent.com/2015/12/05/day-five-docker-compose-part-1</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+ I start parts about &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker compose&lt;/a&gt;. This tools is used for creating stacks. Application have more than one container. Best practice is every container has single purpose.&lt;/p&gt;
+
+&lt;p&gt;For example Wordpress in Docker:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;you need MySQL or MariaDb&lt;/li&gt;
+&lt;li&gt;you need PHP&lt;/li&gt;
+&lt;li&gt;you need web server nginx or apache&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;How to do it? Docker compose introduce &lt;a href=&quot;https://docs.docker.com/compose/compose-file/&quot;&gt;file&lt;/a&gt; &lt;code&gt;docker-compose.yml&lt;/code&gt; where you can describe more than one container. This is &lt;a href=&quot;https://hub.docker.com/_/wordpress/&quot;&gt;Wordpress&lt;/a&gt; official &lt;code&gt;docker-compose.yml&lt;/code&gt; from Wordpress repository at &lt;a href=&quot;https://hub.docker.com&quot;&gt;DockerHub&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;wordpress&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;wordpress&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;db:mysql&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;8080:80&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;mariadb&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What you see? Here are defined 2 containers, one for &lt;code&gt;wordpress&lt;/code&gt; and second for &lt;code&gt;db&lt;/code&gt;. They are using &lt;code&gt;image&lt;/code&gt; from Docker Hub. If you start this by &lt;code&gt;docker-compose up&lt;/code&gt; images will be downloaded before run stack.
+You can see directive &lt;code&gt;links&lt;/code&gt;. Link is way how describe connection between containers. In Wordpress container you have after that special environment properties (for example: &lt;code&gt;MYSQL_PORT_3306_TCP&lt;/code&gt;) used in &lt;a href=&quot;https://github.com/docker-library/wordpress/blob/ef064e49ebedfa12cf27e94c58b6ec103ae9b816/apache/docker-entrypoint.sh&quot;&gt;start script&lt;/a&gt;.
+Next are ports you have to expose ports from container. This depends if you using linux or VM. At linux are exposed to &lt;code&gt;localhost&lt;/code&gt;. If you have docker-machine VM you exposed to IP address &lt;code&gt;docker-machine ip &amp;lt;VM-NAME&amp;gt;&lt;/code&gt;.
+Last used parameter in this is &lt;code&gt;environment&lt;/code&gt;. You have to defined own variable as here password to MySQL for start. If you can use own variable in docker-compose from you bash. You have to define without value and run as this example: &lt;code&gt;MY_VAR=value docker-compose up&lt;/code&gt;. This is useful at CI or using one file for development and test environment.&lt;/p&gt;
+
+&lt;p&gt;This is basics about docker-compose.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Four - Docker Machine</title>

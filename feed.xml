@@ -5,9 +5,41 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://dockeradvent.com//</link>
     <atom:link href="http://dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Dec 2015 08:41:19 +0100</pubDate>
-    <lastBuildDate>Sat, 05 Dec 2015 08:41:19 +0100</lastBuildDate>
+    <pubDate>Sun, 06 Dec 2015 11:52:51 +0100</pubDate>
+    <lastBuildDate>Sun, 06 Dec 2015 11:52:51 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Six - Docker Hub</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.&lt;/p&gt;
+
+&lt;p&gt;Registry you can have as service:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.docker.com/docker-trusted-registry&quot;&gt;Docker Trusted Registry&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://quay.io/&quot;&gt;Quay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://tutum.co/&quot;&gt;Tutum&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;or you can run them alone:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/docker/distribution&quot;&gt;Docker Registry 2.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It&amp;#39;s easy to run registry myself using docker too. I used docker registry with S3 and Nginx for authentication.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://dockeradvent.com//2015/12/06/day-six-dockerhub/</link>
+        <guid isPermaLink="true">http://dockeradvent.com//2015/12/06/day-six-dockerhub/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Five - Docker Compose Part 1</title>

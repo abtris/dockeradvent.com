@@ -4,13 +4,43 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-05T08:41:19+01:00</updated>
+ <updated>2015-12-06T11:52:51+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Six - Docker Hub</title>
+   <link href="http://dockeradvent.com/2015/12/06/day-six-dockerhub/"/>
+   <updated>2015-12-06T11:00:00+01:00</updated>
+   <id>http://dockeradvent.com/2015/12/06/day-six-dockerhub</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.&lt;/p&gt;
+
+&lt;p&gt;Registry you can have as service:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.docker.com/docker-trusted-registry&quot;&gt;Docker Trusted Registry&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://quay.io/&quot;&gt;Quay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://tutum.co/&quot;&gt;Tutum&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;or you can run them alone:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/docker/distribution&quot;&gt;Docker Registry 2.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It&amp;#39;s easy to run registry myself using docker too. I used docker registry with S3 and Nginx for authentication.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Five - Docker Compose Part 1</title>

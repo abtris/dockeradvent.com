@@ -11,7 +11,7 @@
 
   <title>
     
-      Day Two - Open Container Ekosystem &middot; Docker Advent
+      Day Six - Docker Hub &middot; Docker Advent
     
   </title>
 
@@ -81,35 +81,29 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day Two - Open Container Ekosystem</h1>
-  <span class="post-date">02 Dec 2015</span>
+  <h1 class="post-title">Day Six - Docker Hub</h1>
+  <span class="post-date">06 Dec 2015</span>
   <p>Hi everyone,<br>
- I can write about <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">Open Container Ecosystem</a>, today.</p>
+<a href="https://hub.docker.com/">Docker Hub</a> is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.</p>
 
-<p>If you look at <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">mindmap</a> created by <a href="http://krishworld.com/">Krishnan Subramanian</a>. You can see how is open container ecosystem wide.</p>
-
-<p>You have in mindmap big categories:</p>
+<p>Registry you can have as service:</p>
 
 <ul>
-<li>Container OS</li>
-<li>Application Deployment/Development platforms</li>
-<li>Developer tools</li>
-<li>Hosting/Service providers</li>
-<li>Database/Big data</li>
-<li>Config Management Tools with Docker support</li>
-<li>Networking</li>
-<li>Image registry</li>
-<li>Monitoring</li>
-<li>Security</li>
-<li>Scheduler/Orchestration/Management/Monitoring</li>
-<li>Misc</li>
+<li><a href="https://hub.docker.com/">Docker Hub</a></li>
+<li><a href="https://www.docker.com/docker-trusted-registry">Docker Trusted Registry</a></li>
+<li><a href="https://quay.io/">Quay</a></li>
+<li><a href="http://tutum.co/">Tutum</a></li>
 </ul>
 
-<p>Some of them are cool and I make some posts about them, some can be split into more categories.</p>
+<p>or you can run them alone:</p>
 
-<p>Next, I will write about how install docker and start our first container.</p>
+<ul>
+<li><a href="https://github.com/docker/distribution">Docker Registry 2.0</a></li>
+</ul>
 
-<p>Regards,<br>
+<p>It&#39;s easy to run registry myself using docker too. I used docker registry with S3 and Nginx for authentication.</p>
+
+<p>See you tomorrow,<br>
 Ladislav</p>
 
 </div>
@@ -117,15 +111,6 @@ Ladislav</p>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/12/06/day-six-dockerhub/">
-            Day Six - Docker Hub
-            <small>06 Dec 2015</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -141,6 +126,15 @@ Ladislav</p>
           <a href="/2015/12/04/day-four-docker-machine/">
             Day Four - Docker Machine
             <small>04 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/03/day-three-docker-install-upgrade/">
+            Day Three - Docker install and upgrade
+            <small>03 Dec 2015</small>
           </a>
         </h3>
       </li>

@@ -4,13 +4,120 @@
  <title>Docker Advent</title>
  <link href="http://dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://dockeradvent.com/"/>
- <updated>2015-12-06T11:52:51+01:00</updated>
+ <updated>2015-12-07T08:14:56+01:00</updated>
  <id>http://dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Seven - Dockerfile</title>
+   <link href="http://dockeradvent.com/2015/12/07/day-seven-dockerfile/"/>
+   <updated>2015-12-07T11:00:00+01:00</updated>
+   <id>http://dockeradvent.com/2015/12/07/day-seven-dockerfile</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+if you can start making own images you need &lt;code&gt;Dockerfile&lt;/code&gt;. This file describe how is image created. Every command is cachable in separate layer and this is helpful if adding new commands, rebuild is more faster than you use tools as Puppet, Chef or Ansible.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://docs.docker.com/engine/reference/builder/&quot;&gt;Dockerfile&lt;/a&gt; can contains many commands.&lt;/p&gt;
+
+&lt;h2&gt;Structure&lt;/h2&gt;
+
+&lt;p&gt;Minimum file is for example used in Heroku:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; heroku/nodejs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and this is only one line! This image has parent image with &lt;code&gt;Dockerfile&lt;/code&gt; contains:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Inherit from Heroku&amp;#39;s stack&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; heroku/cedar:14
+
+&lt;span class=&quot;c&quot;&gt;# Internally, we arbitrarily use port 3000&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; PORT &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Which version of node?&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; NODE_ENGINE 0.12.2
+&lt;span class=&quot;c&quot;&gt;# Locate our binaries&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; PATH /app/heroku/node/bin/:/app/user/node_modules/.bin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Create some needed directories&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir -p /app/heroku/node /app/.profile.d
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /app/user
+
+&lt;span class=&quot;c&quot;&gt;# Install node&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; curl -s https://s3pository.heroku.com/node/v&lt;span class=&quot;nv&quot;&gt;$NODE_ENGINE&lt;/span&gt;/node-v&lt;span class=&quot;nv&quot;&gt;$NODE_ENGINE&lt;/span&gt;-linux-x64.tar.gz &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar --strip-components&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; -xz -C /app/heroku/node
+
+&lt;span class=&quot;c&quot;&gt;# Export the node path in .profile.d&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;export PATH=\&amp;quot;/app/heroku/node/bin:/app/user/node_modules/.bin:\$PATH\&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt; /app/.profile.d/nodejs.sh
+
+&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; package.json /app/user/
+&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; /app/heroku/node/bin/npm install
+&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; . /app/user/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This parent is &lt;code&gt;heroku/cedar:14&lt;/code&gt; and his &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; ubuntu-debootstrap:14.04
+COPY ./cedar-14.sh /tmp/build.sh
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C &lt;span class=&quot;nv&quot;&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;noninteractive /tmp/build.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and this parent &lt;code&gt;ubuntu-debootstrap:14.04&lt;/code&gt; is:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; scratch
+&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; rootfs.tar.xz /
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and &lt;code&gt;scratch&lt;/code&gt; is &lt;a href=&quot;https://hub.docker.com/r/library/scratch/&quot;&gt;empty image&lt;/a&gt; that is used explicitly to build new images.&lt;/p&gt;
+
+&lt;h2&gt;Commands&lt;/h2&gt;
+
+&lt;p&gt;You start with &lt;code&gt;FROM&lt;/code&gt;. Usually use smallest possible image or image used in your servers.&lt;/p&gt;
+
+&lt;p&gt;For adding files into image use &lt;code&gt;ADD&lt;/code&gt; or &lt;code&gt;COPY&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;If you&amp;#39;re not interested in the nuances of ADD and COPY and just want an answer to &amp;quot;which one should I use?&amp;quot;, all you need to know is: use COPY. - [Brian DeHamer](https://labs.ctl.io/dockerfile-add-vs-copy/)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In simple way &lt;code&gt;ADD&lt;/code&gt; use only for URL address or archives.&lt;/p&gt;
+
+&lt;p&gt;Next is &lt;code&gt;RUN&lt;/code&gt; command, you can run any OS command. Every &lt;code&gt;RUN&lt;/code&gt; is in separate layer and it&amp;#39;s useful if you group commands.&lt;/p&gt;
+
+&lt;p&gt;Instead using:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-bar
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-baz
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-foo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;use this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+        package-bar &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+        package-baz &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+        package-foo &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get clean &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/lib/apt/lists/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;First example create 4 images for every layer. Second create only one and clean after install. This helps with image size.&lt;/p&gt;
+
+&lt;p&gt;If you need ports use &lt;code&gt;EXPOSE&lt;/code&gt;, for environment properties &lt;code&gt;ENV&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ENTRYPOINT&lt;/code&gt; is main image command and &lt;code&gt;CMD&lt;/code&gt; is for default flags.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;node&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;--version&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now the image can be run like this to show the command’s help:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker run node
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Or using the right parameters to execute a command:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker run node install aws-sdk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can define &lt;code&gt;VOLUME&lt;/code&gt;, &lt;code&gt;USER&lt;/code&gt;, &lt;code&gt;WORKDIR&lt;/code&gt; if you need it.&lt;/p&gt;
+
+&lt;p&gt;Last interesting command is &lt;code&gt;ONBUILD&lt;/code&gt;. I like this, you can defined some parts in parent image. This commands will be executed in building only for child image. Example we have in our image where is &lt;code&gt;FROM heroku/nodejs&lt;/code&gt; image. This image in build execute sequence defined in &lt;code&gt;heroku\nodejs&lt;/code&gt; image.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ONBUILD ADD package.json /app/user/
+ONBUILD RUN /app/heroku/node/bin/npm install
+ONBUILD ADD . /app/user/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;in our image is added &lt;code&gt;package.json&lt;/code&gt; and install all dependencies. After that add your source code.&lt;/p&gt;
+
+&lt;p&gt;This is very good example how use &lt;code&gt;ONBUILD&lt;/code&gt; as template for your apps. Another examples are many images for &lt;a href=&quot;https://hub.docker.com/_/golang/&quot;&gt;golang&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/perl/&quot;&gt;perl&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/rails/&quot;&gt;rails&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/node/&quot;&gt;nodejs&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/php/&quot;&gt;php&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/wordpress/&quot;&gt;wordpress&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/java/&quot;&gt;java&lt;/a&gt; as based images.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Six - Docker Hub</title>

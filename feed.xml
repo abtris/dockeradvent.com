@@ -3,10 +3,10 @@
   <channel>
     <title>Docker Advent</title>
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
-    <link>http://dockeradvent.com//</link>
-    <atom:link href="http://dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Dec 2015 08:14:56 +0100</pubDate>
-    <lastBuildDate>Mon, 07 Dec 2015 08:14:56 +0100</lastBuildDate>
+    <link>http://www.dockeradvent.com//</link>
+    <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 07 Dec 2015 09:41:10 +0100</pubDate>
+    <lastBuildDate>Mon, 07 Dec 2015 09:41:10 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -112,8 +112,8 @@ ONBUILD ADD . /app/user/
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Mon, 07 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/07/day-seven-dockerfile/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/07/day-seven-dockerfile/</guid>
+        <link>http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</guid>
         
         
       </item>
@@ -144,8 +144,8 @@ Ladislav&lt;/p&gt;
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Sun, 06 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/06/day-six-dockerhub/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/06/day-six-dockerhub/</guid>
+        <link>http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</guid>
         
         
       </item>
@@ -187,8 +187,8 @@ Last used parameter in this is &lt;code&gt;environment&lt;/code&gt;. You have to
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Sat, 05 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</guid>
+        <link>http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</guid>
         
         
       </item>
@@ -268,8 +268,8 @@ fi
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Fri, 04 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/04/day-four-docker-machine/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/04/day-four-docker-machine/</guid>
+        <link>http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</guid>
         
         
       </item>
@@ -342,8 +342,8 @@ For more examples and ideas, visit:
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Thu, 03 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</guid>
+        <link>http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</guid>
         
         
       </item>
@@ -380,8 +380,8 @@ Ladislav&lt;/p&gt;
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</guid>
+        <link>http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</guid>
         
         
       </item>
@@ -399,8 +399,8 @@ I see docker as two things. First is Docker platform created by &lt;a href=&quot
 Ladislav&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://dockeradvent.com//2015/12/01/day-one-what-is-docker/</link>
-        <guid isPermaLink="true">http://dockeradvent.com//2015/12/01/day-one-what-is-docker/</guid>
+        <link>http://www.dockeradvent.com//2015/12/01/day-one-what-is-docker/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/01/day-one-what-is-docker/</guid>
         
         
       </item>

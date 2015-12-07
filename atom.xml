@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Docker Advent</title>
- <link href="http://dockeradvent.com/atom.xml" rel="self"/>
- <link href="http://dockeradvent.com/"/>
- <updated>2015-12-07T08:14:56+01:00</updated>
- <id>http://dockeradvent.com</id>
+ <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
+ <link href="http://www.dockeradvent.com/"/>
+ <updated>2015-12-07T09:41:10+01:00</updated>
+ <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Day Seven - Dockerfile</title>
-   <link href="http://dockeradvent.com/2015/12/07/day-seven-dockerfile/"/>
+   <link href="http://www.dockeradvent.com/2015/12/07/day-seven-dockerfile/"/>
    <updated>2015-12-07T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/07/day-seven-dockerfile</id>
+   <id>http://www.dockeradvent.com/2015/12/07/day-seven-dockerfile</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 if you can start making own images you need &lt;code&gt;Dockerfile&lt;/code&gt;. This file describe how is image created. Every command is cachable in separate layer and this is helpful if adding new commands, rebuild is more faster than you use tools as Puppet, Chef or Ansible.&lt;/p&gt;
 
@@ -121,9 +121,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day Six - Docker Hub</title>
-   <link href="http://dockeradvent.com/2015/12/06/day-six-dockerhub/"/>
+   <link href="http://www.dockeradvent.com/2015/12/06/day-six-dockerhub/"/>
    <updated>2015-12-06T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/06/day-six-dockerhub</id>
+   <id>http://www.dockeradvent.com/2015/12/06/day-six-dockerhub</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.&lt;/p&gt;
 
@@ -151,9 +151,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day Five - Docker Compose Part 1</title>
-   <link href="http://dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/"/>
+   <link href="http://www.dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/"/>
    <updated>2015-12-05T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/05/day-five-docker-compose-part-1</id>
+   <id>http://www.dockeradvent.com/2015/12/05/day-five-docker-compose-part-1</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
  I start parts about &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker compose&lt;/a&gt;. This tools is used for creating stacks. Application have more than one container. Best practice is every container has single purpose.&lt;/p&gt;
 
@@ -192,9 +192,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day Four - Docker Machine</title>
-   <link href="http://dockeradvent.com/2015/12/04/day-four-docker-machine/"/>
+   <link href="http://www.dockeradvent.com/2015/12/04/day-four-docker-machine/"/>
    <updated>2015-12-04T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/04/day-four-docker-machine</id>
+   <id>http://www.dockeradvent.com/2015/12/04/day-four-docker-machine</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
  if you install docker. I recommend install docker-machine. If you are using Mac or Windows you need virtualization for working with docker.
 Docker machine (DM) created virtual machine for you and setup docker daemon there. This works for list of cloud services too.&lt;/p&gt;
@@ -271,9 +271,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day Three - Docker install and upgrade</title>
-   <link href="http://dockeradvent.com/2015/12/03/day-three-docker-install-upgrade/"/>
+   <link href="http://www.dockeradvent.com/2015/12/03/day-three-docker-install-upgrade/"/>
    <updated>2015-12-03T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/03/day-three-docker-install-upgrade</id>
+   <id>http://www.dockeradvent.com/2015/12/03/day-three-docker-install-upgrade</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
  you need use stable docker version. Be careful about upgrade. For example from 1.8 to 1.9 was big problem with performance and network bridge had change default IP address from &lt;code&gt;172.17.42.1/24&lt;/code&gt; to &lt;code&gt;172.17.0.1/24&lt;/code&gt;.&lt;/p&gt;
 
@@ -343,9 +343,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day Two - Open Container Ekosystem</title>
-   <link href="http://dockeradvent.com/2015/12/02/day-two-open-container-ecosystem/"/>
+   <link href="http://www.dockeradvent.com/2015/12/02/day-two-open-container-ecosystem/"/>
    <updated>2015-12-02T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/02/day-two-open-container-ecosystem</id>
+   <id>http://www.dockeradvent.com/2015/12/02/day-two-open-container-ecosystem</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
  I can write about &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;Open Container Ecosystem&lt;/a&gt;, today.&lt;/p&gt;
 
@@ -379,9 +379,9 @@ Ladislav&lt;/p&gt;
  
  <entry>
    <title>Day One - What's docker?</title>
-   <link href="http://dockeradvent.com/2015/12/01/day-one-what-is-docker/"/>
+   <link href="http://www.dockeradvent.com/2015/12/01/day-one-what-is-docker/"/>
    <updated>2015-12-01T11:00:00+01:00</updated>
-   <id>http://dockeradvent.com/2015/12/01/day-one-what-is-docker</id>
+   <id>http://www.dockeradvent.com/2015/12/01/day-one-what-is-docker</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 I see docker as two things. First is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker, Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
 

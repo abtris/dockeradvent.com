@@ -10,7 +10,7 @@ relative_permalinks: true
 title:            Docker Advent
 tagline:          'Small thoughts about docker in advent'
 description:      'Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.'
-url:              http://dockeradvent.com
+url:              http://www.dockeradvent.com
 baseurl:          /
 
 author:

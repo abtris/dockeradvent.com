@@ -4,13 +4,105 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-07T09:44:28+01:00</updated>
+ <updated>2015-12-08T14:24:42+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Eight - Docker Compose Part 2</title>
+   <link href="http://www.dockeradvent.com/2015/12/08/day-eight-docker-compose-part-2/"/>
+   <updated>2015-12-08T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/08/day-eight-docker-compose-part-2</id>
+   <content type="html">&lt;p&gt;Hello everyone,&lt;br&gt;
+I&amp;#39;m back with Docker Compose. We continue with `&lt;code&gt;. I can show how you can combine&lt;/code&gt;Dockerfile&lt;code&gt;and&lt;/code&gt;docker-compose.yml` file. This is useful for development. Can&amp;#39;t be used in production.&lt;/p&gt;
+
+&lt;p&gt;My example is simple Ruby application. I can use Redis for caching and queues.
+I can use image with Redis from Docker Hub. I use hosted Redis in production and this is only for development. But app is specific. I can use Sinatra framework and use last Ruby.
+ We can look at Docker Hub if exists &lt;a href=&quot;https://hub.docker.com/_/ruby/&quot;&gt;official image for Ruby&lt;/a&gt;. Yes, here is. I choose using them and create &lt;code&gt;Dockerfile&lt;/code&gt; to extend this image for my application. This is my &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;Ruby dockerfile is:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; ruby:2.2
+
+&lt;span class=&quot;c&quot;&gt;# throw errors if Gemfile has been modified since Gemfile.lock&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; bundle config --global frozen &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir -p /usr/src/app
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /usr/src/app
+
+ONBUILD COPY Gemfile /usr/src/app/
+ONBUILD COPY Gemfile.lock /usr/src/app/
+&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; bundle install
+
+ONBUILD COPY . /usr/src/app
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;my &lt;code&gt;Dockerfile&lt;/code&gt; is easy:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;FROM ruby:2.2-onbuild
+
+EXPOSE 4567
+
+WORKDIR /usr/src/app
+
+
+ENTRYPOINT [&amp;quot;/usr/local/bin/ruby&amp;quot;]
+CMD [&amp;quot;server.rb&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I have to test if build works:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;docker built -t abtris/sinatra .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and integrate with &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;redis&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;.&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cache&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;expose&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;4567&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and you run this with &lt;code&gt;docker-compose up&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-compose up
+Creating sinatra_cache_1
+Creating sinatra_web_1
+Attaching to sinatra_cache_1, sinatra_web_1
+cache_1 | 1:C 08 Dec 13:22:32.153 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+cache_1 |                 _._
+cache_1 |            _.-``__ &amp;#39;&amp;#39;-._
+cache_1 |       _.-``    `.  `_.  &amp;#39;&amp;#39;-._           Redis 3.0.5 (00000000/0) 64 bit
+cache_1 |   .-`` .-```.  ```\/    _.,_ &amp;#39;&amp;#39;-._
+cache_1 |  (    &amp;#39;      ,       .-`  | `,    )     Running in standalone mode
+cache_1 |  |`-._`-...-` __...-.``-._|&amp;#39;` _.-&amp;#39;|     Port: 6379
+cache_1 |  |    `-._   `._    /     _.-&amp;#39;    |     PID: 1
+cache_1 |   `-._    `-._  `-./  _.-&amp;#39;    _.-&amp;#39;
+cache_1 |  |`-._`-._    `-.__.-&amp;#39;    _.-&amp;#39;_.-&amp;#39;|
+cache_1 |  |    `-._`-._        _.-&amp;#39;_.-&amp;#39;    |           http://redis.io
+cache_1 |   `-._    `-._`-.__.-&amp;#39;_.-&amp;#39;    _.-&amp;#39;
+cache_1 |  |`-._`-._    `-.__.-&amp;#39;    _.-&amp;#39;_.-&amp;#39;|
+cache_1 |  |    `-._`-._        _.-&amp;#39;_.-&amp;#39;    |
+cache_1 |   `-._    `-._`-.__.-&amp;#39;_.-&amp;#39;    _.-&amp;#39;
+cache_1 |       `-._    `-.__.-&amp;#39;    _.-&amp;#39;
+cache_1 |           `-._        _.-&amp;#39;
+cache_1 |               `-.__.-&amp;#39;
+cache_1 |
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+cache_1 | 1:M 08 Dec 13:22:32.154 # Server started, Redis version 3.0.5
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &amp;#39;vm.overcommit_memory = 1&amp;#39; to /etc/sysctl.conf and then reboot or run the command &amp;#39;sysctl vm.overcommit_memory=1&amp;#39; for this to take effect.
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &amp;#39;echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled&amp;#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+cache_1 | 1:M 08 Dec 13:22:32.154 * The server is now ready to accept connections on port 6379
+web_1   | [2015-12-08 13:22:32] INFO  WEBrick 1.3.1
+web_1   | [2015-12-08 13:22:32] INFO  ruby 2.2.3 (2015-08-18) [x86_64-linux]
+web_1   | == Sinatra (v1.4.6) has taken the stage on 4567 for development with backup from WEBrick
+web_1   | [2015-12-08 13:22:32] INFO  WEBrick::HTTPServer#start: pid=1 port=4567
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Application works &lt;code&gt;open http://$(docker-machine ip dev)&lt;/code&gt; launch browser and you can see your application.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Seven - Dockerfile</title>

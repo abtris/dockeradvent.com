@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Day Eight - Docker Compose Part 2 &middot; Docker Advent
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Docker Advent
+        </a>
+      </h1>
+      <p class="lead">Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
+    </nav>
+
+    <p>&copy; 2015. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Day Eight - Docker Compose Part 2</h1>
+  <span class="post-date">08 Dec 2015</span>
+  <p>Hello everyone,<br>
+I&#39;m back with Docker Compose. We continue with `<code>. I can show how you can combine</code>Dockerfile<code>and</code>docker-compose.yml` file. This is useful for development. Can&#39;t be used in production.</p>
+
+<p>My example is simple Ruby application. I can use Redis for caching and queues.
+I can use image with Redis from Docker Hub. I use hosted Redis in production and this is only for development. But app is specific. I can use Sinatra framework and use last Ruby.
+ We can look at Docker Hub if exists <a href="https://hub.docker.com/_/ruby/">official image for Ruby</a>. Yes, here is. I choose using them and create <code>Dockerfile</code> to extend this image for my application. This is my <code>Dockerfile</code>:</p>
+
+<p>Ruby dockerfile is:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> ruby:2.2
+
+<span class="c"># throw errors if Gemfile has been modified since Gemfile.lock</span>
+<span class="k">RUN</span> bundle config --global frozen <span class="m">1</span>
+
+<span class="k">RUN</span> mkdir -p /usr/src/app
+<span class="k">WORKDIR</span> /usr/src/app
+
+ONBUILD COPY Gemfile /usr/src/app/
+ONBUILD COPY Gemfile.lock /usr/src/app/
+<span class="n-Keyword">ONBUILD</span><span class="w"> </span><span class="k">RUN</span> bundle install
+
+ONBUILD COPY . /usr/src/app
+</code></pre></div>
+<p>my <code>Dockerfile</code> is easy:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">FROM ruby:2.2-onbuild
+
+EXPOSE 4567
+
+WORKDIR /usr/src/app
+
+
+ENTRYPOINT [&quot;/usr/local/bin/ruby&quot;]
+CMD [&quot;server.rb&quot;]
+</code></pre></div>
+<p>I have to test if build works:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">docker built -t abtris/sinatra .
+</code></pre></div>
+<p>and integrate with <code>docker-compose.yml</code></p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">redis</span>
+<span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
+  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">cache</span>
+  <span class="l-Scalar-Plain">expose</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">4567</span>
+</code></pre></div>
+<p>and you run this with <code>docker-compose up</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-compose up
+Creating sinatra_cache_1
+Creating sinatra_web_1
+Attaching to sinatra_cache_1, sinatra_web_1
+cache_1 | 1:C 08 Dec 13:22:32.153 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+cache_1 |                 _._
+cache_1 |            _.-``__ &#39;&#39;-._
+cache_1 |       _.-``    `.  `_.  &#39;&#39;-._           Redis 3.0.5 (00000000/0) 64 bit
+cache_1 |   .-`` .-```.  ```\/    _.,_ &#39;&#39;-._
+cache_1 |  (    &#39;      ,       .-`  | `,    )     Running in standalone mode
+cache_1 |  |`-._`-...-` __...-.``-._|&#39;` _.-&#39;|     Port: 6379
+cache_1 |  |    `-._   `._    /     _.-&#39;    |     PID: 1
+cache_1 |   `-._    `-._  `-./  _.-&#39;    _.-&#39;
+cache_1 |  |`-._`-._    `-.__.-&#39;    _.-&#39;_.-&#39;|
+cache_1 |  |    `-._`-._        _.-&#39;_.-&#39;    |           http://redis.io
+cache_1 |   `-._    `-._`-.__.-&#39;_.-&#39;    _.-&#39;
+cache_1 |  |`-._`-._    `-.__.-&#39;    _.-&#39;_.-&#39;|
+cache_1 |  |    `-._`-._        _.-&#39;_.-&#39;    |
+cache_1 |   `-._    `-._`-.__.-&#39;_.-&#39;    _.-&#39;
+cache_1 |       `-._    `-.__.-&#39;    _.-&#39;
+cache_1 |           `-._        _.-&#39;
+cache_1 |               `-.__.-&#39;
+cache_1 |
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+cache_1 | 1:M 08 Dec 13:22:32.154 # Server started, Redis version 3.0.5
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &#39;vm.overcommit_memory = 1&#39; to /etc/sysctl.conf and then reboot or run the command &#39;sysctl vm.overcommit_memory=1&#39; for this to take effect.
+cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &#39;echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled&#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+cache_1 | 1:M 08 Dec 13:22:32.154 * The server is now ready to accept connections on port 6379
+web_1   | [2015-12-08 13:22:32] INFO  WEBrick 1.3.1
+web_1   | [2015-12-08 13:22:32] INFO  ruby 2.2.3 (2015-08-18) [x86_64-linux]
+web_1   | == Sinatra (v1.4.6) has taken the stage on 4567 for development with backup from WEBrick
+web_1   | [2015-12-08 13:22:32] INFO  WEBrick::HTTPServer#start: pid=1 port=4567
+</code></pre></div>
+<p>Application works <code>open http://$(docker-machine ip dev)</code> launch browser and you can see your application.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/12/07/day-seven-dockerfile/">
+            Day Seven - Dockerfile
+            <small>07 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/06/day-six-dockerhub/">
+            Day Six - Docker Hub
+            <small>06 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/05/day-five-docker-compose-part-1/">
+            Day Five - Docker Compose Part 1
+            <small>05 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37693925-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

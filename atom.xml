@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-08T14:25:02+01:00</updated>
+ <updated>2015-12-08T14:26:56+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -18,7 +18,7 @@
    <updated>2015-12-08T11:00:00+01:00</updated>
    <id>http://www.dockeradvent.com/2015/12/08/day-eight-docker-compose-part-2</id>
    <content type="html">&lt;p&gt;Hello everyone,&lt;br&gt;
-I&amp;#39;m back with Docker Compose. We continue with `&lt;code&gt;. I can show how you can combine&lt;/code&gt;Dockerfile&lt;code&gt;and&lt;/code&gt;docker-compose.yml` file. This is useful for development. Can&amp;#39;t be used in production.&lt;/p&gt;
+I&amp;#39;m back with Docker Compose. In &lt;a href=&quot;http://www.dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/&quot;&gt;previous post&lt;/a&gt; we have some basics. Today, I can show how you can combine &lt;code&gt;Dockerfile&lt;/code&gt; and &lt;code&gt;docker-compose.yml&lt;/code&gt; file. This is useful for development. Can&amp;#39;t be used in production.&lt;/p&gt;
 
 &lt;p&gt;My example is simple Ruby application. I can use Redis for caching and queues.
 I can use image with Redis from Docker Hub. I use hosted Redis in production and this is only for development. But app is specific. I can use Sinatra framework and use last Ruby.

@@ -6,7 +6,7 @@ categories: 2015
 ---
 
 Hello everyone,<br>
-I'm back with Docker Compose. We continue with ``. I can show how you can combine `Dockerfile` and `docker-compose.yml` file. This is useful for development. Can't be used in production.
+I'm back with Docker Compose. In [previous post](http://www.dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/) we have some basics. Today, I can show how you can combine `Dockerfile` and `docker-compose.yml` file. This is useful for development. Can't be used in production.
 
 My example is simple Ruby application. I can use Redis for caching and queues.
 I can use image with Redis from Docker Hub. I use hosted Redis in production and this is only for development. But app is specific. I can use Sinatra framework and use last Ruby.

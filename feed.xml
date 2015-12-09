@@ -5,9 +5,76 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 Dec 2015 14:26:56 +0100</pubDate>
-    <lastBuildDate>Tue, 08 Dec 2015 14:26:56 +0100</lastBuildDate>
+    <pubDate>Wed, 09 Dec 2015 08:55:28 +0100</pubDate>
+    <lastBuildDate>Wed, 09 Dec 2015 08:55:28 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Nine - Docker Registry</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+if you need own docker registry. You can use &lt;a href=&quot;https://github.com/docker/distribution&quot;&gt;official docker registry&lt;/a&gt; image.&lt;/p&gt;
+
+&lt;p&gt;The registry 2.0 implementation provides the following benefits:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;faster push and pull&lt;/li&gt;
+&lt;li&gt;new, more efficient implementation&lt;/li&gt;
+&lt;li&gt;simplified deployment&lt;/li&gt;
+&lt;li&gt;pluggable storage backend&lt;/li&gt;
+&lt;li&gt;webhook notifications&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I love better security included in direct in Registry 2.0. In old version I have Nginx before registry for basic auth. In new version you can use basic auth or OAuth2.&lt;/p&gt;
+
+&lt;p&gt;If you can use basic auth with registry 2.0 create new image with your auth.&lt;/p&gt;
+
+&lt;p&gt;Create &lt;code&gt;auth&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;mkdir auth
+docker run --entrypoint htpasswd registry:2 -Bbn testuser testpassword &amp;gt; auth/htpasswd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and create image with this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; registry:latest
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir /auth
+&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; auth/htpasswd /auth/htpasswd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and I have &lt;code&gt;docker-compose.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;backend&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker.apiary-internal.com/registry&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cpu_shares&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;400&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;314572800&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;5000:5000&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_BUCKET&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker-registry-bucket&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_ENCRYPT&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;False&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_KEY&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;&amp;lt;AWS-KEY&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_REGION&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;&amp;lt;AWS-REGION&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_SECRET&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;&amp;lt;AWS-SECRET&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_SECURE&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;False&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;AWS_USE_SIGV4&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;False&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;SETTINGS_FLAVOR&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;prod&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;SEARCH_BACKEND&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sqlalchemy&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;REGISTRY_AUTH&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;htpasswd&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;REGISTRY_AUTH_HTPASSWD_REALM&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Docker&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Internal&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Registry&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;REGISTRY_AUTH_HTPASSWD_PATH&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;/auth/htpasswd&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use for example &lt;a href=&quot;https://aws.amazon.com/ecs/&quot;&gt;AWS Elastic Container Service (ECS)&lt;/a&gt;. You can create task definition with &lt;a href=&quot;http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI.html&quot;&gt;&lt;code&gt;ecs-cli&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;nv&quot;&gt;AWS_REGION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;lt;AWS-REGION&amp;gt; ecs-cli compose create
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For login into internal registry you have to use:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker login docker-registry.company.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In AWS use &lt;a href=&quot;https://aws.amazon.com/elasticloadbalancing/&quot;&gt;Elastic Load Balancer (ELB)&lt;/a&gt; to use &lt;code&gt;https&lt;/code&gt; and forward port &lt;code&gt;443&lt;/code&gt; into &lt;code&gt;5000&lt;/code&gt; at ECS.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Wed, 09 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/09/day-nine-docker-registry/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/09/day-nine-docker-registry/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Eight - Docker Compose Part 2</title>

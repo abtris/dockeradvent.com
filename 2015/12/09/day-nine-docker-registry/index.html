@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Day Nine - Docker Registry &middot; Docker Advent
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Docker Advent
+        </a>
+      </h1>
+      <p class="lead">Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
+    </nav>
+
+    <p>&copy; 2015. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Day Nine - Docker Registry</h1>
+  <span class="post-date">09 Dec 2015</span>
+  <p>Hi everyone,<br>
+if you need own docker registry. You can use <a href="https://github.com/docker/distribution">official docker registry</a> image.</p>
+
+<p>The registry 2.0 implementation provides the following benefits:</p>
+
+<ul>
+<li>faster push and pull</li>
+<li>new, more efficient implementation</li>
+<li>simplified deployment</li>
+<li>pluggable storage backend</li>
+<li>webhook notifications</li>
+</ul>
+
+<p>I love better security included in direct in Registry 2.0. In old version I have Nginx before registry for basic auth. In new version you can use basic auth or OAuth2.</p>
+
+<p>If you can use basic auth with registry 2.0 create new image with your auth.</p>
+
+<p>Create <code>auth</code> file:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">mkdir auth
+docker run --entrypoint htpasswd registry:2 -Bbn testuser testpassword &gt; auth/htpasswd
+</code></pre></div>
+<p>and create image with this:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> registry:latest
+<span class="k">RUN</span> mkdir /auth
+<span class="k">ADD</span> auth/htpasswd /auth/htpasswd
+</code></pre></div>
+<p>and I have <code>docker-compose.yml</code>:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">backend</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">docker.apiary-internal.com/registry</span>
+  <span class="l-Scalar-Plain">cpu_shares</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">400</span>
+  <span class="l-Scalar-Plain">mem_limit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">314572800</span>
+  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5000:5000</span>
+  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">AWS_BUCKET</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">docker-registry-bucket</span>
+    <span class="l-Scalar-Plain">AWS_ENCRYPT</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
+    <span class="l-Scalar-Plain">AWS_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-KEY&gt;</span>
+    <span class="l-Scalar-Plain">AWS_REGION</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-REGION&gt;</span>
+    <span class="l-Scalar-Plain">AWS_SECRET</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-SECRET&gt;</span>
+    <span class="l-Scalar-Plain">AWS_SECURE</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
+    <span class="l-Scalar-Plain">AWS_USE_SIGV4</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
+    <span class="l-Scalar-Plain">SETTINGS_FLAVOR</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">prod</span>
+    <span class="l-Scalar-Plain">SEARCH_BACKEND</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sqlalchemy</span>
+    <span class="l-Scalar-Plain">REGISTRY_AUTH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">htpasswd</span>
+    <span class="l-Scalar-Plain">REGISTRY_AUTH_HTPASSWD_REALM</span><span class="p-Indicator">:</span> <span class="s">&#39;Docker</span><span class="nv"> </span><span class="s">Internal</span><span class="nv"> </span><span class="s">Registry&#39;</span>
+    <span class="l-Scalar-Plain">REGISTRY_AUTH_HTPASSWD_PATH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/auth/htpasswd</span>
+</code></pre></div>
+<p>You can use for example <a href="https://aws.amazon.com/ecs/">AWS Elastic Container Service (ECS)</a>. You can create task definition with <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI.html"><code>ecs-cli</code></a>:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nv">AWS_REGION</span><span class="o">=</span>&lt;AWS-REGION&gt; ecs-cli compose create
+</code></pre></div>
+<p>For login into internal registry you have to use:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker login docker-registry.company.com
+</code></pre></div>
+<p>In AWS use <a href="https://aws.amazon.com/elasticloadbalancing/">Elastic Load Balancer (ELB)</a> to use <code>https</code> and forward port <code>443</code> into <code>5000</code> at ECS.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/12/08/day-eight-docker-compose-part-2/">
+            Day Eight - Docker Compose Part 2
+            <small>08 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/07/day-seven-dockerfile/">
+            Day Seven - Dockerfile
+            <small>07 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/06/day-six-dockerhub/">
+            Day Six - Docker Hub
+            <small>06 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37693925-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Day Ten - Docker Swarm &middot; Docker Advent
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Docker Advent
+        </a>
+      </h1>
+      <p class="lead">Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
+    </nav>
+
+    <p>&copy; 2015. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Day Ten - Docker Swarm</h1>
+  <span class="post-date">10 Dec 2015</span>
+  <p>Hi everyone,<br>
+next tool from Docker is <a href="https://docs.docker.com/swarm/">Docker Swarm</a>. It&#39;s native clustering for Docker. You need <a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/">service discovery</a> based on some software as <a href="https://www.consul.io/">consul</a>, <a href="https://coreos.com/etcd/docs/latest/">etcd</a> or <a href="https://zookeeper.apache.org/">zookeeper</a>.</p>
+
+<h2>Setup swarm</h2>
+
+<p>You need docker and first you need generate token.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker run swarm create
+
+Unable to find image &#39;swarm:latest&#39; locally
+latest: Pulling from library/swarm
+
+d681c900c6e3: Pull complete
+188de6f24f3f: Pull complete
+90b2ffb8d338: Pull complete
+237af4efea94: Pull complete
+3b3fc6f62107: Pull complete
+7e6c9135b308: Pull complete
+986340ab62f0: Pull complete
+a9975e2cc0a3: Pull complete
+Digest: sha256:c21fd414b0488637b1f05f13a59b032a3f9da5d818d31da1a4ca98a84c0c781b
+Status: Downloaded newer image for swarm:latest
+ca5c13a8cb0d2a1da427024b032a138a
+</code></pre></div>
+<p>Next step is launch swarm manager:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create \
+&gt;         -d virtualbox \
+&gt;         --swarm \
+&gt;         --swarm-master \
+&gt;         --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&gt;         swarm-master
+
+Running pre-create checks...
+Creating machine...
+(swarm-master) OUT | Creating VirtualBox VM...
+(swarm-master) OUT | Creating SSH key...
+(swarm-master) OUT | Starting VirtualBox VM...
+(swarm-master) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-master
+</code></pre></div>
+<p>Now you can see two machines:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME           ACTIVE   DRIVER       STATE     URL                         SWARM
+dev            *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-master   -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<p>and you need create swarm node:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create \
+&gt;   -d virtualbox \
+&gt;   --swarm \
+&gt;   --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&gt;   swarm-agent-00
+
+Running pre-create checks...
+Creating machine...
+(swarm-agent-00) OUT | Creating VirtualBox VM...
+(swarm-agent-00) OUT | Creating SSH key...
+(swarm-agent-00) OUT | Starting VirtualBox VM...
+(swarm-agent-00) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-agent-00
+</code></pre></div>
+<p>and another one:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create -d virtualbox --swarm --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a swarm-agent-01
+</code></pre></div>
+<p>and now you can see all machines:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<h2>Running swarm</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">eval $(docker-machine env --swarm swarm-master)
+</code></pre></div>
+<p>and now you can see:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              -        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     *        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<p>and you can use docker info about information about your cluster:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker info
+
+Containers: 4
+Images: 3
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ swarm-agent-00: 192.168.99.102:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-agent-01: 192.168.99.103:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-master: 192.168.99.101:2376
+  └ Status: Healthy
+  └ Containers: 2
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+CPUs: 3
+Total Memory: 3.064 GiB
+Name: f5395c4e7e6e
+</code></pre></div>
+<p>you can check <code>docker ps  -a</code> to all containers.</p>
+
+<p>Try run: <code>docker run hello-world</code> and after that <code>docker ps -a</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                                     NAMES
+35dd40392b49        hello-world         &quot;/hello&quot;                 16 seconds ago      Exited (0) 15 seconds ago                                             swarm-agent-00/sad_hodgkin
+0849ac73f36f        swarm:latest        &quot;/swarm join --advert&quot;   3 minutes ago       Up 3 minutes                2375/tcp                                  swarm-agent-01/swarm-agent
+008e6e36c7b3        swarm:latest        &quot;/swarm join --advert&quot;   6 minutes ago       Up 6 minutes                2375/tcp                                  swarm-agent-00/swarm-agent
+dfef13a18857        swarm:latest        &quot;/swarm join --advert&quot;   9 minutes ago       Up 9 minutes                2375/tcp                                  swarm-master/swarm-agent
+f5395c4e7e6e        swarm:latest        &quot;/swarm manage --tlsv&quot;   9 minutes ago       Up 9 minutes                2375/tcp, 192.168.99.101:3376-&gt;3376/tcp   swarm-master/swarm-agent-master
+</code></pre></div>
+<p>You see our docker container ran on one of our swarm agent.</p>
+
+<p>Swarm support <a href="https://docs.docker.com/swarm/discovery/">multiple discovery backends</a>. You can experiment with others discovery backends.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/12/09/day-nine-docker-registry/">
+            Day Nine - Docker Registry
+            <small>09 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/08/day-eight-docker-compose-part-2/">
+            Day Eight - Docker Compose Part 2
+            <small>08 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/07/day-seven-dockerfile/">
+            Day Seven - Dockerfile
+            <small>07 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37693925-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

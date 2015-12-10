@@ -88,6 +88,170 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/10/day-ten-docker-swarm/">
+        Day Ten - Docker Swarm
+      </a>
+    </h1>
+
+    <span class="post-date">10 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+next tool from Docker is <a href="https://docs.docker.com/swarm/">Docker Swarm</a>. It&#39;s native clustering for Docker. You need <a href="https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/">service discovery</a> based on some software as <a href="https://www.consul.io/">consul</a>, <a href="https://coreos.com/etcd/docs/latest/">etcd</a> or <a href="https://zookeeper.apache.org/">zookeeper</a>.</p>
+
+<h2>Setup swarm</h2>
+
+<p>You need docker and first you need generate token.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker run swarm create
+
+Unable to find image &#39;swarm:latest&#39; locally
+latest: Pulling from library/swarm
+
+d681c900c6e3: Pull complete
+188de6f24f3f: Pull complete
+90b2ffb8d338: Pull complete
+237af4efea94: Pull complete
+3b3fc6f62107: Pull complete
+7e6c9135b308: Pull complete
+986340ab62f0: Pull complete
+a9975e2cc0a3: Pull complete
+Digest: sha256:c21fd414b0488637b1f05f13a59b032a3f9da5d818d31da1a4ca98a84c0c781b
+Status: Downloaded newer image for swarm:latest
+ca5c13a8cb0d2a1da427024b032a138a
+</code></pre></div>
+<p>Next step is launch swarm manager:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create \
+&gt;         -d virtualbox \
+&gt;         --swarm \
+&gt;         --swarm-master \
+&gt;         --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&gt;         swarm-master
+
+Running pre-create checks...
+Creating machine...
+(swarm-master) OUT | Creating VirtualBox VM...
+(swarm-master) OUT | Creating SSH key...
+(swarm-master) OUT | Starting VirtualBox VM...
+(swarm-master) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-master
+</code></pre></div>
+<p>Now you can see two machines:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME           ACTIVE   DRIVER       STATE     URL                         SWARM
+dev            *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-master   -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<p>and you need create swarm node:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create \
+&gt;   -d virtualbox \
+&gt;   --swarm \
+&gt;   --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&gt;   swarm-agent-00
+
+Running pre-create checks...
+Creating machine...
+(swarm-agent-00) OUT | Creating VirtualBox VM...
+(swarm-agent-00) OUT | Creating SSH key...
+(swarm-agent-00) OUT | Starting VirtualBox VM...
+(swarm-agent-00) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-agent-00
+</code></pre></div>
+<p>and another one:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine create -d virtualbox --swarm --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a swarm-agent-01
+</code></pre></div>
+<p>and now you can see all machines:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<h2>Running swarm</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">eval $(docker-machine env --swarm swarm-master)
+</code></pre></div>
+<p>and now you can see:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              -        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     *        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+</code></pre></div>
+<p>and you can use docker info about information about your cluster:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker info
+
+Containers: 4
+Images: 3
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ swarm-agent-00: 192.168.99.102:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-agent-01: 192.168.99.103:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-master: 192.168.99.101:2376
+  └ Status: Healthy
+  └ Containers: 2
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+CPUs: 3
+Total Memory: 3.064 GiB
+Name: f5395c4e7e6e
+</code></pre></div>
+<p>you can check <code>docker ps  -a</code> to all containers.</p>
+
+<p>Try run: <code>docker run hello-world</code> and after that <code>docker ps -a</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                                     NAMES
+35dd40392b49        hello-world         &quot;/hello&quot;                 16 seconds ago      Exited (0) 15 seconds ago                                             swarm-agent-00/sad_hodgkin
+0849ac73f36f        swarm:latest        &quot;/swarm join --advert&quot;   3 minutes ago       Up 3 minutes                2375/tcp                                  swarm-agent-01/swarm-agent
+008e6e36c7b3        swarm:latest        &quot;/swarm join --advert&quot;   6 minutes ago       Up 6 minutes                2375/tcp                                  swarm-agent-00/swarm-agent
+dfef13a18857        swarm:latest        &quot;/swarm join --advert&quot;   9 minutes ago       Up 9 minutes                2375/tcp                                  swarm-master/swarm-agent
+f5395c4e7e6e        swarm:latest        &quot;/swarm manage --tlsv&quot;   9 minutes ago       Up 9 minutes                2375/tcp, 192.168.99.101:3376-&gt;3376/tcp   swarm-master/swarm-agent-master
+</code></pre></div>
+<p>You see our docker container ran on one of our swarm agent.</p>
+
+<p>Swarm support <a href="https://docs.docker.com/swarm/discovery/">multiple discovery backends</a>. You can experiment with others discovery backends.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/09/day-nine-docker-registry/">
         Day Nine - Docker Registry
       </a>
@@ -594,46 +758,6 @@ For more examples and ideas, visit:
 <p>Again, be careful about upgrade. Test, test, test every major docker version before you upgrade.</p>
 
 <p>This is all folks. See you tomorrow.</p>
-
-<p>Regards,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/02/day-two-open-container-ecosystem/">
-        Day Two - Open Container Ekosystem
-      </a>
-    </h1>
-
-    <span class="post-date">02 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- I can write about <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">Open Container Ecosystem</a>, today.</p>
-
-<p>If you look at <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">mindmap</a> created by <a href="http://krishworld.com/">Krishnan Subramanian</a>. You can see how is open container ecosystem wide.</p>
-
-<p>You have in mindmap big categories:</p>
-
-<ul>
-<li>Container OS</li>
-<li>Application Deployment/Development platforms</li>
-<li>Developer tools</li>
-<li>Hosting/Service providers</li>
-<li>Database/Big data</li>
-<li>Config Management Tools with Docker support</li>
-<li>Networking</li>
-<li>Image registry</li>
-<li>Monitoring</li>
-<li>Security</li>
-<li>Scheduler/Orchestration/Management/Monitoring</li>
-<li>Misc</li>
-</ul>
-
-<p>Some of them are cool and I make some posts about them, some can be split into more categories.</p>
-
-<p>Next, I will write about how install docker and start our first container.</p>
 
 <p>Regards,<br>
 Ladislav</p>

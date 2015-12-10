@@ -5,9 +5,171 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Dec 2015 08:55:55 +0100</pubDate>
-    <lastBuildDate>Wed, 09 Dec 2015 08:55:55 +0100</lastBuildDate>
+    <pubDate>Thu, 10 Dec 2015 08:05:36 +0100</pubDate>
+    <lastBuildDate>Thu, 10 Dec 2015 08:05:36 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Ten - Docker Swarm</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+next tool from Docker is &lt;a href=&quot;https://docs.docker.com/swarm/&quot;&gt;Docker Swarm&lt;/a&gt;. It&amp;#39;s native clustering for Docker. You need &lt;a href=&quot;https://www.nginx.com/blog/service-discovery-in-a-microservices-architecture/&quot;&gt;service discovery&lt;/a&gt; based on some software as &lt;a href=&quot;https://www.consul.io/&quot;&gt;consul&lt;/a&gt;, &lt;a href=&quot;https://coreos.com/etcd/docs/latest/&quot;&gt;etcd&lt;/a&gt; or &lt;a href=&quot;https://zookeeper.apache.org/&quot;&gt;zookeeper&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Setup swarm&lt;/h2&gt;
+
+&lt;p&gt;You need docker and first you need generate token.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker run swarm create
+
+Unable to find image &amp;#39;swarm:latest&amp;#39; locally
+latest: Pulling from library/swarm
+
+d681c900c6e3: Pull complete
+188de6f24f3f: Pull complete
+90b2ffb8d338: Pull complete
+237af4efea94: Pull complete
+3b3fc6f62107: Pull complete
+7e6c9135b308: Pull complete
+986340ab62f0: Pull complete
+a9975e2cc0a3: Pull complete
+Digest: sha256:c21fd414b0488637b1f05f13a59b032a3f9da5d818d31da1a4ca98a84c0c781b
+Status: Downloaded newer image for swarm:latest
+ca5c13a8cb0d2a1da427024b032a138a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next step is launch swarm manager:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine create \
+&amp;gt;         -d virtualbox \
+&amp;gt;         --swarm \
+&amp;gt;         --swarm-master \
+&amp;gt;         --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&amp;gt;         swarm-master
+
+Running pre-create checks...
+Creating machine...
+(swarm-master) OUT | Creating VirtualBox VM...
+(swarm-master) OUT | Creating SSH key...
+(swarm-master) OUT | Starting VirtualBox VM...
+(swarm-master) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now you can see two machines:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine ls
+
+NAME           ACTIVE   DRIVER       STATE     URL                         SWARM
+dev            *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-master   -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and you need create swarm node:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine create \
+&amp;gt;   -d virtualbox \
+&amp;gt;   --swarm \
+&amp;gt;   --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a \
+&amp;gt;   swarm-agent-00
+
+Running pre-create checks...
+Creating machine...
+(swarm-agent-00) OUT | Creating VirtualBox VM...
+(swarm-agent-00) OUT | Creating SSH key...
+(swarm-agent-00) OUT | Starting VirtualBox VM...
+(swarm-agent-00) OUT | Starting VM...
+Waiting for machine to be running, this may take a few minutes...
+Machine is running, waiting for SSH to be available...
+Detecting operating system of created instance...
+Detecting the provisioner...
+Provisioning created instance...
+Copying certs to the local machine directory...
+Copying certs to the remote machine...
+Setting Docker configuration on the remote daemon...
+Configuring swarm...
+To see how to connect Docker to this machine, run: docker-machine env swarm-agent-00
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and another one:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine create -d virtualbox --swarm --swarm-discovery token://ca5c13a8cb0d2a1da427024b032a138a swarm-agent-01
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and now you can see all machines:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              *        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     -        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Running swarm&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;eval $(docker-machine env --swarm swarm-master)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and now you can see:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker-machine ls
+
+NAME             ACTIVE   DRIVER       STATE     URL                         SWARM
+dev              -        virtualbox   Running   tcp://192.168.99.100:2376
+swarm-agent-00   -        virtualbox   Running   tcp://192.168.99.102:2376   swarm-master
+swarm-agent-01   -        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+swarm-master     *        virtualbox   Running   tcp://192.168.99.101:2376   swarm-master (master)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and you can use docker info about information about your cluster:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker info
+
+Containers: 4
+Images: 3
+Role: primary
+Strategy: spread
+Filters: health, port, dependency, affinity, constraint
+Nodes: 3
+ swarm-agent-00: 192.168.99.102:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-agent-01: 192.168.99.103:2376
+  └ Status: Healthy
+  └ Containers: 1
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-master: 192.168.99.101:2376
+  └ Status: Healthy
+  └ Containers: 2
+  └ Reserved CPUs: 0 / 1
+  └ Reserved Memory: 0 B / 1.021 GiB
+  └ Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+CPUs: 3
+Total Memory: 3.064 GiB
+Name: f5395c4e7e6e
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you can check &lt;code&gt;docker ps  -a&lt;/code&gt; to all containers.&lt;/p&gt;
+
+&lt;p&gt;Try run: &lt;code&gt;docker run hello-world&lt;/code&gt; and after that &lt;code&gt;docker ps -a&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker ps -a
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS                                     NAMES
+35dd40392b49        hello-world         &amp;quot;/hello&amp;quot;                 16 seconds ago      Exited (0) 15 seconds ago                                             swarm-agent-00/sad_hodgkin
+0849ac73f36f        swarm:latest        &amp;quot;/swarm join --advert&amp;quot;   3 minutes ago       Up 3 minutes                2375/tcp                                  swarm-agent-01/swarm-agent
+008e6e36c7b3        swarm:latest        &amp;quot;/swarm join --advert&amp;quot;   6 minutes ago       Up 6 minutes                2375/tcp                                  swarm-agent-00/swarm-agent
+dfef13a18857        swarm:latest        &amp;quot;/swarm join --advert&amp;quot;   9 minutes ago       Up 9 minutes                2375/tcp                                  swarm-master/swarm-agent
+f5395c4e7e6e        swarm:latest        &amp;quot;/swarm manage --tlsv&amp;quot;   9 minutes ago       Up 9 minutes                2375/tcp, 192.168.99.101:3376-&amp;gt;3376/tcp   swarm-master/swarm-agent-master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You see our docker container ran on one of our swarm agent.&lt;/p&gt;
+
+&lt;p&gt;Swarm support &lt;a href=&quot;https://docs.docker.com/swarm/discovery/&quot;&gt;multiple discovery backends&lt;/a&gt;. You can experiment with others discovery backends.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/10/day-ten-docker-swarm/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/10/day-ten-docker-swarm/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Nine - Docker Registry</title>

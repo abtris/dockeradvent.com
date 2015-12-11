@@ -88,6 +88,53 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/11/day-eleven-docker-version-manager/">
+        Day Eleven - Docker Version Manager
+      </a>
+    </h1>
+
+    <span class="post-date">11 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+Rackspace created <a href="https://getcarina.com/blog/docker-version-manager/">docker version manager</a>, this helps you use more version docker.</p>
+
+<p>I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.</p>
+
+<h2>Install on Mac or Linux</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
+</code></pre></div>
+<h2>Usage</h2>
+
+<p>After dvm is installed, list all installed versions of the Docker client:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls
+  1.8.3
+-&gt;  system (1.9.1)
+</code></pre></div>
+<p>You can install all this versions:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls-remote
+1.6.0
+1.6.1
+1.6.2
+1.7.0
+1.7.1
+1.8.0
+1.8.1
+1.8.2
+1.8.3
+1.9.0
+1.9.1
+</code></pre></div>
+<p>using <code>dvm install &lt;VERSION&gt;</code>. Switch between version you can use <code>dvm use</code> command. Project you can see at <a href="https://github.com/getcarina/dvm">github</a>.</p>
+
+<p>I love this project. It&#39;s very useful to test new version some as I&#39;m using similar projects for NodeJS (<code>nvm</code>), Ruby (<code>rbenv</code>) or Go (<code>gobrew</code>).</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/10/day-ten-docker-swarm/">
         Day Ten - Docker Swarm
       </a>
@@ -684,82 +731,6 @@ else
 fi
 </code></pre></div>
 <p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/03/day-three-docker-install-upgrade/">
-        Day Three - Docker install and upgrade
-      </a>
-    </h1>
-
-    <span class="post-date">03 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- you need use stable docker version. Be careful about upgrade. For example from 1.8 to 1.9 was big problem with performance and network bridge had change default IP address from <code>172.17.42.1/24</code> to <code>172.17.0.1/24</code>.</p>
-
-<h2>Install Docker</h2>
-
-<p>I don&#39;t like <a href="https://kitematic.com/">Docker Kitematic</a>. This isn&#39;t tool for developers. But you can try if you helps. It&#39;s available as part Docker Toolbox.</p>
-
-<h3>Mac</h3>
-
-<p>Use homebrew, you can <a href="https://www.docker.com/docker-toolbox">install Docker Toolbox</a>, but I recommend install tools separately.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">brew install docker
-brew install docker-machine
-brew install docker-compose
-</code></pre></div>
-<h3>Windows</h3>
-
-<p>Download <a href="https://www.docker.com/docker-toolbox">Docker Toolbox</a>.</p>
-
-<h3>Linux</h3>
-
-<p>Install Docker by <a href="https://docs.docker.com/engine/installation/">your distribution</a>.</p>
-
-<h2>Test it</h2>
-
-<p>For test we run docker hello-world image.</p>
-
-<p>Run this command from terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$docker run hello-world
-</code></pre></div>
-<p>and you can see this output:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Unable to find image &#39;hello-world:latest&#39; locally
-latest: Pulling from library/hello-world
-
-b901d36b6f2f: Pull complete
-0a6ba66e537a: Pull complete
-Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7
-Status: Downloaded newer image for hello-world:latest
-
-Hello from Docker.
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker Hub account:
- https://hub.docker.com
-
-For more examples and ideas, visit:
- https://docs.docker.com/userguide/
-</code></pre></div>
-<p>Again, be careful about upgrade. Test, test, test every major docker version before you upgrade.</p>
-
-<p>This is all folks. See you tomorrow.</p>
-
-<p>Regards,<br>
 Ladislav</p>
 
   </div>

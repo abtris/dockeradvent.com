@@ -5,9 +5,54 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 10 Dec 2015 08:05:58 +0100</pubDate>
-    <lastBuildDate>Thu, 10 Dec 2015 08:05:58 +0100</lastBuildDate>
+    <pubDate>Fri, 11 Dec 2015 08:17:38 +0100</pubDate>
+    <lastBuildDate>Fri, 11 Dec 2015 08:17:38 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Eleven - Docker Version Manager</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+Rackspace created &lt;a href=&quot;https://getcarina.com/blog/docker-version-manager/&quot;&gt;docker version manager&lt;/a&gt;, this helps you use more version docker.&lt;/p&gt;
+
+&lt;p&gt;I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.&lt;/p&gt;
+
+&lt;h2&gt;Install on Mac or Linux&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;After dvm is installed, list all installed versions of the Docker client:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls
+  1.8.3
+-&amp;gt;  system (1.9.1)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can install all this versions:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls-remote
+1.6.0
+1.6.1
+1.6.2
+1.7.0
+1.7.1
+1.8.0
+1.8.1
+1.8.2
+1.8.3
+1.9.0
+1.9.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;using &lt;code&gt;dvm install &amp;lt;VERSION&amp;gt;&lt;/code&gt;. Switch between version you can use &lt;code&gt;dvm use&lt;/code&gt; command. Project you can see at &lt;a href=&quot;https://github.com/getcarina/dvm&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I love this project. It&amp;#39;s very useful to test new version some as I&amp;#39;m using similar projects for NodeJS (&lt;code&gt;nvm&lt;/code&gt;), Ruby (&lt;code&gt;rbenv&lt;/code&gt;) or Go (&lt;code&gt;gobrew&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Fri, 11 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/11/day-eleven-docker-version-manager/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/11/day-eleven-docker-version-manager/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Ten - Docker Swarm</title>
@@ -705,25 +750,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Wed, 02 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day One - What&#39;s docker?</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
-I see docker as two things. First is Docker platform created by &lt;a href=&quot;http://www.docker.com&quot;&gt;Docker, Inc&lt;/a&gt; that includes &lt;a href=&quot;https://github.com/docker/docker&quot;&gt;Docker client/server&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Dockerhub&lt;/a&gt; and docker tools (machine, swarm, compose). I make post about every tool.&lt;/p&gt;
-
-&lt;p&gt;Second is &lt;a href=&quot;https://www.opencontainers.org/&quot;&gt;The Open Container Initiative&lt;/a&gt; about &lt;a href=&quot;https://github.com/opencontainers/specs&quot;&gt;definition&lt;/a&gt; what is container and &lt;a href=&quot;https://github.com/opencontainers/runc&quot;&gt;runc&lt;/a&gt; as first implementation. Docker made this with others companies and this is big.&lt;/p&gt;
-
-&lt;p&gt;Open Container ecosystem is huge and you see them in next post.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Tue, 01 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/01/day-one-what-is-docker/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/01/day-one-what-is-docker/</guid>
         
         
       </item>

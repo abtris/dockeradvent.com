@@ -4,13 +4,56 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-10T08:05:58+01:00</updated>
+ <updated>2015-12-11T08:17:38+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Eleven - Docker Version Manager</title>
+   <link href="http://www.dockeradvent.com/2015/12/11/day-eleven-docker-version-manager/"/>
+   <updated>2015-12-11T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/11/day-eleven-docker-version-manager</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+Rackspace created &lt;a href=&quot;https://getcarina.com/blog/docker-version-manager/&quot;&gt;docker version manager&lt;/a&gt;, this helps you use more version docker.&lt;/p&gt;
+
+&lt;p&gt;I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.&lt;/p&gt;
+
+&lt;h2&gt;Install on Mac or Linux&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;After dvm is installed, list all installed versions of the Docker client:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls
+  1.8.3
+-&amp;gt;  system (1.9.1)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can install all this versions:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls-remote
+1.6.0
+1.6.1
+1.6.2
+1.7.0
+1.7.1
+1.8.0
+1.8.1
+1.8.2
+1.8.3
+1.9.0
+1.9.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;using &lt;code&gt;dvm install &amp;lt;VERSION&amp;gt;&lt;/code&gt;. Switch between version you can use &lt;code&gt;dvm use&lt;/code&gt; command. Project you can see at &lt;a href=&quot;https://github.com/getcarina/dvm&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I love this project. It&amp;#39;s very useful to test new version some as I&amp;#39;m using similar projects for NodeJS (&lt;code&gt;nvm&lt;/code&gt;), Ruby (&lt;code&gt;rbenv&lt;/code&gt;) or Go (&lt;code&gt;gobrew&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Ten - Docker Swarm</title>

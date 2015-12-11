@@ -11,7 +11,7 @@
 
   <title>
     
-      Day Two - Open Container Ekosystem &middot; Docker Advent
+      Day Eleven - Docker Version Manager &middot; Docker Advent
     
   </title>
 
@@ -85,35 +85,42 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day Two - Open Container Ekosystem</h1>
-  <span class="post-date">02 Dec 2015</span>
+  <h1 class="post-title">Day Eleven - Docker Version Manager</h1>
+  <span class="post-date">11 Dec 2015</span>
   <p>Hi everyone,<br>
- I can write about <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">Open Container Ecosystem</a>, today.</p>
+Rackspace created <a href="https://getcarina.com/blog/docker-version-manager/">docker version manager</a>, this helps you use more version docker.</p>
 
-<p>If you look at <a href="https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem">mindmap</a> created by <a href="http://krishworld.com/">Krishnan Subramanian</a>. You can see how is open container ecosystem wide.</p>
+<p>I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.</p>
 
-<p>You have in mindmap big categories:</p>
+<h2>Install on Mac or Linux</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
+</code></pre></div>
+<h2>Usage</h2>
 
-<ul>
-<li>Container OS</li>
-<li>Application Deployment/Development platforms</li>
-<li>Developer tools</li>
-<li>Hosting/Service providers</li>
-<li>Database/Big data</li>
-<li>Config Management Tools with Docker support</li>
-<li>Networking</li>
-<li>Image registry</li>
-<li>Monitoring</li>
-<li>Security</li>
-<li>Scheduler/Orchestration/Management/Monitoring</li>
-<li>Misc</li>
-</ul>
+<p>After dvm is installed, list all installed versions of the Docker client:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls
+  1.8.3
+-&gt;  system (1.9.1)
+</code></pre></div>
+<p>You can install all this versions:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls-remote
+1.6.0
+1.6.1
+1.6.2
+1.7.0
+1.7.1
+1.8.0
+1.8.1
+1.8.2
+1.8.3
+1.9.0
+1.9.1
+</code></pre></div>
+<p>using <code>dvm install &lt;VERSION&gt;</code>. Switch between version you can use <code>dvm use</code> command. Project you can see at <a href="https://github.com/getcarina/dvm">github</a>.</p>
 
-<p>Some of them are cool and I make some posts about them, some can be split into more categories.</p>
+<p>I love this project. It&#39;s very useful to test new version some as I&#39;m using similar projects for NodeJS (<code>nvm</code>), Ruby (<code>rbenv</code>) or Go (<code>gobrew</code>).</p>
 
-<p>Next, I will write about how install docker and start our first container.</p>
-
-<p>Regards,<br>
+<p>See you tomorrow,<br>
 Ladislav</p>
 
 </div>
@@ -121,15 +128,6 @@ Ladislav</p>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/12/11/day-eleven-docker-version-manager/">
-            Day Eleven - Docker Version Manager
-            <small>11 Dec 2015</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -145,6 +143,15 @@ Ladislav</p>
           <a href="/2015/12/09/day-nine-docker-registry/">
             Day Nine - Docker Registry
             <small>09 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/08/day-eight-docker-compose-part-2/">
+            Day Eight - Docker Compose Part 2
+            <small>08 Dec 2015</small>
           </a>
         </h3>
       </li>

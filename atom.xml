@@ -4,13 +4,69 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-11T08:17:38+01:00</updated>
+ <updated>2015-12-12T18:28:49+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Twelve - CircleCI and Docker</title>
+   <link href="http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/"/>
+   <updated>2015-12-12T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+Docker is great for testing. I make a few posts about support in Continues Integration Engines.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://circleci.com/docs/docker&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.travis-ci.com/user/docker/&quot;&gt;TravisCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jenkinsci/docker&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Circle CI&lt;/h2&gt;
+
+&lt;p&gt;To use Docker add required service into &lt;code&gt;circle.yml&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;machine&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you can use this for install different version docker than default (1.8.3):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;machine:
+  pre:
+    - echo &amp;#39;DOCKER_OPTS=&amp;quot;-s btrfs -e lxc -D --userland-proxy=false&amp;quot;&amp;#39; | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker &amp;#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci&amp;#39;
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;if you need use own &lt;code&gt;docker-compose&lt;/code&gt; version use this in dependencies:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;dependencies:
+  cache_directories:
+    - &amp;quot;~/bin/docker-compose/&amp;quot;
+  override:
+    - if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/; fi
+    - if [[ `~/bin/docker-compose/docker-compose -v | cut -d &amp;quot; &amp;quot; -f3` &amp;lt; &amp;quot;1.5.1&amp;quot; ]]; then curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` &amp;gt; ~/bin/docker-compose/docker-compose &amp;amp;&amp;amp; chmod +x ~/bin/docker-compose/docker-compose; fi
+    - ~/bin/docker-compose/docker-compose --version
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you can use caching docker layers:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;dependencies:
+  cache_directories:
+    - &amp;quot;~/docker&amp;quot;
+
+  override:
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build -t circleci/elasticsearch .
+    - mkdir -p ~/docker; docker save circleci/elasticsearch &amp;gt; ~/docker/image.tar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you have to test if helps performance. For every hosted CI will helps caching docker hub, but I think this isn&amp;#39;t good solution. Look carefully at &lt;a href=&quot;https://circleci.com/docs/docker#some-known-caching-issues&quot;&gt;caching issues&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Eleven - Docker Version Manager</title>

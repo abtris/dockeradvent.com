@@ -88,6 +88,89 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/04/day-four-docker-machine/">
+        Day Four - Docker Machine
+      </a>
+    </h1>
+
+    <span class="post-date">04 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+ if you install docker. I recommend install docker-machine. If you are using Mac or Windows you need virtualization for working with docker.
+Docker machine (DM) created virtual machine for you and setup docker daemon there. This works for list of cloud services too.</p>
+
+<p>First for local development at Mac, Windows or Linux. In linux you can use this but you don&#39;t need it.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">docker-machine create --driver virtualbox &lt;VM-name&gt;
+</code></pre></div>
+<p>I&#39;m using as <code>VM-name</code> name <code>dev</code>.</p>
+
+<p>For manage more VM you can use <code>docker-machine ls</code>, you see all your VMs. For activate VM you have to use <code>eval &quot;$(docker-machine env dev)&quot;</code></p>
+
+<p>We use for active docker-machine these script that check if you have installed docker-machine, if exists and start them do you. You can have alias to script as <code>dkactivate</code> or <code>dsetup</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
+
+# Starts docker-machine VM called DEV if down, resets the environment variables
+
+# Run this before using docker
+
+which docker-machine &gt; /dev/null 2&gt;&amp;1
+if [ $? -eq 1 ]; then
+  echo &quot;docker-machine is not installed. Run docker-install-dockertoolbox first&quot;
+  exit 1
+fi
+
+NAME=$1
+
+if [ ! $NAME ]; then
+  echo &quot;Please supply a VM name&quot;
+  exit 1
+fi
+
+docker-machine ls | grep $NAME &gt; /dev/null 2&gt;&amp;1
+if [ $? -eq 1 ]; then
+  echo &quot;$NAME VM not found. Create the VM first (e.g. run docker-machine create --driver virtualbox $NAME)&quot;
+  exit 1
+fi
+
+if [ `docker-machine status $NAME` != &quot;running&quot; ]; then
+    docker-machine start $NAME
+fi
+
+echo &quot;Running docker-machine env for the $NAME VM...&quot;
+eval &quot;$(docker-machine env $NAME)&quot;
+</code></pre></div>
+<p>This is local development, for example I use AWS for docker too. If you have account at AWS you can create new instances in EC2 for docker by this script. Just add your parameters.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
+AWS_ACCESS_KEY_ID=`cat ~/.aws/credentials | grep aws_access_key_id | cut -d&#39;=&#39; -f2`
+AWS_SECRET_ACCESS_KEY=`cat ~/.aws/credentials | grep aws_secret_access_key | cut -d&#39;=&#39; -f2`
+INSTANCE_TYPE=&#39;m3.xlarge&#39;
+REGION=&#39;us-east-1&#39;
+NAME=$1
+AWS_VPC_ID=$2
+AWS_SUBNET_ID=$3
+
+if [ ! $NAME == &quot;&quot; ]; then
+  docker-machine create \
+      -d amazonec2 \
+      --amazonec2-access-key $AWS_ACCESS_KEY_ID \
+      --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
+      --amazonec2-vpc-id $AWS_VPC_ID \
+      --amazonec2-subnet-id $AWS_SUBNET_ID \
+      --amazonec2-region $AWS_REGION \
+      --amazonec2-zone c \
+      --amazonec2-instance-type $INSTANCE_TYPE \
+      $NAME-dev
+else
+  echo &quot;Missing name&quot;
+fi
+</code></pre></div>
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/03/day-three-docker-install-upgrade/">
         Day Three - Docker install and upgrade
       </a>

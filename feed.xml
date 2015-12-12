@@ -5,9 +5,67 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Dec 2015 08:17:38 +0100</pubDate>
-    <lastBuildDate>Fri, 11 Dec 2015 08:17:38 +0100</lastBuildDate>
+    <pubDate>Sat, 12 Dec 2015 18:28:49 +0100</pubDate>
+    <lastBuildDate>Sat, 12 Dec 2015 18:28:49 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Twelve - CircleCI and Docker</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+Docker is great for testing. I make a few posts about support in Continues Integration Engines.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://circleci.com/docs/docker&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.travis-ci.com/user/docker/&quot;&gt;TravisCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jenkinsci/docker&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Circle CI&lt;/h2&gt;
+
+&lt;p&gt;To use Docker add required service into &lt;code&gt;circle.yml&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;machine&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you can use this for install different version docker than default (1.8.3):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;machine:
+  pre:
+    - echo &amp;#39;DOCKER_OPTS=&amp;quot;-s btrfs -e lxc -D --userland-proxy=false&amp;quot;&amp;#39; | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker &amp;#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci&amp;#39;
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;if you need use own &lt;code&gt;docker-compose&lt;/code&gt; version use this in dependencies:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;dependencies:
+  cache_directories:
+    - &amp;quot;~/bin/docker-compose/&amp;quot;
+  override:
+    - if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/; fi
+    - if [[ `~/bin/docker-compose/docker-compose -v | cut -d &amp;quot; &amp;quot; -f3` &amp;lt; &amp;quot;1.5.1&amp;quot; ]]; then curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` &amp;gt; ~/bin/docker-compose/docker-compose &amp;amp;&amp;amp; chmod +x ~/bin/docker-compose/docker-compose; fi
+    - ~/bin/docker-compose/docker-compose --version
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you can use caching docker layers:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;dependencies:
+  cache_directories:
+    - &amp;quot;~/docker&amp;quot;
+
+  override:
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build -t circleci/elasticsearch .
+    - mkdir -p ~/docker; docker save circleci/elasticsearch &amp;gt; ~/docker/image.tar
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;you have to test if helps performance. For every hosted CI will helps caching docker hub, but I think this isn&amp;#39;t good solution. Look carefully at &lt;a href=&quot;https://circleci.com/docs/docker#some-known-caching-issues&quot;&gt;caching issues&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Sat, 12 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/12/day-twelve-docker-and-circleci/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/12/day-twelve-docker-and-circleci/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Eleven - Docker Version Manager</title>
@@ -712,44 +770,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Thu, 03 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Two - Open Container Ekosystem</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
- I can write about &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;Open Container Ecosystem&lt;/a&gt;, today.&lt;/p&gt;
-
-&lt;p&gt;If you look at &lt;a href=&quot;https://www.mindmeister.com/389671722/open-container-ecosystem-formerly-docker-ecosystem&quot;&gt;mindmap&lt;/a&gt; created by &lt;a href=&quot;http://krishworld.com/&quot;&gt;Krishnan Subramanian&lt;/a&gt;. You can see how is open container ecosystem wide.&lt;/p&gt;
-
-&lt;p&gt;You have in mindmap big categories:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Container OS&lt;/li&gt;
-&lt;li&gt;Application Deployment/Development platforms&lt;/li&gt;
-&lt;li&gt;Developer tools&lt;/li&gt;
-&lt;li&gt;Hosting/Service providers&lt;/li&gt;
-&lt;li&gt;Database/Big data&lt;/li&gt;
-&lt;li&gt;Config Management Tools with Docker support&lt;/li&gt;
-&lt;li&gt;Networking&lt;/li&gt;
-&lt;li&gt;Image registry&lt;/li&gt;
-&lt;li&gt;Monitoring&lt;/li&gt;
-&lt;li&gt;Security&lt;/li&gt;
-&lt;li&gt;Scheduler/Orchestration/Management/Monitoring&lt;/li&gt;
-&lt;li&gt;Misc&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Some of them are cool and I make some posts about them, some can be split into more categories.&lt;/p&gt;
-
-&lt;p&gt;Next, I will write about how install docker and start our first container.&lt;/p&gt;
-
-&lt;p&gt;Regards,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Wed, 02 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/02/day-two-open-container-ecosystem/</guid>
         
         
       </item>

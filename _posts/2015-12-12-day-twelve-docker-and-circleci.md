@@ -11,6 +11,8 @@ Docker is great for testing. I make a few posts about support in Continues Integ
 - [CircleCI](https://circleci.com/docs/docker)
 - [TravisCI](https://docs.travis-ci.com/user/docker/)
 - [Jenkins](https://github.com/jenkinsci/docker)
+- [Drone](http://drone.io/)
+- [BuildKite](https://buildkite.com/docs/guides/docker-containerized-builds)
 
 ## Circle CI
 

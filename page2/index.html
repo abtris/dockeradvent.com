@@ -88,6 +88,51 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/05/day-five-docker-compose-part-1/">
+        Day Five - Docker Compose Part 1
+      </a>
+    </h1>
+
+    <span class="post-date">05 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+ I start parts about <a href="https://docs.docker.com/compose/">docker compose</a>. This tools is used for creating stacks. Application have more than one container. Best practice is every container has single purpose.</p>
+
+<p>For example Wordpress in Docker:</p>
+
+<ul>
+<li>you need MySQL or MariaDb</li>
+<li>you need PHP</li>
+<li>you need web server nginx or apache</li>
+</ul>
+
+<p>How to do it? Docker compose introduce <a href="https://docs.docker.com/compose/compose-file/">file</a> <code>docker-compose.yml</code> where you can describe more than one container. This is <a href="https://hub.docker.com/_/wordpress/">Wordpress</a> official <code>docker-compose.yml</code> from Wordpress repository at <a href="https://hub.docker.com">DockerHub</a>.</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">wordpress</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">wordpress</span>
+  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">db:mysql</span>
+  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">8080:80</span>
+
+<span class="l-Scalar-Plain">db</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mariadb</span>
+  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">MYSQL_ROOT_PASSWORD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example</span>
+</code></pre></div>
+<p>What you see? Here are defined 2 containers, one for <code>wordpress</code> and second for <code>db</code>. They are using <code>image</code> from Docker Hub. If you start this by <code>docker-compose up</code> images will be downloaded before run stack.
+You can see directive <code>links</code>. Link is way how describe connection between containers. In Wordpress container you have after that special environment properties (for example: <code>MYSQL_PORT_3306_TCP</code>) used in <a href="https://github.com/docker-library/wordpress/blob/ef064e49ebedfa12cf27e94c58b6ec103ae9b816/apache/docker-entrypoint.sh">start script</a>.
+Next are ports you have to expose ports from container. This depends if you using linux or VM. At linux are exposed to <code>localhost</code>. If you have docker-machine VM you exposed to IP address <code>docker-machine ip &lt;VM-NAME&gt;</code>.
+Last used parameter in this is <code>environment</code>. You have to defined own variable as here password to MySQL for start. If you can use own variable in docker-compose from you bash. You have to define without value and run as this example: <code>MY_VAR=value docker-compose up</code>. This is useful at CI or using one file for development and test environment.</p>
+
+<p>This is basics about docker-compose.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/04/day-four-docker-machine/">
         Day Four - Docker Machine
       </a>

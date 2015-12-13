@@ -5,9 +5,54 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 12 Dec 2015 18:29:06 +0100</pubDate>
-    <lastBuildDate>Sat, 12 Dec 2015 18:29:06 +0100</lastBuildDate>
+    <pubDate>Sun, 13 Dec 2015 14:10:07 +0100</pubDate>
+    <lastBuildDate>Sun, 13 Dec 2015 14:10:07 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Thirteen - Docker and TravisCI</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+Docker is great for testing. In last post I write about &lt;a href=&quot;http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/&quot;&gt;CircleCI&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Travis CI&lt;/h2&gt;
+
+&lt;p&gt;TravisCI is most used in Open Source projects at GitHub.&lt;/p&gt;
+
+&lt;p&gt;To use Docker add the following settings to your &lt;code&gt;.travis.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo: required
+
+services:
+  - docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;docker-compose&lt;/code&gt; in similar way as in CircleCI.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` &amp;gt; docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I&amp;#39;m not sure about TravisCI and &lt;a href=&quot;https://docs.travis-ci.com/user/caching&quot;&gt;caching&lt;/a&gt; used for docker. TravisCI using docker for normal build too, if you use &lt;code&gt;sudo: false&lt;/code&gt; your build using docker at backend.&lt;/p&gt;
+
+&lt;h2&gt;Continues Engines&lt;/h2&gt;
+
+&lt;p&gt;Many CI systems exists for example &lt;a href=&quot;https://drone.io/&quot;&gt;drone.io&lt;/a&gt; is build at top of docker. It&amp;#39;s have only simple documentation with basics commands showing UI.&lt;/p&gt;
+
+&lt;p&gt;We have new generation CI as &lt;a href=&quot;http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html&quot;&gt;Wercker&lt;/a&gt; or &lt;a href=&quot;https://buildkite.com/docs/guides/docker-containerized-builds&quot;&gt;BuildKite&lt;/a&gt; with pipelines and better support using docker.&lt;/p&gt;
+
+&lt;p&gt;Only future show us who win this battle for best continuous delivery tool.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Sun, 13 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/13/day-thirteen-docker-and-travisci/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/13/day-thirteen-docker-and-travisci/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Twelve - CircleCI and Docker</title>
@@ -18,6 +63,8 @@ Docker is great for testing. I make a few posts about support in Continues Integ
 &lt;li&gt;&lt;a href=&quot;https://circleci.com/docs/docker&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.travis-ci.com/user/docker/&quot;&gt;TravisCI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/jenkinsci/docker&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drone.io/&quot;&gt;Drone&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://buildkite.com/docs/guides/docker-containerized-builds&quot;&gt;BuildKite&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;Circle CI&lt;/h2&gt;
@@ -696,80 +743,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Fri, 04 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Three - Docker install and upgrade</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
- you need use stable docker version. Be careful about upgrade. For example from 1.8 to 1.9 was big problem with performance and network bridge had change default IP address from &lt;code&gt;172.17.42.1/24&lt;/code&gt; to &lt;code&gt;172.17.0.1/24&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Install Docker&lt;/h2&gt;
-
-&lt;p&gt;I don&amp;#39;t like &lt;a href=&quot;https://kitematic.com/&quot;&gt;Docker Kitematic&lt;/a&gt;. This isn&amp;#39;t tool for developers. But you can try if you helps. It&amp;#39;s available as part Docker Toolbox.&lt;/p&gt;
-
-&lt;h3&gt;Mac&lt;/h3&gt;
-
-&lt;p&gt;Use homebrew, you can &lt;a href=&quot;https://www.docker.com/docker-toolbox&quot;&gt;install Docker Toolbox&lt;/a&gt;, but I recommend install tools separately.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;brew install docker
-brew install docker-machine
-brew install docker-compose
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3&gt;Windows&lt;/h3&gt;
-
-&lt;p&gt;Download &lt;a href=&quot;https://www.docker.com/docker-toolbox&quot;&gt;Docker Toolbox&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Linux&lt;/h3&gt;
-
-&lt;p&gt;Install Docker by &lt;a href=&quot;https://docs.docker.com/engine/installation/&quot;&gt;your distribution&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Test it&lt;/h2&gt;
-
-&lt;p&gt;For test we run docker hello-world image.&lt;/p&gt;
-
-&lt;p&gt;Run this command from terminal:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$docker run hello-world
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and you can see this output:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Unable to find image &amp;#39;hello-world:latest&amp;#39; locally
-latest: Pulling from library/hello-world
-
-b901d36b6f2f: Pull complete
-0a6ba66e537a: Pull complete
-Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7
-Status: Downloaded newer image for hello-world:latest
-
-Hello from Docker.
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the &amp;quot;hello-world&amp;quot; image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker Hub account:
- https://hub.docker.com
-
-For more examples and ideas, visit:
- https://docs.docker.com/userguide/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Again, be careful about upgrade. Test, test, test every major docker version before you upgrade.&lt;/p&gt;
-
-&lt;p&gt;This is all folks. See you tomorrow.&lt;/p&gt;
-
-&lt;p&gt;Regards,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/03/day-three-docker-install-upgrade/</guid>
         
         
       </item>

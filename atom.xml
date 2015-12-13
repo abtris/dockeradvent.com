@@ -4,13 +4,56 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-12T18:29:06+01:00</updated>
+ <updated>2015-12-13T14:10:07+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Thirteen - Docker and TravisCI</title>
+   <link href="http://www.dockeradvent.com/2015/12/13/day-thirteen-docker-and-travisci/"/>
+   <updated>2015-12-13T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/13/day-thirteen-docker-and-travisci</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+Docker is great for testing. In last post I write about &lt;a href=&quot;http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/&quot;&gt;CircleCI&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Travis CI&lt;/h2&gt;
+
+&lt;p&gt;TravisCI is most used in Open Source projects at GitHub.&lt;/p&gt;
+
+&lt;p&gt;To use Docker add the following settings to your &lt;code&gt;.travis.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo: required
+
+services:
+  - docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;docker-compose&lt;/code&gt; in similar way as in CircleCI.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` &amp;gt; docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I&amp;#39;m not sure about TravisCI and &lt;a href=&quot;https://docs.travis-ci.com/user/caching&quot;&gt;caching&lt;/a&gt; used for docker. TravisCI using docker for normal build too, if you use &lt;code&gt;sudo: false&lt;/code&gt; your build using docker at backend.&lt;/p&gt;
+
+&lt;h2&gt;Continues Engines&lt;/h2&gt;
+
+&lt;p&gt;Many CI systems exists for example &lt;a href=&quot;https://drone.io/&quot;&gt;drone.io&lt;/a&gt; is build at top of docker. It&amp;#39;s have only simple documentation with basics commands showing UI.&lt;/p&gt;
+
+&lt;p&gt;We have new generation CI as &lt;a href=&quot;http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html&quot;&gt;Wercker&lt;/a&gt; or &lt;a href=&quot;https://buildkite.com/docs/guides/docker-containerized-builds&quot;&gt;BuildKite&lt;/a&gt; with pipelines and better support using docker.&lt;/p&gt;
+
+&lt;p&gt;Only future show us who win this battle for best continuous delivery tool.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Twelve - CircleCI and Docker</title>
@@ -24,6 +67,8 @@ Docker is great for testing. I make a few posts about support in Continues Integ
 &lt;li&gt;&lt;a href=&quot;https://circleci.com/docs/docker&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://docs.travis-ci.com/user/docker/&quot;&gt;TravisCI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/jenkinsci/docker&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drone.io/&quot;&gt;Drone&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://buildkite.com/docs/guides/docker-containerized-builds&quot;&gt;BuildKite&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;Circle CI&lt;/h2&gt;

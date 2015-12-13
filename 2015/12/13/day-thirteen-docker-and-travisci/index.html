@@ -11,7 +11,7 @@
 
   <title>
     
-      Day Twelve - CircleCI and Docker &middot; Docker Advent
+      Day Thirteen - Docker and TravisCI &middot; Docker Advent
     
   </title>
 
@@ -85,55 +85,40 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day Twelve - CircleCI and Docker</h1>
-  <span class="post-date">12 Dec 2015</span>
+  <h1 class="post-title">Day Thirteen - Docker and TravisCI</h1>
+  <span class="post-date">13 Dec 2015</span>
   <p>Hi everyone,<br>
-Docker is great for testing. I make a few posts about support in Continues Integration Engines.</p>
+Docker is great for testing. In last post I write about <a href="http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/">CircleCI</a>.</p>
 
-<ul>
-<li><a href="https://circleci.com/docs/docker">CircleCI</a></li>
-<li><a href="https://docs.travis-ci.com/user/docker/">TravisCI</a></li>
-<li><a href="https://github.com/jenkinsci/docker">Jenkins</a></li>
-<li><a href="http://drone.io/">Drone</a></li>
-<li><a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a></li>
-</ul>
+<h2>Travis CI</h2>
 
-<h2>Circle CI</h2>
+<p>TravisCI is most used in Open Source projects at GitHub.</p>
 
-<p>To use Docker add required service into <code>circle.yml</code> file:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
-</code></pre></div>
-<p>you can use this for install different version docker than default (1.8.3):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">machine:
-  pre:
-    - echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker
-    - sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci&#39;
-    - sudo chmod 0755 /usr/bin/docker
-  services:
-    - docker
-</code></pre></div>
-<p>if you need use own <code>docker-compose</code> version use this in dependencies:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
-  cache_directories:
-    - &quot;~/bin/docker-compose/&quot;
-  override:
-    - if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/; fi
-    - if [[ `~/bin/docker-compose/docker-compose -v | cut -d &quot; &quot; -f3` &lt; &quot;1.5.1&quot; ]]; then curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi
-    - ~/bin/docker-compose/docker-compose --version
-</code></pre></div>
-<p>you can use caching docker layers:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
-  cache_directories:
-    - &quot;~/docker&quot;
+<p>To use Docker add the following settings to your <code>.travis.yml</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sudo: required
 
-  override:
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -t circleci/elasticsearch .
-    - mkdir -p ~/docker; docker save circleci/elasticsearch &gt; ~/docker/image.tar
+services:
+  - docker
 </code></pre></div>
-<p>you have to test if helps performance. For every hosted CI will helps caching docker hub, but I think this isn&#39;t good solution. Look carefully at <a href="https://circleci.com/docs/docker#some-known-caching-issues">caching issues</a>.</p>
+<p>You can use <code>docker-compose</code> in similar way as in CircleCI.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` &gt; docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+</code></pre></div>
+<p>I&#39;m not sure about TravisCI and <a href="https://docs.travis-ci.com/user/caching">caching</a> used for docker. TravisCI using docker for normal build too, if you use <code>sudo: false</code> your build using docker at backend.</p>
+
+<h2>Continues Engines</h2>
+
+<p>Many CI systems exists for example <a href="https://drone.io/">drone.io</a> is build at top of docker. It&#39;s have only simple documentation with basics commands showing UI.</p>
+
+<p>We have new generation CI as <a href="http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html">Wercker</a> or <a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a> with pipelines and better support using docker.</p>
+
+<p>Only future show us who win this battle for best continuous delivery tool.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>
@@ -146,9 +131,9 @@ Ladislav</p>
     
       <li>
         <h3>
-          <a href="/2015/12/13/day-thirteen-docker-and-travisci/">
-            Day Thirteen - Docker and TravisCI
-            <small>13 Dec 2015</small>
+          <a href="/2015/12/12/day-twelve-docker-and-circleci/">
+            Day Twelve - CircleCI and Docker
+            <small>12 Dec 2015</small>
           </a>
         </h3>
       </li>

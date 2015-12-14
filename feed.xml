@@ -5,9 +5,48 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 13 Dec 2015 14:10:07 +0100</pubDate>
-    <lastBuildDate>Sun, 13 Dec 2015 14:10:07 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Dec 2015 08:14:36 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Dec 2015 08:14:36 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Fourteen - Docker Lifecycle</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+ I can write some details about docker containers. How images and containers born and die.&lt;/p&gt;
+
+&lt;h2&gt;Steps in lifecycle&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;You have to &lt;code&gt;build&lt;/code&gt; &lt;strong&gt;image&lt;/strong&gt;. Make &lt;a href=&quot;http://localhost:4000/2015/12/07/day-seven-dockerfile/&quot;&gt;&lt;code&gt;Dockerfile&lt;/code&gt;&lt;/a&gt; and run &lt;code&gt;docker build&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+&lt;li&gt;you can run &lt;code&gt;docker build .&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;or you add tag name &lt;code&gt;docker build -t username/my-imagename .&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;or you can have &lt;code&gt;Dockerfile&lt;/code&gt; somewhere at path &lt;code&gt;docker build -t username/my-imagename -f /path/Dockerfile&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;If you run image by &lt;code&gt;docker run&lt;/code&gt; you create &lt;strong&gt;container&lt;/strong&gt;. You can check them by &lt;code&gt;docker ps&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Container can be in different status, you can stop them by &lt;code&gt;docker stop&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you make some changes by using terminal &lt;code&gt;docker run -it &amp;lt;image-name&amp;gt; /bin/bash&lt;/code&gt; or &lt;code&gt;docker exec -it &amp;lt;container-id&amp;gt; /bin/bash&lt;/code&gt;. You can change this &lt;strong&gt;container&lt;/strong&gt; into &lt;strong&gt;image&lt;/strong&gt;. You have to use &lt;code&gt;docker commit&lt;/code&gt; &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/commit/&quot;&gt;command&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Docker lifecycle schema&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/docker-lifecycle-2.png&quot; alt=&quot;Docker Container Lifecycle&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, I write post about details and all commands and statuses docker container.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Thirteen - Docker and TravisCI</title>
@@ -662,87 +701,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Sat, 05 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Four - Docker Machine</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
- if you install docker. I recommend install docker-machine. If you are using Mac or Windows you need virtualization for working with docker.
-Docker machine (DM) created virtual machine for you and setup docker daemon there. This works for list of cloud services too.&lt;/p&gt;
-
-&lt;p&gt;First for local development at Mac, Windows or Linux. In linux you can use this but you don&amp;#39;t need it.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;docker-machine create --driver virtualbox &amp;lt;VM-name&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I&amp;#39;m using as &lt;code&gt;VM-name&lt;/code&gt; name &lt;code&gt;dev&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;For manage more VM you can use &lt;code&gt;docker-machine ls&lt;/code&gt;, you see all your VMs. For activate VM you have to use &lt;code&gt;eval &amp;quot;$(docker-machine env dev)&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;We use for active docker-machine these script that check if you have installed docker-machine, if exists and start them do you. You can have alias to script as &lt;code&gt;dkactivate&lt;/code&gt; or &lt;code&gt;dsetup&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/sh
-
-# Starts docker-machine VM called DEV if down, resets the environment variables
-
-# Run this before using docker
-
-which docker-machine &amp;gt; /dev/null 2&amp;gt;&amp;amp;1
-if [ $? -eq 1 ]; then
-  echo &amp;quot;docker-machine is not installed. Run docker-install-dockertoolbox first&amp;quot;
-  exit 1
-fi
-
-NAME=$1
-
-if [ ! $NAME ]; then
-  echo &amp;quot;Please supply a VM name&amp;quot;
-  exit 1
-fi
-
-docker-machine ls | grep $NAME &amp;gt; /dev/null 2&amp;gt;&amp;amp;1
-if [ $? -eq 1 ]; then
-  echo &amp;quot;$NAME VM not found. Create the VM first (e.g. run docker-machine create --driver virtualbox $NAME)&amp;quot;
-  exit 1
-fi
-
-if [ `docker-machine status $NAME` != &amp;quot;running&amp;quot; ]; then
-    docker-machine start $NAME
-fi
-
-echo &amp;quot;Running docker-machine env for the $NAME VM...&amp;quot;
-eval &amp;quot;$(docker-machine env $NAME)&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This is local development, for example I use AWS for docker too. If you have account at AWS you can create new instances in EC2 for docker by this script. Just add your parameters.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/sh
-AWS_ACCESS_KEY_ID=`cat ~/.aws/credentials | grep aws_access_key_id | cut -d&amp;#39;=&amp;#39; -f2`
-AWS_SECRET_ACCESS_KEY=`cat ~/.aws/credentials | grep aws_secret_access_key | cut -d&amp;#39;=&amp;#39; -f2`
-INSTANCE_TYPE=&amp;#39;m3.xlarge&amp;#39;
-REGION=&amp;#39;us-east-1&amp;#39;
-NAME=$1
-AWS_VPC_ID=$2
-AWS_SUBNET_ID=$3
-
-if [ ! $NAME == &amp;quot;&amp;quot; ]; then
-  docker-machine create \
-      -d amazonec2 \
-      --amazonec2-access-key $AWS_ACCESS_KEY_ID \
-      --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
-      --amazonec2-vpc-id $AWS_VPC_ID \
-      --amazonec2-subnet-id $AWS_SUBNET_ID \
-      --amazonec2-region $AWS_REGION \
-      --amazonec2-zone c \
-      --amazonec2-instance-type $INSTANCE_TYPE \
-      $NAME-dev
-else
-  echo &amp;quot;Missing name&amp;quot;
-fi
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Fri, 04 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/04/day-four-docker-machine/</guid>
         
         
       </item>

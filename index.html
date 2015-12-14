@@ -88,6 +88,47 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/14/day-fourteen-docker-lifecycle/">
+        Day Fourteen - Docker Lifecycle
+      </a>
+    </h1>
+
+    <span class="post-date">14 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+ I can write some details about docker containers. How images and containers born and die.</p>
+
+<h2>Steps in lifecycle</h2>
+
+<ol>
+<li>You have to <code>build</code> <strong>image</strong>. Make <a href="http://localhost:4000/2015/12/07/day-seven-dockerfile/"><code>Dockerfile</code></a> and run <code>docker build</code>.</li>
+</ol>
+
+<ul>
+<li>you can run <code>docker build .</code></li>
+<li>or you add tag name <code>docker build -t username/my-imagename .</code></li>
+<li>or you can have <code>Dockerfile</code> somewhere at path <code>docker build -t username/my-imagename -f /path/Dockerfile</code></li>
+</ul>
+
+<ol>
+<li><p>If you run image by <code>docker run</code> you create <strong>container</strong>. You can check them by <code>docker ps</code>.</p></li>
+<li><p>Container can be in different status, you can stop them by <code>docker stop</code>.</p></li>
+<li><p>If you make some changes by using terminal <code>docker run -it &lt;image-name&gt; /bin/bash</code> or <code>docker exec -it &lt;container-id&gt; /bin/bash</code>. You can change this <strong>container</strong> into <strong>image</strong>. You have to use <code>docker commit</code> <a href="https://docs.docker.com/engine/reference/commandline/commit/">command</a>.</p></li>
+</ol>
+
+<h2>Docker lifecycle schema</h2>
+
+<p><img src="/assets/docker-lifecycle-2.png" alt="Docker Container Lifecycle"></p>
+
+<p>Next, I write post about details and all commands and statuses docker container.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/13/day-thirteen-docker-and-travisci/">
         Day Thirteen - Docker and TravisCI
       </a>
@@ -676,40 +717,6 @@ ONBUILD ADD . /app/user/
 <p>in our image is added <code>package.json</code> and install all dependencies. After that add your source code.</p>
 
 <p>This is very good example how use <code>ONBUILD</code> as template for your apps. Another examples are many images for <a href="https://hub.docker.com/_/golang/">golang</a>, <a href="https://hub.docker.com/_/perl/">perl</a>, <a href="https://hub.docker.com/_/rails/">rails</a>, <a href="https://hub.docker.com/_/node/">nodejs</a>, <a href="https://hub.docker.com/_/php/">php</a>, <a href="https://hub.docker.com/_/wordpress/">wordpress</a>, <a href="https://hub.docker.com/_/java/">java</a> as based images.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/06/day-six-dockerhub/">
-        Day Six - Docker Hub
-      </a>
-    </h1>
-
-    <span class="post-date">06 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-<a href="https://hub.docker.com/">Docker Hub</a> is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.</p>
-
-<p>Registry you can have as service:</p>
-
-<ul>
-<li><a href="https://hub.docker.com/">Docker Hub</a></li>
-<li><a href="https://www.docker.com/docker-trusted-registry">Docker Trusted Registry</a></li>
-<li><a href="https://quay.io/">Quay</a></li>
-<li><a href="http://tutum.co/">Tutum</a></li>
-</ul>
-
-<p>or you can run them alone:</p>
-
-<ul>
-<li><a href="https://github.com/docker/distribution">Docker Registry 2.0</a></li>
-</ul>
-
-<p>It&#39;s easy to run registry myself using docker too. I used docker registry with S3 and Nginx for authentication.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

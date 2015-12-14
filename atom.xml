@@ -4,13 +4,50 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-13T14:10:07+01:00</updated>
+ <updated>2015-12-14T08:14:36+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Fourteen - Docker Lifecycle</title>
+   <link href="http://www.dockeradvent.com/2015/12/14/day-fourteen-docker-lifecycle/"/>
+   <updated>2015-12-14T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/14/day-fourteen-docker-lifecycle</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+ I can write some details about docker containers. How images and containers born and die.&lt;/p&gt;
+
+&lt;h2&gt;Steps in lifecycle&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;You have to &lt;code&gt;build&lt;/code&gt; &lt;strong&gt;image&lt;/strong&gt;. Make &lt;a href=&quot;http://localhost:4000/2015/12/07/day-seven-dockerfile/&quot;&gt;&lt;code&gt;Dockerfile&lt;/code&gt;&lt;/a&gt; and run &lt;code&gt;docker build&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+&lt;li&gt;you can run &lt;code&gt;docker build .&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;or you add tag name &lt;code&gt;docker build -t username/my-imagename .&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;or you can have &lt;code&gt;Dockerfile&lt;/code&gt; somewhere at path &lt;code&gt;docker build -t username/my-imagename -f /path/Dockerfile&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;If you run image by &lt;code&gt;docker run&lt;/code&gt; you create &lt;strong&gt;container&lt;/strong&gt;. You can check them by &lt;code&gt;docker ps&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Container can be in different status, you can stop them by &lt;code&gt;docker stop&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you make some changes by using terminal &lt;code&gt;docker run -it &amp;lt;image-name&amp;gt; /bin/bash&lt;/code&gt; or &lt;code&gt;docker exec -it &amp;lt;container-id&amp;gt; /bin/bash&lt;/code&gt;. You can change this &lt;strong&gt;container&lt;/strong&gt; into &lt;strong&gt;image&lt;/strong&gt;. You have to use &lt;code&gt;docker commit&lt;/code&gt; &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/commit/&quot;&gt;command&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Docker lifecycle schema&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/docker-lifecycle-2.png&quot; alt=&quot;Docker Container Lifecycle&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, I write post about details and all commands and statuses docker container.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Thirteen - Docker and TravisCI</title>

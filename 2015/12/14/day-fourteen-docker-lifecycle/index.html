@@ -11,7 +11,7 @@
 
   <title>
     
-      Day One - What's docker? &middot; Docker Advent
+      Day Fourteen - Docker Lifecycle &middot; Docker Advent
     
   </title>
 
@@ -85,14 +85,34 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day One - What's docker?</h1>
-  <span class="post-date">01 Dec 2015</span>
+  <h1 class="post-title">Day Fourteen - Docker Lifecycle</h1>
+  <span class="post-date">14 Dec 2015</span>
   <p>Hi everyone,<br>
-I see docker as two things. First is Docker platform created by <a href="http://www.docker.com">Docker, Inc</a> that includes <a href="https://github.com/docker/docker">Docker client/server</a>, <a href="https://hub.docker.com/">Dockerhub</a> and docker tools (machine, swarm, compose). I make post about every tool.</p>
+ I can write some details about docker containers. How images and containers born and die.</p>
 
-<p>Second is <a href="https://www.opencontainers.org/">The Open Container Initiative</a> about <a href="https://github.com/opencontainers/specs">definition</a> what is container and <a href="https://github.com/opencontainers/runc">runc</a> as first implementation. Docker made this with others companies and this is big.</p>
+<h2>Steps in lifecycle</h2>
 
-<p>Open Container ecosystem is huge and you see them in next post.</p>
+<ol>
+<li>You have to <code>build</code> <strong>image</strong>. Make <a href="http://localhost:4000/2015/12/07/day-seven-dockerfile/"><code>Dockerfile</code></a> and run <code>docker build</code>.</li>
+</ol>
+
+<ul>
+<li>you can run <code>docker build .</code></li>
+<li>or you add tag name <code>docker build -t username/my-imagename .</code></li>
+<li>or you can have <code>Dockerfile</code> somewhere at path <code>docker build -t username/my-imagename -f /path/Dockerfile</code></li>
+</ul>
+
+<ol>
+<li><p>If you run image by <code>docker run</code> you create <strong>container</strong>. You can check them by <code>docker ps</code>.</p></li>
+<li><p>Container can be in different status, you can stop them by <code>docker stop</code>.</p></li>
+<li><p>If you make some changes by using terminal <code>docker run -it &lt;image-name&gt; /bin/bash</code> or <code>docker exec -it &lt;container-id&gt; /bin/bash</code>. You can change this <strong>container</strong> into <strong>image</strong>. You have to use <code>docker commit</code> <a href="https://docs.docker.com/engine/reference/commandline/commit/">command</a>.</p></li>
+</ol>
+
+<h2>Docker lifecycle schema</h2>
+
+<p><img src="/assets/docker-lifecycle-2.png" alt="Docker Container Lifecycle"></p>
+
+<p>Next, I write post about details and all commands and statuses docker container.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>
@@ -102,15 +122,6 @@ Ladislav</p>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/12/14/day-fourteen-docker-lifecycle/">
-            Day Fourteen - Docker Lifecycle
-            <small>14 Dec 2015</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -126,6 +137,15 @@ Ladislav</p>
           <a href="/2015/12/12/day-twelve-docker-and-circleci/">
             Day Twelve - CircleCI and Docker
             <small>12 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/11/day-eleven-docker-version-manager/">
+            Day Eleven - Docker Version Manager
+            <small>11 Dec 2015</small>
           </a>
         </h3>
       </li>

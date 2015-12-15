@@ -5,9 +5,57 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 Dec 2015 08:14:53 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Dec 2015 08:14:53 +0100</lastBuildDate>
+    <pubDate>Tue, 15 Dec 2015 08:33:50 +0100</pubDate>
+    <lastBuildDate>Tue, 15 Dec 2015 08:33:50 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Fifteen - Container Lifecycle</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+ I can write some details about docker containers lifecycle.&lt;/p&gt;
+
+&lt;h2&gt;Container statuses&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;running&lt;/li&gt;
+&lt;li&gt;stopped&lt;/li&gt;
+&lt;li&gt;paused&lt;/li&gt;
+&lt;li&gt;killed&lt;/li&gt;
+&lt;li&gt;removed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;How change status&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;image -&amp;gt; &lt;code&gt;docker run&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker pause&lt;/code&gt; -&amp;gt; paused -&amp;gt; &lt;code&gt;docker unpause&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker stop&lt;/code&gt; -&amp;gt; stopped -&amp;gt; &lt;code&gt;docker start&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;stopped -&amp;gt; &lt;code&gt;docker rm&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker kill&lt;/code&gt; -&amp;gt; killed -&amp;gt; &lt;code&gt;docker rm&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker rm --force&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker restart&lt;/code&gt; -&amp;gt; stopped -&amp;gt; running&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Docker container lifecycle schema&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/docker-lifecycle-3.png&quot; alt=&quot;Docker Container Lifecycle&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see you have many containers, sometimes problems with space in VM. Docker consumes big amount of disk space. I use this script &lt;code&gt;docker-cleanup&lt;/code&gt; for cleanup my VM. First command remove containers and second remove images.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Tue, 15 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/15/day-fifteen-container-lifecycle/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/15/day-fifteen-container-lifecycle/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Fourteen - Docker Lifecycle</title>
@@ -658,49 +706,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Sun, 06 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Five - Docker Compose Part 1</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
- I start parts about &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;docker compose&lt;/a&gt;. This tools is used for creating stacks. Application have more than one container. Best practice is every container has single purpose.&lt;/p&gt;
-
-&lt;p&gt;For example Wordpress in Docker:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;you need MySQL or MariaDb&lt;/li&gt;
-&lt;li&gt;you need PHP&lt;/li&gt;
-&lt;li&gt;you need web server nginx or apache&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;How to do it? Docker compose introduce &lt;a href=&quot;https://docs.docker.com/compose/compose-file/&quot;&gt;file&lt;/a&gt; &lt;code&gt;docker-compose.yml&lt;/code&gt; where you can describe more than one container. This is &lt;a href=&quot;https://hub.docker.com/_/wordpress/&quot;&gt;Wordpress&lt;/a&gt; official &lt;code&gt;docker-compose.yml&lt;/code&gt; from Wordpress repository at &lt;a href=&quot;https://hub.docker.com&quot;&gt;DockerHub&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;wordpress&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;wordpress&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;db:mysql&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;8080:80&lt;/span&gt;
-
-&lt;span class=&quot;l-Scalar-Plain&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;mariadb&lt;/span&gt;
-  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;What you see? Here are defined 2 containers, one for &lt;code&gt;wordpress&lt;/code&gt; and second for &lt;code&gt;db&lt;/code&gt;. They are using &lt;code&gt;image&lt;/code&gt; from Docker Hub. If you start this by &lt;code&gt;docker-compose up&lt;/code&gt; images will be downloaded before run stack.
-You can see directive &lt;code&gt;links&lt;/code&gt;. Link is way how describe connection between containers. In Wordpress container you have after that special environment properties (for example: &lt;code&gt;MYSQL_PORT_3306_TCP&lt;/code&gt;) used in &lt;a href=&quot;https://github.com/docker-library/wordpress/blob/ef064e49ebedfa12cf27e94c58b6ec103ae9b816/apache/docker-entrypoint.sh&quot;&gt;start script&lt;/a&gt;.
-Next are ports you have to expose ports from container. This depends if you using linux or VM. At linux are exposed to &lt;code&gt;localhost&lt;/code&gt;. If you have docker-machine VM you exposed to IP address &lt;code&gt;docker-machine ip &amp;lt;VM-NAME&amp;gt;&lt;/code&gt;.
-Last used parameter in this is &lt;code&gt;environment&lt;/code&gt;. You have to defined own variable as here password to MySQL for start. If you can use own variable in docker-compose from you bash. You have to define without value and run as this example: &lt;code&gt;MY_VAR=value docker-compose up&lt;/code&gt;. This is useful at CI or using one file for development and test environment.&lt;/p&gt;
-
-&lt;p&gt;This is basics about docker-compose.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/05/day-five-docker-compose-part-1/</guid>
         
         
       </item>

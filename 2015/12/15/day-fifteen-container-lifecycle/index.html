@@ -11,7 +11,7 @@
 
   <title>
     
-      Day One - What's docker? &middot; Docker Advent
+      Day Fifteen - Container Lifecycle &middot; Docker Advent
     
   </title>
 
@@ -85,15 +85,44 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day One - What's docker?</h1>
-  <span class="post-date">01 Dec 2015</span>
+  <h1 class="post-title">Day Fifteen - Container Lifecycle</h1>
+  <span class="post-date">15 Dec 2015</span>
   <p>Hi everyone,<br>
-I see docker as two things. First is Docker platform created by <a href="http://www.docker.com">Docker, Inc</a> that includes <a href="https://github.com/docker/docker">Docker client/server</a>, <a href="https://hub.docker.com/">Dockerhub</a> and docker tools (machine, swarm, compose). I make post about every tool.</p>
+ I can write some details about docker containers lifecycle.</p>
 
-<p>Second is <a href="https://www.opencontainers.org/">The Open Container Initiative</a> about <a href="https://github.com/opencontainers/specs">definition</a> what is container and <a href="https://github.com/opencontainers/runc">runc</a> as first implementation. Docker made this with others companies and this is big.</p>
+<h2>Container statuses</h2>
 
-<p>Open Container ecosystem is huge and you see them in next post.</p>
+<ul>
+<li>running</li>
+<li>stopped</li>
+<li>paused</li>
+<li>killed</li>
+<li>removed</li>
+</ul>
 
+<h2>How change status</h2>
+
+<ul>
+<li>image -&gt; <code>docker run</code> -&gt; running</li>
+<li>running -&gt; <code>docker pause</code> -&gt; paused -&gt; <code>docker unpause</code> -&gt; running</li>
+<li>running -&gt; <code>docker stop</code> -&gt; stopped -&gt; <code>docker start</code> -&gt; running</li>
+<li>stopped -&gt; <code>docker rm</code> -&gt; removed</li>
+<li>running -&gt; <code>docker kill</code> -&gt; killed -&gt; <code>docker rm</code> -&gt; removed</li>
+<li>running -&gt; <code>docker rm --force</code> -&gt; removed</li>
+<li>running -&gt; <code>docker restart</code> -&gt; stopped -&gt; running</li>
+</ul>
+
+<h2>Docker container lifecycle schema</h2>
+
+<p><img src="/assets/docker-lifecycle-3.png" alt="Docker Container Lifecycle"></p>
+
+<p>You can see you have many containers, sometimes problems with space in VM. Docker consumes big amount of disk space. I use this script <code>docker-cleanup</code> for cleanup my VM. First command remove containers and second remove images.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+</code></pre></div>
 <p>See you tomorrow,<br>
 Ladislav</p>
 
@@ -102,15 +131,6 @@ Ladislav</p>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/12/15/day-fifteen-container-lifecycle/">
-            Day Fifteen - Container Lifecycle
-            <small>15 Dec 2015</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -126,6 +146,15 @@ Ladislav</p>
           <a href="/2015/12/13/day-thirteen-docker-and-travisci/">
             Day Thirteen - Docker and TravisCI
             <small>13 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/12/day-twelve-docker-and-circleci/">
+            Day Twelve - CircleCI and Docker
+            <small>12 Dec 2015</small>
           </a>
         </h3>
       </li>

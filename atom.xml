@@ -4,13 +4,59 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-14T08:14:53+01:00</updated>
+ <updated>2015-12-15T08:33:50+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Fifteen - Container Lifecycle</title>
+   <link href="http://www.dockeradvent.com/2015/12/15/day-fifteen-container-lifecycle/"/>
+   <updated>2015-12-15T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/15/day-fifteen-container-lifecycle</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+ I can write some details about docker containers lifecycle.&lt;/p&gt;
+
+&lt;h2&gt;Container statuses&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;running&lt;/li&gt;
+&lt;li&gt;stopped&lt;/li&gt;
+&lt;li&gt;paused&lt;/li&gt;
+&lt;li&gt;killed&lt;/li&gt;
+&lt;li&gt;removed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;How change status&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;image -&amp;gt; &lt;code&gt;docker run&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker pause&lt;/code&gt; -&amp;gt; paused -&amp;gt; &lt;code&gt;docker unpause&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker stop&lt;/code&gt; -&amp;gt; stopped -&amp;gt; &lt;code&gt;docker start&lt;/code&gt; -&amp;gt; running&lt;/li&gt;
+&lt;li&gt;stopped -&amp;gt; &lt;code&gt;docker rm&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker kill&lt;/code&gt; -&amp;gt; killed -&amp;gt; &lt;code&gt;docker rm&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker rm --force&lt;/code&gt; -&amp;gt; removed&lt;/li&gt;
+&lt;li&gt;running -&amp;gt; &lt;code&gt;docker restart&lt;/code&gt; -&amp;gt; stopped -&amp;gt; running&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Docker container lifecycle schema&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/docker-lifecycle-3.png&quot; alt=&quot;Docker Container Lifecycle&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see you have many containers, sometimes problems with space in VM. Docker consumes big amount of disk space. I use this script &lt;code&gt;docker-cleanup&lt;/code&gt; for cleanup my VM. First command remove containers and second remove images.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Fourteen - Docker Lifecycle</title>

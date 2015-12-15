@@ -88,6 +88,56 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/15/day-fifteen-container-lifecycle/">
+        Day Fifteen - Container Lifecycle
+      </a>
+    </h1>
+
+    <span class="post-date">15 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+ I can write some details about docker containers lifecycle.</p>
+
+<h2>Container statuses</h2>
+
+<ul>
+<li>running</li>
+<li>stopped</li>
+<li>paused</li>
+<li>killed</li>
+<li>removed</li>
+</ul>
+
+<h2>How change status</h2>
+
+<ul>
+<li>image -&gt; <code>docker run</code> -&gt; running</li>
+<li>running -&gt; <code>docker pause</code> -&gt; paused -&gt; <code>docker unpause</code> -&gt; running</li>
+<li>running -&gt; <code>docker stop</code> -&gt; stopped -&gt; <code>docker start</code> -&gt; running</li>
+<li>stopped -&gt; <code>docker rm</code> -&gt; removed</li>
+<li>running -&gt; <code>docker kill</code> -&gt; killed -&gt; <code>docker rm</code> -&gt; removed</li>
+<li>running -&gt; <code>docker rm --force</code> -&gt; removed</li>
+<li>running -&gt; <code>docker restart</code> -&gt; stopped -&gt; running</li>
+</ul>
+
+<h2>Docker container lifecycle schema</h2>
+
+<p><img src="/assets/docker-lifecycle-3.png" alt="Docker Container Lifecycle"></p>
+
+<p>You can see you have many containers, sometimes problems with space in VM. Docker consumes big amount of disk space. I use this script <code>docker-cleanup</code> for cleanup my VM. First command remove containers and second remove images.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+</code></pre></div>
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/14/day-fourteen-docker-lifecycle/">
         Day Fourteen - Docker Lifecycle
       </a>
@@ -606,117 +656,6 @@ web_1   | == Sinatra (v1.4.6) has taken the stage on 4567 for development with b
 web_1   | [2015-12-08 13:22:32] INFO  WEBrick::HTTPServer#start: pid=1 port=4567
 </code></pre></div>
 <p>Application works <code>open http://$(docker-machine ip dev)</code> launch browser and you can see your application.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/07/day-seven-dockerfile/">
-        Day Seven - Dockerfile
-      </a>
-    </h1>
-
-    <span class="post-date">07 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-if you can start making own images you need <code>Dockerfile</code>. This file describe how is image created. Every command is cachable in separate layer and this is helpful if adding new commands, rebuild is more faster than you use tools as Puppet, Chef or Ansible.</p>
-
-<p><a href="http://docs.docker.com/engine/reference/builder/">Dockerfile</a> can contains many commands.</p>
-
-<h2>Structure</h2>
-
-<p>Minimum file is for example used in Heroku:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">from</span> heroku/nodejs
-</code></pre></div>
-<p>and this is only one line! This image has parent image with <code>Dockerfile</code> contains:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="c"># Inherit from Heroku&#39;s stack</span>
-<span class="k">FROM</span> heroku/cedar:14
-
-<span class="c"># Internally, we arbitrarily use port 3000</span>
-<span class="k">ENV</span> PORT <span class="m">3000</span>
-<span class="c"># Which version of node?</span>
-<span class="k">ENV</span> NODE_ENGINE 0.12.2
-<span class="c"># Locate our binaries</span>
-<span class="k">ENV</span> PATH /app/heroku/node/bin/:/app/user/node_modules/.bin:<span class="nv">$PATH</span>
-
-<span class="c"># Create some needed directories</span>
-<span class="k">RUN</span> mkdir -p /app/heroku/node /app/.profile.d
-<span class="k">WORKDIR</span> /app/user
-
-<span class="c"># Install node</span>
-<span class="k">RUN</span> curl -s https://s3pository.heroku.com/node/v<span class="nv">$NODE_ENGINE</span>/node-v<span class="nv">$NODE_ENGINE</span>-linux-x64.tar.gz <span class="p">|</span> tar --strip-components<span class="o">=</span><span class="m">1</span> -xz -C /app/heroku/node
-
-<span class="c"># Export the node path in .profile.d</span>
-<span class="k">RUN</span> <span class="nb">echo</span> <span class="s2">&quot;export PATH=\&quot;/app/heroku/node/bin:/app/user/node_modules/.bin:\$PATH\&quot;&quot;</span> &gt; /app/.profile.d/nodejs.sh
-
-<span class="n-Keyword">ONBUILD</span><span class="w"> </span><span class="k">ADD</span> package.json /app/user/
-<span class="n-Keyword">ONBUILD</span><span class="w"> </span><span class="k">RUN</span> /app/heroku/node/bin/npm install
-<span class="n-Keyword">ONBUILD</span><span class="w"> </span><span class="k">ADD</span> . /app/user/
-</code></pre></div>
-<p>This parent is <code>heroku/cedar:14</code> and his <code>Dockerfile</code>:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> ubuntu-debootstrap:14.04
-COPY ./cedar-14.sh /tmp/build.sh
-<span class="k">RUN</span> <span class="nv">LC_ALL</span><span class="o">=</span>C <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive /tmp/build.sh
-</code></pre></div>
-<p>and this parent <code>ubuntu-debootstrap:14.04</code> is:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> scratch
-<span class="k">ADD</span> rootfs.tar.xz /
-<span class="k">CMD</span> <span class="o">[</span><span class="s2">&quot;/bin/bash&quot;</span><span class="o">]</span>
-</code></pre></div>
-<p>and <code>scratch</code> is <a href="https://hub.docker.com/r/library/scratch/">empty image</a> that is used explicitly to build new images.</p>
-
-<h2>Commands</h2>
-
-<p>You start with <code>FROM</code>. Usually use smallest possible image or image used in your servers.</p>
-
-<p>For adding files into image use <code>ADD</code> or <code>COPY</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">If you&#39;re not interested in the nuances of ADD and COPY and just want an answer to &quot;which one should I use?&quot;, all you need to know is: use COPY. - [Brian DeHamer](https://labs.ctl.io/dockerfile-add-vs-copy/)
-</code></pre></div>
-<p>In simple way <code>ADD</code> use only for URL address or archives.</p>
-
-<p>Next is <code>RUN</code> command, you can run any OS command. Every <code>RUN</code> is in separate layer and it&#39;s useful if you group commands.</p>
-
-<p>Instead using:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">RUN</span> apt-get update
-<span class="k">RUN</span> apt-get install -y package-bar
-<span class="k">RUN</span> apt-get install -y package-baz
-<span class="k">RUN</span> apt-get install -y package-foo
-</code></pre></div>
-<p>use this:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y <span class="err">\</span>
-        package-bar <span class="err">\</span>
-        package-baz <span class="err">\</span>
-        package-foo <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> apt-get clean <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
-</code></pre></div>
-<p>First example create 4 images for every layer. Second create only one and clean after install. This helps with image size.</p>
-
-<p>If you need ports use <code>EXPOSE</code>, for environment properties <code>ENV</code></p>
-
-<p><code>ENTRYPOINT</code> is main image command and <code>CMD</code> is for default flags.</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">ENTRYPOINT</span> <span class="o">[</span><span class="s2">&quot;node&quot;</span><span class="o">]</span>
-<span class="k">CMD</span> <span class="o">[</span><span class="s2">&quot;--version&quot;</span><span class="o">]</span>
-</code></pre></div>
-<p>Now the image can be run like this to show the command’s help:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker run node
-</code></pre></div>
-<p>Or using the right parameters to execute a command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker run node install aws-sdk
-</code></pre></div>
-<p>You can define <code>VOLUME</code>, <code>USER</code>, <code>WORKDIR</code> if you need it.</p>
-
-<p>Last interesting command is <code>ONBUILD</code>. I like this, you can defined some parts in parent image. This commands will be executed in building only for child image. Example we have in our image where is <code>FROM heroku/nodejs</code> image. This image in build execute sequence defined in <code>heroku\nodejs</code> image.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ONBUILD ADD package.json /app/user/
-ONBUILD RUN /app/heroku/node/bin/npm install
-ONBUILD ADD . /app/user/
-</code></pre></div>
-<p>in our image is added <code>package.json</code> and install all dependencies. After that add your source code.</p>
-
-<p>This is very good example how use <code>ONBUILD</code> as template for your apps. Another examples are many images for <a href="https://hub.docker.com/_/golang/">golang</a>, <a href="https://hub.docker.com/_/perl/">perl</a>, <a href="https://hub.docker.com/_/rails/">rails</a>, <a href="https://hub.docker.com/_/node/">nodejs</a>, <a href="https://hub.docker.com/_/php/">php</a>, <a href="https://hub.docker.com/_/wordpress/">wordpress</a>, <a href="https://hub.docker.com/_/java/">java</a> as based images.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

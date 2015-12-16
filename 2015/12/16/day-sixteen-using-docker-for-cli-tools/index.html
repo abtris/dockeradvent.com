@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Day Sixteen - Using docker for CLI Tools &middot; Docker Advent
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/hyde.css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+                                 <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="/">
+          Docker Advent
+        </a>
+      </h1>
+      <p class="lead">Made by <a href="https://twitter.com/abtris" target="_blank">@abtris</a>.</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item" href="/">Home</a>
+
+      
+
+      
+      
+        
+          
+        
+      
+        
+          
+            <a class="sidebar-nav-item" href="/about/">About</a>
+          
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+
+      <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
+    </nav>
+
+    <p>&copy; 2015. All rights reserved.</p>
+  </div>
+</div>
+
+
+    <div class="content container">
+      <div class="post">
+  <h1 class="post-title">Day Sixteen - Using docker for CLI Tools</h1>
+  <span class="post-date">16 Dec 2015</span>
+  <p>Hi everyone,<br>
+I like one thing at docker and that is isolation. For example we have <a href="https://github.com/apiaryio/polls-api">project Polls API</a> written in Python. For testing API we use tool named <a href="http://dredd.readthedocs.org/en/latest/">Dredd</a> written in NodeJS. I can&#39;t install NodeJS to our system. But you can easy use Docker to solve this problem.</p>
+
+<p>Here is <code>circle.yml</code> file for project:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.8.3-circleci&#39;</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo chmod 0755 /usr/bin/docker</span>
+  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
+<span class="l-Scalar-Plain">dependencies</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">cache_directories</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="s">&quot;~/bin/docker-compose/&quot;</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker info</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker version</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/ &amp;&amp; curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose --version</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose pull</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker pull apiaryio/dredd</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose build</span>
+<span class="l-Scalar-Plain">test</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose up -d web</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py migrate</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py test</span>
+  <span class="l-Scalar-Plain">post</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">./scripts/dredd</span>
+</code></pre></div>
+<p>If you can create image for some tools you can make it as I did for Dredd.</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">from</span> node:0.12
+
+<span class="k">RUN</span> npm install -g dredd
+
+<span class="k">CMD</span> dredd
+</code></pre></div>
+<p>It&#39;s easy and depends on your tool. Sometimes is better use <code>ENTRYPOINT</code> and <code>CMD</code>. Dredd works out of box without parameters using <code>dredd.yml</code> config. For example API Blueprint parser <a href="https://github.com/apiaryio/drafter">drafter</a> waiting for input from stdin. There is better using <code>ENTRYPOINT</code> and <code>CMD</code> with <code>-h</code> as default parameter.</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> apiaryio/base-dev-cpp:1.0.0
+<span class="k">MAINTAINER</span> Apiary <span class="s2">&quot;sre@apiary.io&quot;</span>
+
+
+<span class="k">RUN</span> locale-gen en_US.UTF-8
+<span class="k">RUN</span> <span class="nb">echo</span> <span class="s2">&quot;LC_ALL=en_US.UTF-8&quot;</span> &gt;&gt; /etc/default/locale
+<span class="k">RUN</span> dpkg-reconfigure locales
+
+<span class="k">ADD</span> ./ /drafter
+
+<span class="k">WORKDIR</span> /drafter
+
+<span class="c"># It&#39;s tempting to put ./configure into RUN, but then you have timestamp issues</span>
+
+<span class="k">RUN</span> ./configure <span class="o">&amp;&amp;</span> make all <span class="o">&amp;&amp;</span> make install
+
+<span class="k">ENTRYPOINT</span> /usr/local/bin/drafter
+<span class="k">CMD</span> <span class="s2">&quot;-h&quot;</span>
+</code></pre></div>
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/12/15/day-fifteen-container-lifecycle/">
+            Day Fifteen - Container Lifecycle
+            <small>15 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/14/day-fourteen-docker-lifecycle/">
+            Day Fourteen - Docker Lifecycle
+            <small>14 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/13/day-thirteen-docker-and-travisci/">
+            Day Thirteen - Docker and TravisCI
+            <small>13 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37693925-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

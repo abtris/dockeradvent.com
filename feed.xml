@@ -5,9 +5,79 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 15 Dec 2015 08:33:50 +0100</pubDate>
-    <lastBuildDate>Tue, 15 Dec 2015 08:33:50 +0100</lastBuildDate>
+    <pubDate>Wed, 16 Dec 2015 09:03:14 +0100</pubDate>
+    <lastBuildDate>Wed, 16 Dec 2015 09:03:14 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Sixteen - Using docker for CLI Tools</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+I like one thing at docker and that is isolation. For example we have &lt;a href=&quot;https://github.com/apiaryio/polls-api&quot;&gt;project Polls API&lt;/a&gt; written in Python. For testing API we use tool named &lt;a href=&quot;http://dredd.readthedocs.org/en/latest/&quot;&gt;Dredd&lt;/a&gt; written in NodeJS. I can&amp;#39;t install NodeJS to our system. But you can easy use Docker to solve this problem.&lt;/p&gt;
+
+&lt;p&gt;Here is &lt;code&gt;circle.yml&lt;/code&gt; file for project:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;machine&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;echo &amp;#39;DOCKER_OPTS=&amp;quot;-s btrfs -e lxc -D --userland-proxy=false&amp;quot;&amp;#39; | sudo tee -a /etc/default/docker&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sudo curl -L -o /usr/bin/docker &amp;#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.8.3-circleci&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sudo chmod 0755 /usr/bin/docker&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cache_directories&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;~/bin/docker-compose/&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;override&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker info&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker version&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/ &amp;amp;&amp;amp; curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` &amp;gt; ~/bin/docker-compose/docker-compose &amp;amp;&amp;amp; chmod +x ~/bin/docker-compose/docker-compose; fi&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose --version&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose pull&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;docker pull apiaryio/dredd&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose build&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose up -d web&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose run shell python manage.py migrate&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;override&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~/bin/docker-compose/docker-compose run shell python manage.py test&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;./scripts/dredd&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you can create image for some tools you can make it as I did for Dredd.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; node:0.12
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; npm install -g dredd
+
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; dredd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It&amp;#39;s easy and depends on your tool. Sometimes is better use &lt;code&gt;ENTRYPOINT&lt;/code&gt; and &lt;code&gt;CMD&lt;/code&gt;. Dredd works out of box without parameters using &lt;code&gt;dredd.yml&lt;/code&gt; config. For example API Blueprint parser &lt;a href=&quot;https://github.com/apiaryio/drafter&quot;&gt;drafter&lt;/a&gt; waiting for input from stdin. There is better using &lt;code&gt;ENTRYPOINT&lt;/code&gt; and &lt;code&gt;CMD&lt;/code&gt; with &lt;code&gt;-h&lt;/code&gt; as default parameter.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; apiaryio/base-dev-cpp:1.0.0
+&lt;span class=&quot;k&quot;&gt;MAINTAINER&lt;/span&gt; Apiary &lt;span class=&quot;s2&quot;&gt;&amp;quot;sre@apiary.io&amp;quot;&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; locale-gen en_US.UTF-8
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;LC_ALL=en_US.UTF-8&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/default/locale
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; dpkg-reconfigure locales
+
+&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; ./ /drafter
+
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /drafter
+
+&lt;span class=&quot;c&quot;&gt;# It&amp;#39;s tempting to put ./configure into RUN, but then you have timestamp issues&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; ./configure &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; make all &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; make install
+
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt; /usr/local/bin/drafter
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;-h&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Wed, 16 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/16/day-sixteen-using-docker-for-cli-tools/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/16/day-sixteen-using-docker-for-cli-tools/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Fifteen - Container Lifecycle</title>
@@ -674,38 +744,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Mon, 07 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Six - Docker Hub</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
-&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; is place to store container images. If you create new image, you need push them into registry. Registry can be public (default is Docker Hub) or private.&lt;/p&gt;
-
-&lt;p&gt;Registry you can have as service:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://www.docker.com/docker-trusted-registry&quot;&gt;Docker Trusted Registry&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://quay.io/&quot;&gt;Quay&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://tutum.co/&quot;&gt;Tutum&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;or you can run them alone:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/docker/distribution&quot;&gt;Docker Registry 2.0&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It&amp;#39;s easy to run registry myself using docker too. I used docker registry with S3 and Nginx for authentication.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Sun, 06 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/06/day-six-dockerhub/</guid>
         
         
       </item>

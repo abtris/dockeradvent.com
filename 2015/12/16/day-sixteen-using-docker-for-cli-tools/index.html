@@ -118,6 +118,32 @@ I like one thing at docker and that is isolation. For example we have <a href="h
   <span class="l-Scalar-Plain">post</span><span class="p-Indicator">:</span>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">./scripts/dredd</span>
 </code></pre></div>
+<p>and bash script for running dredd is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+# set -x
+which docker-compose &gt; /dev/null 1&gt;&amp;1
+if [ $? -eq 0 ]; then
+  DOCKER_COMPOSE=&#39;docker-compose&#39;
+else
+  if [ -f ~/bin/docker-compose/docker-compose ]; then
+    DOCKER_COMPOSE=&quot;$HOME/bin/docker-compose/docker-compose&quot;
+  else
+    echo &quot;Cannot find docker-compose!&quot;
+    exit 1
+  fi
+fi
+# Sync the database
+$DOCKER_COMPOSE run -e DATABASE_URL=sqlite:///dredd.sqlite shell &quot;python manage.py migrate&quot;
+# Run the dev server
+$DOCKER_COMPOSE up -d web
+IPWEB=`docker ps  | grep pollsapi_web | cut -d &#39; &#39; -f1 | xargs docker inspect  | grep IPAddress\&quot;: | cut -d &quot;:&quot; -f2 | tr -d &quot;\&quot;&quot; | tr -d &quot;,&quot; | tr -d &#39;[[:space:]]&#39;`
+# Run dredd
+docker run -v $(pwd):/root -w /root apiaryio/dredd dredd apiary.apib http://$IPWEB:8080
+RESULT=$?
+exit $RESULT
+</code></pre></div>
+<p>You can see setup database using docker-compose. After running web, I get IP address for python server and using this address as parameter for running dredd command.</p>
+
 <p>If you can create image for some tools you can make it as I did for Dredd.</p>
 <div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">from</span> node:0.12
 

@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-16T09:03:14+01:00</updated>
+ <updated>2015-12-16T09:07:56+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -48,6 +48,32 @@ I like one thing at docker and that is isolation. For example we have &lt;a href
   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;./scripts/dredd&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and bash script for running dredd is:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
+# set -x
+which docker-compose &amp;gt; /dev/null 1&amp;gt;&amp;amp;1
+if [ $? -eq 0 ]; then
+  DOCKER_COMPOSE=&amp;#39;docker-compose&amp;#39;
+else
+  if [ -f ~/bin/docker-compose/docker-compose ]; then
+    DOCKER_COMPOSE=&amp;quot;$HOME/bin/docker-compose/docker-compose&amp;quot;
+  else
+    echo &amp;quot;Cannot find docker-compose!&amp;quot;
+    exit 1
+  fi
+fi
+# Sync the database
+$DOCKER_COMPOSE run -e DATABASE_URL=sqlite:///dredd.sqlite shell &amp;quot;python manage.py migrate&amp;quot;
+# Run the dev server
+$DOCKER_COMPOSE up -d web
+IPWEB=`docker ps  | grep pollsapi_web | cut -d &amp;#39; &amp;#39; -f1 | xargs docker inspect  | grep IPAddress\&amp;quot;: | cut -d &amp;quot;:&amp;quot; -f2 | tr -d &amp;quot;\&amp;quot;&amp;quot; | tr -d &amp;quot;,&amp;quot; | tr -d &amp;#39;[[:space:]]&amp;#39;`
+# Run dredd
+docker run -v $(pwd):/root -w /root apiaryio/dredd dredd apiary.apib http://$IPWEB:8080
+RESULT=$?
+exit $RESULT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can see setup database using docker-compose. After running web, I get IP address for python server and using this address as parameter for running dredd command.&lt;/p&gt;
+
 &lt;p&gt;If you can create image for some tools you can make it as I did for Dredd.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; node:0.12
 

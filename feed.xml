@@ -5,9 +5,77 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 16 Dec 2015 09:08:15 +0100</pubDate>
-    <lastBuildDate>Wed, 16 Dec 2015 09:08:15 +0100</lastBuildDate>
+    <pubDate>Thu, 17 Dec 2015 08:17:05 +0100</pubDate>
+    <lastBuildDate>Thu, 17 Dec 2015 08:17:05 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Seventeen - Docker and Sphinx documentation</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+if you write the docs, you can use &lt;a href=&quot;http://sphinx-doc.org/&quot;&gt;Sphinx&lt;/a&gt;. You can share your documentation using &lt;a href=&quot;https://readthedocs.org/&quot;&gt;Read the Docs&lt;/a&gt; portal.&lt;/p&gt;
+
+&lt;p&gt;If you look at &lt;a href=&quot;https://docs.readthedocs.org/en/latest/getting_started.html#write-your-docs&quot;&gt;quickstart&lt;/a&gt; how write the docs, you can install python and some tools. This can be complicated if you can use latex for creating PDF version and do you need another version python for your development and some another for write the docs. Some members of your team can&amp;#39;t install anything for update just a few lines.&lt;/p&gt;
+
+&lt;h2&gt;Docker solution for Sphinx&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;a href=&quot;https://hub.docker.com/r/apiaryio/base-sphinx-doc-dev/&quot;&gt;docker image&lt;/a&gt;. There is &lt;code&gt;requirements.txt&lt;/code&gt; for all python packages:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Sphinx&amp;gt;=1.3.1
+awscli==1.5.2
+sphinx_rtd_theme
+recommonmark
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and Dockerfile based on debian.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;        debian:jessie
+&lt;span class=&quot;k&quot;&gt;MAINTAINER&lt;/span&gt;  Apiary &amp;lt;sre@apiary.io&amp;gt;
+
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; REFRESHED_AT 2015-11-03
+
+COPY requirements.txt /tmp/
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get clean &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get install -y --no-install-recommends python-sphinx &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    graphviz &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    make &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    python-pip &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    pip install -r /tmp/requirements.txt &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /usr/share/doc/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /usr/share/locale/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /var/cache/debconf/*-old &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /var/lib/apt/lists/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get autoclean -y &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get autoremove -y
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir /mnt/docs
+
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /mnt/docs
+&lt;span class=&quot;k&quot;&gt;VOLUME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/mnt/docs&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; make clean html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;for running in repository with documentation you can use simple shell script, with support html and latex version. &lt;a href=&quot;https://github.com/apiaryio/docker-base-images/blob/master/sphinx-latex-doc-dev/Dockerfile&quot;&gt;Latex image size&lt;/a&gt; is more than 1GB. Html version have only 100MB.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
+if [[ &amp;quot;$@&amp;quot; =~ latex.* ]]; then
+    echo &amp;quot;Building with LaTex image&amp;quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-latex-doc-dev $@
+else
+    echo &amp;quot;Building with html-only image&amp;quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-doc-dev $@
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Using is very simple just run &lt;code&gt;./build.sh&lt;/code&gt; and &lt;code&gt;open build/html/index.html&lt;/code&gt;. You can use your favorite editor to edit sources and after that just run build again and check in browser. This version supports &lt;a href=&quot;http://sphinx-doc.org/rest.html&quot;&gt;reStructuredText&lt;/a&gt; and &lt;a href=&quot;https://help.github.com/articles/markdown-basics/&quot;&gt;markdown&lt;/a&gt;. You can combine both formats into your documentation. I prefer using markdown for simple text as this blog, but for complex documentation with references is better use reStructuredText (rst) format.&lt;/p&gt;
+
+&lt;p&gt;If you like write the docs, please check &lt;a href=&quot;http://www.writethedocs.org/&quot;&gt;Write the Docs&lt;/a&gt; conferences and meetups.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/17/day-seventeen-docker-and-sphinx-documentation/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/17/day-seventeen-docker-and-sphinx-documentation/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Sixteen - Using docker for CLI Tools</title>
@@ -661,115 +729,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Tue, 08 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/08/day-eight-docker-compose-part-2/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/08/day-eight-docker-compose-part-2/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Seven - Dockerfile</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
-if you can start making own images you need &lt;code&gt;Dockerfile&lt;/code&gt;. This file describe how is image created. Every command is cachable in separate layer and this is helpful if adding new commands, rebuild is more faster than you use tools as Puppet, Chef or Ansible.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://docs.docker.com/engine/reference/builder/&quot;&gt;Dockerfile&lt;/a&gt; can contains many commands.&lt;/p&gt;
-
-&lt;h2&gt;Structure&lt;/h2&gt;
-
-&lt;p&gt;Minimum file is for example used in Heroku:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; heroku/nodejs
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and this is only one line! This image has parent image with &lt;code&gt;Dockerfile&lt;/code&gt; contains:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;c&quot;&gt;# Inherit from Heroku&amp;#39;s stack&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; heroku/cedar:14
-
-&lt;span class=&quot;c&quot;&gt;# Internally, we arbitrarily use port 3000&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; PORT &lt;span class=&quot;m&quot;&gt;3000&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Which version of node?&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; NODE_ENGINE 0.12.2
-&lt;span class=&quot;c&quot;&gt;# Locate our binaries&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; PATH /app/heroku/node/bin/:/app/user/node_modules/.bin:&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Create some needed directories&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir -p /app/heroku/node /app/.profile.d
-&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /app/user
-
-&lt;span class=&quot;c&quot;&gt;# Install node&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; curl -s https://s3pository.heroku.com/node/v&lt;span class=&quot;nv&quot;&gt;$NODE_ENGINE&lt;/span&gt;/node-v&lt;span class=&quot;nv&quot;&gt;$NODE_ENGINE&lt;/span&gt;-linux-x64.tar.gz &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar --strip-components&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; -xz -C /app/heroku/node
-
-&lt;span class=&quot;c&quot;&gt;# Export the node path in .profile.d&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;export PATH=\&amp;quot;/app/heroku/node/bin:/app/user/node_modules/.bin:\$PATH\&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt; /app/.profile.d/nodejs.sh
-
-&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; package.json /app/user/
-&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; /app/heroku/node/bin/npm install
-&lt;span class=&quot;n-Keyword&quot;&gt;ONBUILD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; . /app/user/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This parent is &lt;code&gt;heroku/cedar:14&lt;/code&gt; and his &lt;code&gt;Dockerfile&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; ubuntu-debootstrap:14.04
-COPY ./cedar-14.sh /tmp/build.sh
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;C &lt;span class=&quot;nv&quot;&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;noninteractive /tmp/build.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and this parent &lt;code&gt;ubuntu-debootstrap:14.04&lt;/code&gt; is:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; scratch
-&lt;span class=&quot;k&quot;&gt;ADD&lt;/span&gt; rootfs.tar.xz /
-&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and &lt;code&gt;scratch&lt;/code&gt; is &lt;a href=&quot;https://hub.docker.com/r/library/scratch/&quot;&gt;empty image&lt;/a&gt; that is used explicitly to build new images.&lt;/p&gt;
-
-&lt;h2&gt;Commands&lt;/h2&gt;
-
-&lt;p&gt;You start with &lt;code&gt;FROM&lt;/code&gt;. Usually use smallest possible image or image used in your servers.&lt;/p&gt;
-
-&lt;p&gt;For adding files into image use &lt;code&gt;ADD&lt;/code&gt; or &lt;code&gt;COPY&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;If you&amp;#39;re not interested in the nuances of ADD and COPY and just want an answer to &amp;quot;which one should I use?&amp;quot;, all you need to know is: use COPY. - [Brian DeHamer](https://labs.ctl.io/dockerfile-add-vs-copy/)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In simple way &lt;code&gt;ADD&lt;/code&gt; use only for URL address or archives.&lt;/p&gt;
-
-&lt;p&gt;Next is &lt;code&gt;RUN&lt;/code&gt; command, you can run any OS command. Every &lt;code&gt;RUN&lt;/code&gt; is in separate layer and it&amp;#39;s useful if you group commands.&lt;/p&gt;
-
-&lt;p&gt;Instead using:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-bar
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-baz
-&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get install -y package-foo
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;use this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
-        package-bar &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
-        package-baz &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
-        package-foo &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get clean &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/lib/apt/lists/*
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;First example create 4 images for every layer. Second create only one and clean after install. This helps with image size.&lt;/p&gt;
-
-&lt;p&gt;If you need ports use &lt;code&gt;EXPOSE&lt;/code&gt;, for environment properties &lt;code&gt;ENV&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ENTRYPOINT&lt;/code&gt; is main image command and &lt;code&gt;CMD&lt;/code&gt; is for default flags.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;node&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;--version&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now the image can be run like this to show the command’s help:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker run node
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Or using the right parameters to execute a command:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker run node install aws-sdk
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can define &lt;code&gt;VOLUME&lt;/code&gt;, &lt;code&gt;USER&lt;/code&gt;, &lt;code&gt;WORKDIR&lt;/code&gt; if you need it.&lt;/p&gt;
-
-&lt;p&gt;Last interesting command is &lt;code&gt;ONBUILD&lt;/code&gt;. I like this, you can defined some parts in parent image. This commands will be executed in building only for child image. Example we have in our image where is &lt;code&gt;FROM heroku/nodejs&lt;/code&gt; image. This image in build execute sequence defined in &lt;code&gt;heroku\nodejs&lt;/code&gt; image.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ONBUILD ADD package.json /app/user/
-ONBUILD RUN /app/heroku/node/bin/npm install
-ONBUILD ADD . /app/user/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;in our image is added &lt;code&gt;package.json&lt;/code&gt; and install all dependencies. After that add your source code.&lt;/p&gt;
-
-&lt;p&gt;This is very good example how use &lt;code&gt;ONBUILD&lt;/code&gt; as template for your apps. Another examples are many images for &lt;a href=&quot;https://hub.docker.com/_/golang/&quot;&gt;golang&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/perl/&quot;&gt;perl&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/rails/&quot;&gt;rails&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/node/&quot;&gt;nodejs&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/php/&quot;&gt;php&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/wordpress/&quot;&gt;wordpress&lt;/a&gt;, &lt;a href=&quot;https://hub.docker.com/_/java/&quot;&gt;java&lt;/a&gt; as based images.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Mon, 07 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/07/day-seven-dockerfile/</guid>
         
         
       </item>

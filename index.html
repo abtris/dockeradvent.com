@@ -74,6 +74,10 @@
           
         
       
+        
+          
+        
+      
 
       <a class="sidebar-nav-item" href="https://github.com/abtris/dockeradvent.com">GitHub project</a>
     </nav>
@@ -85,6 +89,76 @@
 
     <div class="content container">
       <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/12/17/day-seventeen-docker-and-sphinx-documentation/">
+        Day Seventeen - Docker and Sphinx documentation
+      </a>
+    </h1>
+
+    <span class="post-date">17 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+if you write the docs, you can use <a href="http://sphinx-doc.org/">Sphinx</a>. You can share your documentation using <a href="https://readthedocs.org/">Read the Docs</a> portal.</p>
+
+<p>If you look at <a href="https://docs.readthedocs.org/en/latest/getting_started.html#write-your-docs">quickstart</a> how write the docs, you can install python and some tools. This can be complicated if you can use latex for creating PDF version and do you need another version python for your development and some another for write the docs. Some members of your team can&#39;t install anything for update just a few lines.</p>
+
+<h2>Docker solution for Sphinx</h2>
+
+<p>You can use <a href="https://hub.docker.com/r/apiaryio/base-sphinx-doc-dev/">docker image</a>. There is <code>requirements.txt</code> for all python packages:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Sphinx&gt;=1.3.1
+awscli==1.5.2
+sphinx_rtd_theme
+recommonmark
+</code></pre></div>
+<p>and Dockerfile based on debian.</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span>        debian:jessie
+<span class="k">MAINTAINER</span>  Apiary &lt;sre@apiary.io&gt;
+
+<span class="k">ENV</span> REFRESHED_AT 2015-11-03
+
+COPY requirements.txt /tmp/
+
+<span class="k">RUN</span> apt-get clean <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    apt-get update <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    apt-get install -y --no-install-recommends python-sphinx <span class="err">\</span>
+    graphviz <span class="err">\</span>
+    make <span class="err">\</span>
+    python-pip <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    pip install -r /tmp/requirements.txt <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    rm -rf /usr/share/doc/* <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    rm -rf /usr/share/locale/* <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    rm -rf /var/cache/debconf/*-old <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    rm -rf /var/lib/apt/lists/* <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    apt-get autoclean -y <span class="o">&amp;&amp;</span> <span class="err">\</span>
+    apt-get autoremove -y
+
+<span class="k">RUN</span> mkdir /mnt/docs
+
+<span class="k">WORKDIR</span> /mnt/docs
+<span class="k">VOLUME</span> <span class="o">[</span><span class="s1">&#39;/mnt/docs&#39;</span><span class="o">]</span>
+
+<span class="k">CMD</span> make clean html
+</code></pre></div>
+<p>for running in repository with documentation you can use simple shell script, with support html and latex version. <a href="https://github.com/apiaryio/docker-base-images/blob/master/sphinx-latex-doc-dev/Dockerfile">Latex image size</a> is more than 1GB. Html version have only 100MB.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+if [[ &quot;$@&quot; =~ latex.* ]]; then
+    echo &quot;Building with LaTex image&quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-latex-doc-dev $@
+else
+    echo &quot;Building with html-only image&quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-doc-dev $@
+fi
+</code></pre></div>
+<p>Using is very simple just run <code>./build.sh</code> and <code>open build/html/index.html</code>. You can use your favorite editor to edit sources and after that just run build again and check in browser. This version supports <a href="http://sphinx-doc.org/rest.html">reStructuredText</a> and <a href="https://help.github.com/articles/markdown-basics/">markdown</a>. You can combine both formats into your documentation. I prefer using markdown for simple text as this blog, but for complex documentation with references is better use reStructuredText (rst) format.</p>
+
+<p>If you like write the docs, please check <a href="http://www.writethedocs.org/">Write the Docs</a> conferences and meetups.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
   
   <div class="post">
     <h1 class="post-title">
@@ -589,75 +663,6 @@ f5395c4e7e6e        swarm:latest        &quot;/swarm manage --tlsv&quot;   9 min
 <p>You see our docker container ran on one of our swarm agent.</p>
 
 <p>Swarm support <a href="https://docs.docker.com/swarm/discovery/">multiple discovery backends</a>. You can experiment with others discovery backends.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/09/day-nine-docker-registry/">
-        Day Nine - Docker Registry
-      </a>
-    </h1>
-
-    <span class="post-date">09 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-if you need own docker registry. You can use <a href="https://github.com/docker/distribution">official docker registry</a> image.</p>
-
-<p>The registry 2.0 implementation provides the following benefits:</p>
-
-<ul>
-<li>faster push and pull</li>
-<li>new, more efficient implementation</li>
-<li>simplified deployment</li>
-<li>pluggable storage backend</li>
-<li>webhook notifications</li>
-</ul>
-
-<p>I love better security included in direct in Registry 2.0. In old version I have Nginx before registry for basic auth. In new version you can use basic auth or OAuth2.</p>
-
-<p>If you can use basic auth with registry 2.0 create new image with your auth.</p>
-
-<p>Create <code>auth</code> file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">mkdir auth
-docker run --entrypoint htpasswd registry:2 -Bbn testuser testpassword &gt; auth/htpasswd
-</code></pre></div>
-<p>and create image with this:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> registry:latest
-<span class="k">RUN</span> mkdir /auth
-<span class="k">ADD</span> auth/htpasswd /auth/htpasswd
-</code></pre></div>
-<p>and I have <code>docker-compose.yml</code>:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">backend</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">docker.apiary-internal.com/registry</span>
-  <span class="l-Scalar-Plain">cpu_shares</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">400</span>
-  <span class="l-Scalar-Plain">mem_limit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">314572800</span>
-  <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">5000:5000</span>
-  <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">AWS_BUCKET</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">docker-registry-bucket</span>
-    <span class="l-Scalar-Plain">AWS_ENCRYPT</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
-    <span class="l-Scalar-Plain">AWS_KEY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-KEY&gt;</span>
-    <span class="l-Scalar-Plain">AWS_REGION</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-REGION&gt;</span>
-    <span class="l-Scalar-Plain">AWS_SECRET</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;AWS-SECRET&gt;</span>
-    <span class="l-Scalar-Plain">AWS_SECURE</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
-    <span class="l-Scalar-Plain">AWS_USE_SIGV4</span><span class="p-Indicator">:</span> <span class="s">&#39;False&#39;</span>
-    <span class="l-Scalar-Plain">SETTINGS_FLAVOR</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">prod</span>
-    <span class="l-Scalar-Plain">SEARCH_BACKEND</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sqlalchemy</span>
-    <span class="l-Scalar-Plain">REGISTRY_AUTH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">htpasswd</span>
-    <span class="l-Scalar-Plain">REGISTRY_AUTH_HTPASSWD_REALM</span><span class="p-Indicator">:</span> <span class="s">&#39;Docker</span><span class="nv"> </span><span class="s">Internal</span><span class="nv"> </span><span class="s">Registry&#39;</span>
-    <span class="l-Scalar-Plain">REGISTRY_AUTH_HTPASSWD_PATH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/auth/htpasswd</span>
-</code></pre></div>
-<p>You can use for example <a href="https://aws.amazon.com/ecs/">AWS Elastic Container Service (ECS)</a>. You can create task definition with <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_CLI.html"><code>ecs-cli</code></a>:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nv">AWS_REGION</span><span class="o">=</span>&lt;AWS-REGION&gt; ecs-cli compose create
-</code></pre></div>
-<p>For login into internal registry you have to use:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker login docker-registry.company.com
-</code></pre></div>
-<p>In AWS use <a href="https://aws.amazon.com/elasticloadbalancing/">Elastic Load Balancer (ELB)</a> to use <code>https</code> and forward port <code>443</code> into <code>5000</code> at ECS.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

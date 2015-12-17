@@ -4,13 +4,79 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-16T09:08:15+01:00</updated>
+ <updated>2015-12-17T08:17:05+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Seventeen - Docker and Sphinx documentation</title>
+   <link href="http://www.dockeradvent.com/2015/12/17/day-seventeen-docker-and-sphinx-documentation/"/>
+   <updated>2015-12-17T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/17/day-seventeen-docker-and-sphinx-documentation</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+if you write the docs, you can use &lt;a href=&quot;http://sphinx-doc.org/&quot;&gt;Sphinx&lt;/a&gt;. You can share your documentation using &lt;a href=&quot;https://readthedocs.org/&quot;&gt;Read the Docs&lt;/a&gt; portal.&lt;/p&gt;
+
+&lt;p&gt;If you look at &lt;a href=&quot;https://docs.readthedocs.org/en/latest/getting_started.html#write-your-docs&quot;&gt;quickstart&lt;/a&gt; how write the docs, you can install python and some tools. This can be complicated if you can use latex for creating PDF version and do you need another version python for your development and some another for write the docs. Some members of your team can&amp;#39;t install anything for update just a few lines.&lt;/p&gt;
+
+&lt;h2&gt;Docker solution for Sphinx&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;a href=&quot;https://hub.docker.com/r/apiaryio/base-sphinx-doc-dev/&quot;&gt;docker image&lt;/a&gt;. There is &lt;code&gt;requirements.txt&lt;/code&gt; for all python packages:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Sphinx&amp;gt;=1.3.1
+awscli==1.5.2
+sphinx_rtd_theme
+recommonmark
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and Dockerfile based on debian.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;        debian:jessie
+&lt;span class=&quot;k&quot;&gt;MAINTAINER&lt;/span&gt;  Apiary &amp;lt;sre@apiary.io&amp;gt;
+
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt; REFRESHED_AT 2015-11-03
+
+COPY requirements.txt /tmp/
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get clean &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get install -y --no-install-recommends python-sphinx &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    graphviz &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    make &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    python-pip &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    pip install -r /tmp/requirements.txt &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /usr/share/doc/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /usr/share/locale/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /var/cache/debconf/*-old &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    rm -rf /var/lib/apt/lists/* &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get autoclean -y &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    apt-get autoremove -y
+
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; mkdir /mnt/docs
+
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt; /mnt/docs
+&lt;span class=&quot;k&quot;&gt;VOLUME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/mnt/docs&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt; make clean html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;for running in repository with documentation you can use simple shell script, with support html and latex version. &lt;a href=&quot;https://github.com/apiaryio/docker-base-images/blob/master/sphinx-latex-doc-dev/Dockerfile&quot;&gt;Latex image size&lt;/a&gt; is more than 1GB. Html version have only 100MB.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
+if [[ &amp;quot;$@&amp;quot; =~ latex.* ]]; then
+    echo &amp;quot;Building with LaTex image&amp;quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-latex-doc-dev $@
+else
+    echo &amp;quot;Building with html-only image&amp;quot;
+    docker run -ti --rm -v $(pwd):/mnt/docs:rw -w /mnt/docs apiaryio/base-sphinx-doc-dev $@
+fi
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Using is very simple just run &lt;code&gt;./build.sh&lt;/code&gt; and &lt;code&gt;open build/html/index.html&lt;/code&gt;. You can use your favorite editor to edit sources and after that just run build again and check in browser. This version supports &lt;a href=&quot;http://sphinx-doc.org/rest.html&quot;&gt;reStructuredText&lt;/a&gt; and &lt;a href=&quot;https://help.github.com/articles/markdown-basics/&quot;&gt;markdown&lt;/a&gt;. You can combine both formats into your documentation. I prefer using markdown for simple text as this blog, but for complex documentation with references is better use reStructuredText (rst) format.&lt;/p&gt;
+
+&lt;p&gt;If you like write the docs, please check &lt;a href=&quot;http://www.writethedocs.org/&quot;&gt;Write the Docs&lt;/a&gt; conferences and meetups.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Sixteen - Using docker for CLI Tools</title>

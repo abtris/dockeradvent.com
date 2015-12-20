@@ -11,7 +11,7 @@
 
   <title>
     
-      Day Eighteen - Docker and Heroku &middot; Docker Advent
+      Day Twenty - Docker and Tutum &middot; Docker Advent
     
   </title>
 
@@ -89,56 +89,9 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day Eighteen - Docker and Heroku</h1>
-  <span class="post-date">18 Dec 2015</span>
-  <p>Hi everyone,<br>
-many PaaS (platform as service) support docker for deployment. I can write some posts about this. I start with Heroku.</p>
-
-<p>Heroku introduce have own container solution for many years and <a href="https://devcenter.heroku.com/articles/docker">docker solution</a> converts docker images into their format. You can combine <code>git push heroku master</code> with <code>heroku docker:release</code> and both works together.</p>
-
-<p>First, you have to update your heroku client and add docker plugin.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">heroku plugins:install heroku-docker
-</code></pre></div>
-<p>second, edit or create your <code>app.json</code> and add <code>image</code>.</p>
-
-<p>Heroku maintains Docker images for most of the languages that we support:</p>
-
-<ul>
-<li>heroku/nodejs</li>
-<li>heroku/ruby</li>
-<li>heroku/jruby</li>
-<li>heroku/python</li>
-<li>heroku/scala</li>
-<li>heroku/clojure</li>
-<li>heroku/gradle</li>
-<li>heroku/java</li>
-<li>heroku/go</li>
-<li>heroku/go-gb</li>
-</ul>
-
-<p>Third, you need <code>Procfile</code> as normal heroku app. And run <code>heroku docker:init</code>. Heroku create <code>Dockerfile</code> and <code>docker-compose.yml</code> file for you.</p>
-
-<p>For local development just run <code>docker-compose up web</code> and app can be open at <code>open &quot;http://$(docker-machine ip default):8080&quot;</code></p>
-
-<p>If you need shell (for example for Ruby app), you can run <code>docker-compose run shell</code>.</p>
-
-<p>Rebuild container using <code>docker-compose build</code>. This you need if you change config or app.</p>
-
-<p>Deploy is easy.</p>
-
-<ol>
-<li>Create Heroku app: <code>heroku create</code></li>
-<li>Push slug into Heroku: <code>heroku docker:release</code></li>
-<li>Open app in browser: <code>heroku open</code></li>
-</ol>
-
-<p>All docker images from heroku you can find at <a href="https://hub.docker.com/r/heroku/">dockerhub</a>.</p>
-
-<p>If you need some special Dockerfile you can <a href="https://devcenter.heroku.com/articles/docker#modifying-the-dockerfile">make own</a>. This steps have some <a href="https://devcenter.heroku.com/articles/docker#limitations">limitations</a> if you use own buildpack you have to use standard pipeline.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
+  <h1 class="post-title">Day Twenty - Docker and Tutum</h1>
+  <span class="post-date">20 Dec 2015</span>
+  
 </div>
 
 <div class="related">
@@ -147,8 +100,8 @@ Ladislav</p>
     
       <li>
         <h3>
-          <a href="/2015/12/20/day-twenty-docker-and-tutum/">
-            Day Twenty - Docker and Tutum
+          <a href="/2015/12/20/day-nineteen-docker-and-aws-ecs/">
+            Day Nineteen - Docker and AWS ECS
             <small>20 Dec 2015</small>
           </a>
         </h3>
@@ -156,9 +109,9 @@ Ladislav</p>
     
       <li>
         <h3>
-          <a href="/2015/12/20/day-nineteen-docker-and-aws-ecs/">
-            Day Nineteen - Docker and AWS ECS
-            <small>20 Dec 2015</small>
+          <a href="/2015/12/18/day-eighteen-docker-and-heroku/">
+            Day Eighteen - Docker and Heroku
+            <small>18 Dec 2015</small>
           </a>
         </h3>
       </li>

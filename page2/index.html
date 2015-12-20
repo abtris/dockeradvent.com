@@ -92,6 +92,115 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/12/day-twelve-docker-and-circleci/">
+        Day Twelve - CircleCI and Docker
+      </a>
+    </h1>
+
+    <span class="post-date">12 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+Docker is great for testing. I make a few posts about support in Continues Integration Engines.</p>
+
+<ul>
+<li><a href="https://circleci.com/docs/docker">CircleCI</a></li>
+<li><a href="https://docs.travis-ci.com/user/docker/">TravisCI</a></li>
+<li><a href="https://github.com/jenkinsci/docker">Jenkins</a></li>
+<li><a href="http://drone.io/">Drone</a></li>
+<li><a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a></li>
+</ul>
+
+<h2>Circle CI</h2>
+
+<p>To use Docker add required service into <code>circle.yml</code> file:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
+</code></pre></div>
+<p>you can use this for install different version docker than default (1.8.3):</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">machine:
+  pre:
+    - echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci&#39;
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+</code></pre></div>
+<p>if you need use own <code>docker-compose</code> version use this in dependencies:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
+  cache_directories:
+    - &quot;~/bin/docker-compose/&quot;
+  override:
+    - if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/; fi
+    - if [[ `~/bin/docker-compose/docker-compose -v | cut -d &quot; &quot; -f3` &lt; &quot;1.5.1&quot; ]]; then curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi
+    - ~/bin/docker-compose/docker-compose --version
+</code></pre></div>
+<p>you can use caching docker layers:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
+  cache_directories:
+    - &quot;~/docker&quot;
+
+  override:
+    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+    - docker build -t circleci/elasticsearch .
+    - mkdir -p ~/docker; docker save circleci/elasticsearch &gt; ~/docker/image.tar
+</code></pre></div>
+<p>you have to test if helps performance. For every hosted CI will helps caching docker hub, but I think this isn&#39;t good solution. Look carefully at <a href="https://circleci.com/docs/docker#some-known-caching-issues">caching issues</a>.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/12/11/day-eleven-docker-version-manager/">
+        Day Eleven - Docker Version Manager
+      </a>
+    </h1>
+
+    <span class="post-date">11 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+Rackspace created <a href="https://getcarina.com/blog/docker-version-manager/">docker version manager</a>, this helps you use more version docker.</p>
+
+<p>I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.</p>
+
+<h2>Install on Mac or Linux</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
+</code></pre></div>
+<h2>Usage</h2>
+
+<p>After dvm is installed, list all installed versions of the Docker client:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls
+  1.8.3
+-&gt;  system (1.9.1)
+</code></pre></div>
+<p>You can install all this versions:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls-remote
+1.6.0
+1.6.1
+1.6.2
+1.7.0
+1.7.1
+1.8.0
+1.8.1
+1.8.2
+1.8.3
+1.9.0
+1.9.1
+</code></pre></div>
+<p>using <code>dvm install &lt;VERSION&gt;</code>. Switch between version you can use <code>dvm use</code> command. Project you can see at <a href="https://github.com/getcarina/dvm">github</a>.</p>
+
+<p>I love this project. It&#39;s very useful to test new version some as I&#39;m using similar projects for NodeJS (<code>nvm</code>), Ruby (<code>rbenv</code>) or Go (<code>gobrew</code>).</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/10/day-ten-docker-swarm/">
         Day Ten - Docker Swarm
       </a>
@@ -605,165 +714,6 @@ Last used parameter in this is <code>environment</code>. You have to defined own
 <p>This is basics about docker-compose.</p>
 
 <p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/04/day-four-docker-machine/">
-        Day Four - Docker Machine
-      </a>
-    </h1>
-
-    <span class="post-date">04 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- if you install docker. I recommend install docker-machine. If you are using Mac or Windows you need virtualization for working with docker.
-Docker machine (DM) created virtual machine for you and setup docker daemon there. This works for list of cloud services too.</p>
-
-<p>First for local development at Mac, Windows or Linux. In linux you can use this but you don&#39;t need it.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">docker-machine create --driver virtualbox &lt;VM-name&gt;
-</code></pre></div>
-<p>I&#39;m using as <code>VM-name</code> name <code>dev</code>.</p>
-
-<p>For manage more VM you can use <code>docker-machine ls</code>, you see all your VMs. For activate VM you have to use <code>eval &quot;$(docker-machine env dev)&quot;</code></p>
-
-<p>We use for active docker-machine these script that check if you have installed docker-machine, if exists and start them do you. You can have alias to script as <code>dkactivate</code> or <code>dsetup</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
-
-# Starts docker-machine VM called DEV if down, resets the environment variables
-
-# Run this before using docker
-
-which docker-machine &gt; /dev/null 2&gt;&amp;1
-if [ $? -eq 1 ]; then
-  echo &quot;docker-machine is not installed. Run docker-install-dockertoolbox first&quot;
-  exit 1
-fi
-
-NAME=$1
-
-if [ ! $NAME ]; then
-  echo &quot;Please supply a VM name&quot;
-  exit 1
-fi
-
-docker-machine ls | grep $NAME &gt; /dev/null 2&gt;&amp;1
-if [ $? -eq 1 ]; then
-  echo &quot;$NAME VM not found. Create the VM first (e.g. run docker-machine create --driver virtualbox $NAME)&quot;
-  exit 1
-fi
-
-if [ `docker-machine status $NAME` != &quot;running&quot; ]; then
-    docker-machine start $NAME
-fi
-
-echo &quot;Running docker-machine env for the $NAME VM...&quot;
-eval &quot;$(docker-machine env $NAME)&quot;
-</code></pre></div>
-<p>This is local development, for example I use AWS for docker too. If you have account at AWS you can create new instances in EC2 for docker by this script. Just add your parameters.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/sh
-AWS_ACCESS_KEY_ID=`cat ~/.aws/credentials | grep aws_access_key_id | cut -d&#39;=&#39; -f2`
-AWS_SECRET_ACCESS_KEY=`cat ~/.aws/credentials | grep aws_secret_access_key | cut -d&#39;=&#39; -f2`
-INSTANCE_TYPE=&#39;m3.xlarge&#39;
-REGION=&#39;us-east-1&#39;
-NAME=$1
-AWS_VPC_ID=$2
-AWS_SUBNET_ID=$3
-
-if [ ! $NAME == &quot;&quot; ]; then
-  docker-machine create \
-      -d amazonec2 \
-      --amazonec2-access-key $AWS_ACCESS_KEY_ID \
-      --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
-      --amazonec2-vpc-id $AWS_VPC_ID \
-      --amazonec2-subnet-id $AWS_SUBNET_ID \
-      --amazonec2-region $AWS_REGION \
-      --amazonec2-zone c \
-      --amazonec2-instance-type $INSTANCE_TYPE \
-      $NAME-dev
-else
-  echo &quot;Missing name&quot;
-fi
-</code></pre></div>
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/03/day-three-docker-install-upgrade/">
-        Day Three - Docker install and upgrade
-      </a>
-    </h1>
-
-    <span class="post-date">03 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- you need use stable docker version. Be careful about upgrade. For example from 1.8 to 1.9 was big problem with performance and network bridge had change default IP address from <code>172.17.42.1/24</code> to <code>172.17.0.1/24</code>.</p>
-
-<h2>Install Docker</h2>
-
-<p>I don&#39;t like <a href="https://kitematic.com/">Docker Kitematic</a>. This isn&#39;t tool for developers. But you can try if you helps. It&#39;s available as part Docker Toolbox.</p>
-
-<h3>Mac</h3>
-
-<p>Use homebrew, you can <a href="https://www.docker.com/docker-toolbox">install Docker Toolbox</a>, but I recommend install tools separately.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">brew install docker
-brew install docker-machine
-brew install docker-compose
-</code></pre></div>
-<h3>Windows</h3>
-
-<p>Download <a href="https://www.docker.com/docker-toolbox">Docker Toolbox</a>.</p>
-
-<h3>Linux</h3>
-
-<p>Install Docker by <a href="https://docs.docker.com/engine/installation/">your distribution</a>.</p>
-
-<h2>Test it</h2>
-
-<p>For test we run docker hello-world image.</p>
-
-<p>Run this command from terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$docker run hello-world
-</code></pre></div>
-<p>and you can see this output:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Unable to find image &#39;hello-world:latest&#39; locally
-latest: Pulling from library/hello-world
-
-b901d36b6f2f: Pull complete
-0a6ba66e537a: Pull complete
-Digest: sha256:8be990ef2aeb16dbcb9271ddfe2610fa6658d13f6dfb8bc72074cc1ca36966a7
-Status: Downloaded newer image for hello-world:latest
-
-Hello from Docker.
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker Hub account:
- https://hub.docker.com
-
-For more examples and ideas, visit:
- https://docs.docker.com/userguide/
-</code></pre></div>
-<p>Again, be careful about upgrade. Test, test, test every major docker version before you upgrade.</p>
-
-<p>This is all folks. See you tomorrow.</p>
-
-<p>Regards,<br>
 Ladislav</p>
 
   </div>

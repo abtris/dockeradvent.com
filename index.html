@@ -92,6 +92,96 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/20/day-twenty-docker-and-tutum/">
+        Day Twenty - Docker and Tutum
+      </a>
+    </h1>
+
+    <span class="post-date">20 Dec 2015</span>
+
+    
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/12/20/day-nineteen-docker-and-aws-ecs/">
+        Day Nineteen - Docker and AWS ECS
+      </a>
+    </h1>
+
+    <span class="post-date">20 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+Amazon Web Services (AWS) is biggest cloud provider and you can use docker with Elastic Compute Cloud (EC2), use Amazon EC2 Container Service (ECS) or AWS Elastic Beanstalk. <a href="https://aws.amazon.com/elasticbeanstalk/">AWS Elastic Beanstalk</a> is very similar to Heroku. It&#39;s Platform as a Service (PaaS).</p>
+
+<p>I write post about ECS. ECS is new service exists two years. You have to use your EC2 instances to provide cluster. No price for service itself only for resources (EC2, ELB, EBS).</p>
+
+<p>This year <a href="https://github.com/aws/amazon-ecs-cli">Amazon ECS CLI</a> introduce support for <code>docker-compose.yml</code>.</p>
+
+<p>I use this command to create task definition for ECS using this command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">AWS_REGION=us-east-1 ecs-cli compose create
+</code></pre></div>
+<p>this is example <code>docker-compose.yml</code> for docker registry:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">backend:
+  image: registry
+  cpu_shares: 400
+  mem_limit: 314572800
+  ports:
+    - 5000:5000
+  environment:
+    AWS_BUCKET: &lt;DOCKER-REGISTRY-BUCKET&gt;
+    AWS_ENCRYPT: &#39;False&#39;
+    AWS_KEY: &lt;AWS-KEY&gt;
+    AWS_REGION: us-east-1
+    AWS_SECRET: &lt;AWS-SECRET&gt;
+    AWS_SECURE: &#39;False&#39;
+    AWS_USE_SIGV4: &#39;False&#39;
+    SETTINGS_FLAVOR: prod
+    SEARCH_BACKEND: sqlalchemy
+    REGISTRY_AUTH: htpasswd
+    REGISTRY_AUTH_HTPASSWD_REALM: &#39;Auth Internal Registry&#39;
+    REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+</code></pre></div>
+<p>For running cluster you need <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html">setup instances</a> and register these instances into cluster. You can use <a href="http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html#ecs-config-s3">ecs.config</a> in user data to setup instance.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+yum install -y aws-cli
+aws s3 cp s3://&lt;BUCKET-NAME&gt;/ecs.config /etc/ecs/ecs.config
+echo ECS_CLUSTER=&lt;CLUSTER-NAME&gt; &gt;&gt; /etc/ecs/ecs.config
+</code></pre></div>
+<p>You can run task or service in ECS. If you need task as cron you can use lambda for setup <a href="http://stackoverflow.com/questions/27382009/aws-lambda-scheduled-tasks">scheduling task</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">AWS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;aws-sdk&#39;</span><span class="p">);</span>
+<span class="nx">AWS</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">region</span> <span class="o">=</span> <span class="s1">&#39;us-east-1&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">ecs</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">ECS</span><span class="p">();</span>
+
+<span class="kr">const</span> <span class="nx">MAX_RESULTS</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">runTask</span><span class="p">(</span><span class="nx">taskDefinitionArn</span><span class="p">,</span> <span class="nx">clusterName</span><span class="p">,</span> <span class="nx">numberOfTasks</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">taskDefinition</span><span class="o">:</span> <span class="nx">taskDefinitionArn</span><span class="p">,</span> <span class="cm">/* required */</span>
+    <span class="nx">cluster</span><span class="o">:</span> <span class="nx">clusterName</span><span class="p">,</span>
+    <span class="nx">count</span><span class="o">:</span> <span class="nx">numberOfTasks</span><span class="p">,</span>
+    <span class="nx">overrides</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nx">startedBy</span><span class="o">:</span> <span class="s1">&#39;nodejs-script&#39;</span>
+  <span class="p">};</span>
+  <span class="nx">ecs</span><span class="p">.</span><span class="nx">runTask</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="p">);</span> <span class="c1">// an error occurred</span>
+    <span class="k">else</span>     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>           <span class="c1">// successful response</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">context</span><span class="p">.</span><span class="nx">succeed</span><span class="p">(</span><span class="nx">runTask</span><span class="p">(</span><span class="s1">&#39;&lt;TASK-NAME&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;CLUSTER-NAME&gt;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>If you can run service it&#39;s similar but service is still alive. You can combine ECS with <a href="https://mesosphere.github.io/marathon/">Marathon</a> or <a href="http://mesos.github.io/chronos/">Chronos</a>.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/18/day-eighteen-docker-and-heroku/">
         Day Eighteen - Docker and Heroku
       </a>
@@ -449,115 +539,6 @@ before_install:
 <p>We have new generation CI as <a href="http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html">Wercker</a> or <a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a> with pipelines and better support using docker.</p>
 
 <p>Only future show us who win this battle for best continuous delivery tool.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/12/day-twelve-docker-and-circleci/">
-        Day Twelve - CircleCI and Docker
-      </a>
-    </h1>
-
-    <span class="post-date">12 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-Docker is great for testing. I make a few posts about support in Continues Integration Engines.</p>
-
-<ul>
-<li><a href="https://circleci.com/docs/docker">CircleCI</a></li>
-<li><a href="https://docs.travis-ci.com/user/docker/">TravisCI</a></li>
-<li><a href="https://github.com/jenkinsci/docker">Jenkins</a></li>
-<li><a href="http://drone.io/">Drone</a></li>
-<li><a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a></li>
-</ul>
-
-<h2>Circle CI</h2>
-
-<p>To use Docker add required service into <code>circle.yml</code> file:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
-</code></pre></div>
-<p>you can use this for install different version docker than default (1.8.3):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">machine:
-  pre:
-    - echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker
-    - sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci&#39;
-    - sudo chmod 0755 /usr/bin/docker
-  services:
-    - docker
-</code></pre></div>
-<p>if you need use own <code>docker-compose</code> version use this in dependencies:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
-  cache_directories:
-    - &quot;~/bin/docker-compose/&quot;
-  override:
-    - if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/; fi
-    - if [[ `~/bin/docker-compose/docker-compose -v | cut -d &quot; &quot; -f3` &lt; &quot;1.5.1&quot; ]]; then curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi
-    - ~/bin/docker-compose/docker-compose --version
-</code></pre></div>
-<p>you can use caching docker layers:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">dependencies:
-  cache_directories:
-    - &quot;~/docker&quot;
-
-  override:
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -t circleci/elasticsearch .
-    - mkdir -p ~/docker; docker save circleci/elasticsearch &gt; ~/docker/image.tar
-</code></pre></div>
-<p>you have to test if helps performance. For every hosted CI will helps caching docker hub, but I think this isn&#39;t good solution. Look carefully at <a href="https://circleci.com/docs/docker#some-known-caching-issues">caching issues</a>.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/11/day-eleven-docker-version-manager/">
-        Day Eleven - Docker Version Manager
-      </a>
-    </h1>
-
-    <span class="post-date">11 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-Rackspace created <a href="https://getcarina.com/blog/docker-version-manager/">docker version manager</a>, this helps you use more version docker.</p>
-
-<p>I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.</p>
-
-<h2>Install on Mac or Linux</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
-</code></pre></div>
-<h2>Usage</h2>
-
-<p>After dvm is installed, list all installed versions of the Docker client:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls
-  1.8.3
--&gt;  system (1.9.1)
-</code></pre></div>
-<p>You can install all this versions:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ dvm ls-remote
-1.6.0
-1.6.1
-1.6.2
-1.7.0
-1.7.1
-1.8.0
-1.8.1
-1.8.2
-1.8.3
-1.9.0
-1.9.1
-</code></pre></div>
-<p>using <code>dvm install &lt;VERSION&gt;</code>. Switch between version you can use <code>dvm use</code> command. Project you can see at <a href="https://github.com/getcarina/dvm">github</a>.</p>
-
-<p>I love this project. It&#39;s very useful to test new version some as I&#39;m using similar projects for NodeJS (<code>nvm</code>), Ruby (<code>rbenv</code>) or Go (<code>gobrew</code>).</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

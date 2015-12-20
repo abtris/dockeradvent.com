@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-20T08:44:37+01:00</updated>
+ <updated>2015-12-20T08:47:10+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -17,14 +17,19 @@
    <link href="http://www.dockeradvent.com/2015/12/20/day-twenty-docker-and-tutum/"/>
    <updated>2015-12-20T11:00:00+01:00</updated>
    <id>http://www.dockeradvent.com/2015/12/20/day-twenty-docker-and-tutum</id>
-   <content type="html"></content>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+&lt;a href=&quot;https://www.tutum.co/&quot;&gt;Tutum&lt;/a&gt; is docker platform for Dev and Ops. Tutum &lt;a href=&quot;http://blog.tutum.co/2015/10/21/docker-tutum/&quot;&gt;join&lt;/a&gt; Docker in October 2015.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
  </entry>
  
  <entry>
    <title>Day Nineteen - Docker and AWS ECS</title>
-   <link href="http://www.dockeradvent.com/2015/12/20/day-nineteen-docker-and-aws-ecs/"/>
-   <updated>2015-12-20T11:00:00+01:00</updated>
-   <id>http://www.dockeradvent.com/2015/12/20/day-nineteen-docker-and-aws-ecs</id>
+   <link href="http://www.dockeradvent.com/2015/12/19/day-nineteen-docker-and-aws-ecs/"/>
+   <updated>2015-12-19T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/19/day-nineteen-docker-and-aws-ecs</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 Amazon Web Services (AWS) is biggest cloud provider and you can use docker with Elastic Compute Cloud (EC2), use Amazon EC2 Container Service (ECS) or AWS Elastic Beanstalk. &lt;a href=&quot;https://aws.amazon.com/elasticbeanstalk/&quot;&gt;AWS Elastic Beanstalk&lt;/a&gt; is very similar to Heroku. It&amp;#39;s Platform as a Service (PaaS).&lt;/p&gt;
 

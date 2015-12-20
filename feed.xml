@@ -5,13 +5,18 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 Dec 2015 08:44:37 +0100</pubDate>
-    <lastBuildDate>Sun, 20 Dec 2015 08:44:37 +0100</lastBuildDate>
+    <pubDate>Sun, 20 Dec 2015 08:47:10 +0100</pubDate>
+    <lastBuildDate>Sun, 20 Dec 2015 08:47:10 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
         <title>Day Twenty - Docker and Tutum</title>
-        <description></description>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+&lt;a href=&quot;https://www.tutum.co/&quot;&gt;Tutum&lt;/a&gt; is docker platform for Dev and Ops. Tutum &lt;a href=&quot;http://blog.tutum.co/2015/10/21/docker-tutum/&quot;&gt;join&lt;/a&gt; Docker in October 2015.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
         <pubDate>Sun, 20 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/20/day-twenty-docker-and-tutum/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/20/day-twenty-docker-and-tutum/</guid>
@@ -88,9 +93,9 @@ echo ECS_CLUSTER=&amp;lt;CLUSTER-NAME&amp;gt; &amp;gt;&amp;gt; /etc/ecs/ecs.conf
 &lt;p&gt;See you tomorrow,&lt;br&gt;
 Ladislav&lt;/p&gt;
 </description>
-        <pubDate>Sun, 20 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/20/day-nineteen-docker-and-aws-ecs/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/20/day-nineteen-docker-and-aws-ecs/</guid>
+        <pubDate>Sat, 19 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/19/day-nineteen-docker-and-aws-ecs/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/19/day-nineteen-docker-and-aws-ecs/</guid>
         
         
       </item>

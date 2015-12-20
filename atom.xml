@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-20T08:47:10+01:00</updated>
+ <updated>2015-12-20T08:53:49+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -19,6 +19,27 @@
    <id>http://www.dockeradvent.com/2015/12/20/day-twenty-docker-and-tutum</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 &lt;a href=&quot;https://www.tutum.co/&quot;&gt;Tutum&lt;/a&gt; is docker platform for Dev and Ops. Tutum &lt;a href=&quot;http://blog.tutum.co/2015/10/21/docker-tutum/&quot;&gt;join&lt;/a&gt; Docker in October 2015.&lt;/p&gt;
+
+&lt;p&gt;Tutum have some cool features:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;internal docker registry&lt;/li&gt;
+&lt;li&gt;build from git&lt;/li&gt;
+&lt;li&gt;deploy to different cloud providers
+
+&lt;ul&gt;
+&lt;li&gt;Amazon Web Services&lt;/li&gt;
+&lt;li&gt;Microsoft Azure&lt;/li&gt;
+&lt;li&gt;Digital Ocean&lt;/li&gt;
+&lt;li&gt;IBM Softlayer&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;logging, monitoring, scaling&lt;/li&gt;
+&lt;li&gt;API&lt;/li&gt;
+&lt;li&gt;support for docker-compose&lt;/li&gt;
+&lt;li&gt;CLI client&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I think this abstraction is very cool for many starting developers. You can use standard docker tools and all works out of the box. Tutum is still in beta but future is near and together with Docker they can be main player in deployment docker applications in the future.&lt;/p&gt;
 
 &lt;p&gt;See you tomorrow,&lt;br&gt;
 Ladislav&lt;/p&gt;

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Day Nineteen - Docker and AWS ECS"
-date:   2015-12-20 11:00:00 +0100
+date:   2015-12-19 11:00:00 +0100
 categories: 2015
 ---
 

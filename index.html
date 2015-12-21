@@ -92,6 +92,41 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/21/day-twentyone-docker-and-logging/">
+        Day Twentyone - Docker and logging
+      </a>
+    </h1>
+
+    <span class="post-date">21 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+every container can have different <a href="https://docs.docker.com/engine/reference/logging/overview/">logging driver</a>.</p>
+
+<p>In version 1.9 is supported this drivers:</p>
+
+<ul>
+<li>json-file (Default logging driver for Docker. Writes JSON messages to file.)</li>
+<li>syslog (Syslog logging driver for Docker. Writes log messages to syslog.)</li>
+<li>journald (Journald logging driver for Docker. Writes log messages to journald.)</li>
+<li>gelf (Graylog Extended Log Format (GELF) logging driver for Docker. Writes log  messages to a GELF endpoint likeGraylog or Logstash.)</li>
+<li>fluentd (Fluentd logging driver for Docker. Writes log messages to fluentd (forward input).)</li>
+<li>awslogs (Amazon CloudWatch Logs logging driver for Docker. Writes log messages to Amazon CloudWatch Logs.
+)</li>
+</ul>
+
+<p>All options you can find in <a href="https://docs.docker.com/engine/reference/logging/overview/">documentation</a>.</p>
+
+<p>If you can use some hosted services as <a href="http://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-docker/">Papertrail</a>, <a href="https://www.loggly.com/docs/docker-syslog/">Loggly</a> or <a href="https://www.sumologic.com/application/docker/">Sumologic</a>.</p>
+
+<p>Setup logging for all docker container is necessary for debugging. If you can use ELK (<a href="http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/">Elastic search, Logstash, Kibana</a>). You can use <a href="https://github.com/gliderlabs/logspout">logspout</a> to <a href="https://github.com/looplab/logspout-logstash">send logs to logstash</a>.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/20/day-twenty-docker-and-tutum/">
         Day Twenty - Docker and Tutum
       </a>
@@ -518,53 +553,6 @@ Ladislav</p>
 <p><img src="/assets/docker-lifecycle-2.png" alt="Docker Container Lifecycle"></p>
 
 <p>Next, I write post about details and all commands and statuses docker container.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/13/day-thirteen-docker-and-travisci/">
-        Day Thirteen - Docker and TravisCI
-      </a>
-    </h1>
-
-    <span class="post-date">13 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-Docker is great for testing. In last post I write about <a href="http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/">CircleCI</a>.</p>
-
-<h2>Travis CI</h2>
-
-<p>TravisCI is most used in Open Source projects at GitHub.</p>
-
-<p>To use Docker add the following settings to your <code>.travis.yml</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo: required
-
-services:
-  - docker
-</code></pre></div>
-<p>You can use <code>docker-compose</code> in similar way as in CircleCI.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">env:
-  DOCKER_COMPOSE_VERSION: 1.4.2
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` &gt; docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-</code></pre></div>
-<p>I&#39;m not sure about TravisCI and <a href="https://docs.travis-ci.com/user/caching">caching</a> used for docker. TravisCI using docker for normal build too, if you use <code>sudo: false</code> your build using docker at backend.</p>
-
-<h2>Continues Engines</h2>
-
-<p>Many CI systems exists for example <a href="https://drone.io/">drone.io</a> is build at top of docker. It&#39;s have only simple documentation with basics commands showing UI.</p>
-
-<p>We have new generation CI as <a href="http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html">Wercker</a> or <a href="https://buildkite.com/docs/guides/docker-containerized-builds">BuildKite</a> with pipelines and better support using docker.</p>
-
-<p>Only future show us who win this battle for best continuous delivery tool.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

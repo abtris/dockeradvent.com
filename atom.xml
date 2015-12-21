@@ -4,13 +4,44 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-20T08:53:49+01:00</updated>
+ <updated>2015-12-21T07:48:31+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Day Twentyone - Docker and logging</title>
+   <link href="http://www.dockeradvent.com/2015/12/21/day-twentyone-docker-and-logging/"/>
+   <updated>2015-12-21T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/21/day-twentyone-docker-and-logging</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+every container can have different &lt;a href=&quot;https://docs.docker.com/engine/reference/logging/overview/&quot;&gt;logging driver&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In version 1.9 is supported this drivers:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;json-file (Default logging driver for Docker. Writes JSON messages to file.)&lt;/li&gt;
+&lt;li&gt;syslog (Syslog logging driver for Docker. Writes log messages to syslog.)&lt;/li&gt;
+&lt;li&gt;journald (Journald logging driver for Docker. Writes log messages to journald.)&lt;/li&gt;
+&lt;li&gt;gelf (Graylog Extended Log Format (GELF) logging driver for Docker. Writes log  messages to a GELF endpoint likeGraylog or Logstash.)&lt;/li&gt;
+&lt;li&gt;fluentd (Fluentd logging driver for Docker. Writes log messages to fluentd (forward input).)&lt;/li&gt;
+&lt;li&gt;awslogs (Amazon CloudWatch Logs logging driver for Docker. Writes log messages to Amazon CloudWatch Logs.
+)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All options you can find in &lt;a href=&quot;https://docs.docker.com/engine/reference/logging/overview/&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you can use some hosted services as &lt;a href=&quot;http://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-docker/&quot;&gt;Papertrail&lt;/a&gt;, &lt;a href=&quot;https://www.loggly.com/docs/docker-syslog/&quot;&gt;Loggly&lt;/a&gt; or &lt;a href=&quot;https://www.sumologic.com/application/docker/&quot;&gt;Sumologic&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Setup logging for all docker container is necessary for debugging. If you can use ELK (&lt;a href=&quot;http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/&quot;&gt;Elastic search, Logstash, Kibana&lt;/a&gt;). You can use &lt;a href=&quot;https://github.com/gliderlabs/logspout&quot;&gt;logspout&lt;/a&gt; to &lt;a href=&quot;https://github.com/looplab/logspout-logstash&quot;&gt;send logs to logstash&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Day Twenty - Docker and Tutum</title>

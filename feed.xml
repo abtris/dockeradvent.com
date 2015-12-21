@@ -5,9 +5,42 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 Dec 2015 08:53:49 +0100</pubDate>
-    <lastBuildDate>Sun, 20 Dec 2015 08:53:49 +0100</lastBuildDate>
+    <pubDate>Mon, 21 Dec 2015 07:48:31 +0100</pubDate>
+    <lastBuildDate>Mon, 21 Dec 2015 07:48:31 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Twentyone - Docker and logging</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+every container can have different &lt;a href=&quot;https://docs.docker.com/engine/reference/logging/overview/&quot;&gt;logging driver&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In version 1.9 is supported this drivers:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;json-file (Default logging driver for Docker. Writes JSON messages to file.)&lt;/li&gt;
+&lt;li&gt;syslog (Syslog logging driver for Docker. Writes log messages to syslog.)&lt;/li&gt;
+&lt;li&gt;journald (Journald logging driver for Docker. Writes log messages to journald.)&lt;/li&gt;
+&lt;li&gt;gelf (Graylog Extended Log Format (GELF) logging driver for Docker. Writes log  messages to a GELF endpoint likeGraylog or Logstash.)&lt;/li&gt;
+&lt;li&gt;fluentd (Fluentd logging driver for Docker. Writes log messages to fluentd (forward input).)&lt;/li&gt;
+&lt;li&gt;awslogs (Amazon CloudWatch Logs logging driver for Docker. Writes log messages to Amazon CloudWatch Logs.
+)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All options you can find in &lt;a href=&quot;https://docs.docker.com/engine/reference/logging/overview/&quot;&gt;documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you can use some hosted services as &lt;a href=&quot;http://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-docker/&quot;&gt;Papertrail&lt;/a&gt;, &lt;a href=&quot;https://www.loggly.com/docs/docker-syslog/&quot;&gt;Loggly&lt;/a&gt; or &lt;a href=&quot;https://www.sumologic.com/application/docker/&quot;&gt;Sumologic&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Setup logging for all docker container is necessary for debugging. If you can use ELK (&lt;a href=&quot;http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/&quot;&gt;Elastic search, Logstash, Kibana&lt;/a&gt;). You can use &lt;a href=&quot;https://github.com/gliderlabs/logspout&quot;&gt;logspout&lt;/a&gt; to &lt;a href=&quot;https://github.com/looplab/logspout-logstash&quot;&gt;send logs to logstash&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Mon, 21 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/21/day-twentyone-docker-and-logging/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/21/day-twentyone-docker-and-logging/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Twenty - Docker and Tutum</title>
@@ -530,51 +563,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Sat, 12 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/12/day-twelve-docker-and-circleci/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/12/day-twelve-docker-and-circleci/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Eleven - Docker Version Manager</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
-Rackspace created &lt;a href=&quot;https://getcarina.com/blog/docker-version-manager/&quot;&gt;docker version manager&lt;/a&gt;, this helps you use more version docker.&lt;/p&gt;
-
-&lt;p&gt;I tested on mac and works good. My college try it at linux and have problems combine with package version. But at linux is easy use normal package system to switch native version.&lt;/p&gt;
-
-&lt;h2&gt;Install on Mac or Linux&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;curl -sL https://download.getcarina.com/dvm/latest/install.sh | sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;Usage&lt;/h2&gt;
-
-&lt;p&gt;After dvm is installed, list all installed versions of the Docker client:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls
-  1.8.3
--&amp;gt;  system (1.9.1)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can install all this versions:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dvm ls-remote
-1.6.0
-1.6.1
-1.6.2
-1.7.0
-1.7.1
-1.8.0
-1.8.1
-1.8.2
-1.8.3
-1.9.0
-1.9.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;using &lt;code&gt;dvm install &amp;lt;VERSION&amp;gt;&lt;/code&gt;. Switch between version you can use &lt;code&gt;dvm use&lt;/code&gt; command. Project you can see at &lt;a href=&quot;https://github.com/getcarina/dvm&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I love this project. It&amp;#39;s very useful to test new version some as I&amp;#39;m using similar projects for NodeJS (&lt;code&gt;nvm&lt;/code&gt;), Ruby (&lt;code&gt;rbenv&lt;/code&gt;) or Go (&lt;code&gt;gobrew&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Fri, 11 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/11/day-eleven-docker-version-manager/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/11/day-eleven-docker-version-manager/</guid>
         
         
       </item>

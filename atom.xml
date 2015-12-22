@@ -4,7 +4,7 @@
  <title>Docker Advent</title>
  <link href="http://www.dockeradvent.com/atom.xml" rel="self"/>
  <link href="http://www.dockeradvent.com/"/>
- <updated>2015-12-21T07:48:31+01:00</updated>
+ <updated>2015-12-22T08:06:49+01:00</updated>
  <id>http://www.dockeradvent.com</id>
  <author>
    <name>Ladislav Prskavec</name>
@@ -13,10 +13,40 @@
 
  
  <entry>
-   <title>Day Twentyone - Docker and logging</title>
-   <link href="http://www.dockeradvent.com/2015/12/21/day-twentyone-docker-and-logging/"/>
+   <title>Day Twenty Two - Docker and monitoring</title>
+   <link href="http://www.dockeradvent.com/2015/12/22/day-twenty-two-docker-and-monitoring/"/>
+   <updated>2015-12-22T11:00:00+01:00</updated>
+   <id>http://www.dockeradvent.com/2015/12/22/day-twenty-two-docker-and-monitoring</id>
+   <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
+Docker have &lt;a href=&quot;https://docs.docker.com/engine/articles/runmetrics/&quot;&gt;runtime metrics&lt;/a&gt;, you can see CPU, MEM, IO and network for every container.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker stats determined_shockley determined_wozniak prickly_hypatia
+CONTAINER             CPU %               MEM USAGE/LIMIT       MEM %               NET I/O
+determined_shockley   0.00%               884 KiB/1.961 GiB     0.04%               648 B/648 B
+determined_wozniak    0.00%               1.723 MiB/1.961 GiB   0.09%               1.266 KiB/648 B
+prickly_hypatia       0.00%               740 KiB/1.961 GiB     0.04%               1.898 KiB/648 B
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It&amp;#39;s many tools for monitoring:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/google/cadvisor&quot;&gt;cAdvisor&lt;/a&gt; from google have web UI.&lt;/li&gt;
+&lt;li&gt;I&amp;#39;m using &lt;a href=&quot;https://www.datadoghq.com/blog/monitor-docker-datadog/&quot;&gt;Datadog&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://sensuapp.org/&quot;&gt;Sensu Monitoring Framework&lt;/a&gt; you can use with &lt;a href=&quot;https://registry.hub.docker.com/u/hiroakis/docker-sensu-server/&quot;&gt;container&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://prometheus.io/&quot;&gt;Prometheus&lt;/a&gt; is an open-source service monitoring system and time series database.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://scoutapp.com/plugin_urls/19761-docker-monitor&quot;&gt;Scout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All monitoring works at some principles. Install agent on host and using docker stats and StatsD for sending data into some collection system.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Day Twenty One - Docker and logging</title>
+   <link href="http://www.dockeradvent.com/2015/12/21/day-twenty-one-docker-and-logging/"/>
    <updated>2015-12-21T11:00:00+01:00</updated>
-   <id>http://www.dockeradvent.com/2015/12/21/day-twentyone-docker-and-logging</id>
+   <id>http://www.dockeradvent.com/2015/12/21/day-twenty-one-docker-and-logging</id>
    <content type="html">&lt;p&gt;Hi everyone,&lt;br&gt;
 every container can have different &lt;a href=&quot;https://docs.docker.com/engine/reference/logging/overview/&quot;&gt;logging driver&lt;/a&gt;.&lt;/p&gt;
 

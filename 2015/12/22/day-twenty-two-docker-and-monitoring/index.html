@@ -11,7 +11,7 @@
 
   <title>
     
-      Day One - What's docker? &middot; Docker Advent
+      Day Twenty Two - Docker and monitoring &middot; Docker Advent
     
   </title>
 
@@ -89,14 +89,27 @@
 
     <div class="content container">
       <div class="post">
-  <h1 class="post-title">Day One - What's docker?</h1>
-  <span class="post-date">01 Dec 2015</span>
+  <h1 class="post-title">Day Twenty Two - Docker and monitoring</h1>
+  <span class="post-date">22 Dec 2015</span>
   <p>Hi everyone,<br>
-I see docker as two things. First is Docker platform created by <a href="http://www.docker.com">Docker, Inc</a> that includes <a href="https://github.com/docker/docker">Docker client/server</a>, <a href="https://hub.docker.com/">Dockerhub</a> and docker tools (machine, swarm, compose). I make post about every tool.</p>
+Docker have <a href="https://docs.docker.com/engine/articles/runmetrics/">runtime metrics</a>, you can see CPU, MEM, IO and network for every container.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker stats determined_shockley determined_wozniak prickly_hypatia
+CONTAINER             CPU %               MEM USAGE/LIMIT       MEM %               NET I/O
+determined_shockley   0.00%               884 KiB/1.961 GiB     0.04%               648 B/648 B
+determined_wozniak    0.00%               1.723 MiB/1.961 GiB   0.09%               1.266 KiB/648 B
+prickly_hypatia       0.00%               740 KiB/1.961 GiB     0.04%               1.898 KiB/648 B
+</code></pre></div>
+<p>It&#39;s many tools for monitoring:</p>
 
-<p>Second is <a href="https://www.opencontainers.org/">The Open Container Initiative</a> about <a href="https://github.com/opencontainers/specs">definition</a> what is container and <a href="https://github.com/opencontainers/runc">runc</a> as first implementation. Docker made this with others companies and this is big.</p>
+<ul>
+<li><a href="https://github.com/google/cadvisor">cAdvisor</a> from google have web UI.</li>
+<li>I&#39;m using <a href="https://www.datadoghq.com/blog/monitor-docker-datadog/">Datadog</a>.</li>
+<li><a href="http://sensuapp.org/">Sensu Monitoring Framework</a> you can use with <a href="https://registry.hub.docker.com/u/hiroakis/docker-sensu-server/">container</a>.</li>
+<li><a href="http://prometheus.io/">Prometheus</a> is an open-source service monitoring system and time series database.</li>
+<li><a href="https://scoutapp.com/plugin_urls/19761-docker-monitor">Scout</a></li>
+</ul>
 
-<p>Open Container ecosystem is huge and you see them in next post.</p>
+<p>All monitoring works at some principles. Install agent on host and using docker stats and StatsD for sending data into some collection system.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>
@@ -106,15 +119,6 @@ Ladislav</p>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2015/12/22/day-twenty-two-docker-and-monitoring/">
-            Day Twenty Two - Docker and monitoring
-            <small>22 Dec 2015</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -130,6 +134,15 @@ Ladislav</p>
           <a href="/2015/12/20/day-twenty-docker-and-tutum/">
             Day Twenty - Docker and Tutum
             <small>20 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/12/19/day-nineteen-docker-and-aws-ecs/">
+            Day Nineteen - Docker and AWS ECS
+            <small>19 Dec 2015</small>
           </a>
         </h3>
       </li>

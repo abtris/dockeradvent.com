@@ -92,8 +92,42 @@
   
   <div class="post">
     <h1 class="post-title">
-      <a href="/2015/12/21/day-twentyone-docker-and-logging/">
-        Day Twentyone - Docker and logging
+      <a href="/2015/12/22/day-twenty-two-docker-and-monitoring/">
+        Day Twenty Two - Docker and monitoring
+      </a>
+    </h1>
+
+    <span class="post-date">22 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+Docker have <a href="https://docs.docker.com/engine/articles/runmetrics/">runtime metrics</a>, you can see CPU, MEM, IO and network for every container.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker stats determined_shockley determined_wozniak prickly_hypatia
+CONTAINER             CPU %               MEM USAGE/LIMIT       MEM %               NET I/O
+determined_shockley   0.00%               884 KiB/1.961 GiB     0.04%               648 B/648 B
+determined_wozniak    0.00%               1.723 MiB/1.961 GiB   0.09%               1.266 KiB/648 B
+prickly_hypatia       0.00%               740 KiB/1.961 GiB     0.04%               1.898 KiB/648 B
+</code></pre></div>
+<p>It&#39;s many tools for monitoring:</p>
+
+<ul>
+<li><a href="https://github.com/google/cadvisor">cAdvisor</a> from google have web UI.</li>
+<li>I&#39;m using <a href="https://www.datadoghq.com/blog/monitor-docker-datadog/">Datadog</a>.</li>
+<li><a href="http://sensuapp.org/">Sensu Monitoring Framework</a> you can use with <a href="https://registry.hub.docker.com/u/hiroakis/docker-sensu-server/">container</a>.</li>
+<li><a href="http://prometheus.io/">Prometheus</a> is an open-source service monitoring system and time series database.</li>
+<li><a href="https://scoutapp.com/plugin_urls/19761-docker-monitor">Scout</a></li>
+</ul>
+
+<p>All monitoring works at some principles. Install agent on host and using docker stats and StatsD for sending data into some collection system.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2015/12/21/day-twenty-one-docker-and-logging/">
+        Day Twenty One - Docker and logging
       </a>
     </h1>
 
@@ -513,47 +547,6 @@ docker rm $(docker ps -a -q)
 # Delete all images
 docker rmi $(docker images -q)
 </code></pre></div>
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/14/day-fourteen-docker-lifecycle/">
-        Day Fourteen - Docker Lifecycle
-      </a>
-    </h1>
-
-    <span class="post-date">14 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- I can write some details about docker containers. How images and containers born and die.</p>
-
-<h2>Steps in lifecycle</h2>
-
-<ol>
-<li>You have to <code>build</code> <strong>image</strong>. Make <a href="http://localhost:4000/2015/12/07/day-seven-dockerfile/"><code>Dockerfile</code></a> and run <code>docker build</code>.</li>
-</ol>
-
-<ul>
-<li>you can run <code>docker build .</code></li>
-<li>or you add tag name <code>docker build -t username/my-imagename .</code></li>
-<li>or you can have <code>Dockerfile</code> somewhere at path <code>docker build -t username/my-imagename -f /path/Dockerfile</code></li>
-</ul>
-
-<ol>
-<li><p>If you run image by <code>docker run</code> you create <strong>container</strong>. You can check them by <code>docker ps</code>.</p></li>
-<li><p>Container can be in different status, you can stop them by <code>docker stop</code>.</p></li>
-<li><p>If you make some changes by using terminal <code>docker run -it &lt;image-name&gt; /bin/bash</code> or <code>docker exec -it &lt;container-id&gt; /bin/bash</code>. You can change this <strong>container</strong> into <strong>image</strong>. You have to use <code>docker commit</code> <a href="https://docs.docker.com/engine/reference/commandline/commit/">command</a>.</p></li>
-</ol>
-
-<h2>Docker lifecycle schema</h2>
-
-<p><img src="/assets/docker-lifecycle-2.png" alt="Docker Container Lifecycle"></p>
-
-<p>Next, I write post about details and all commands and statuses docker container.</p>
-
 <p>See you tomorrow,<br>
 Ladislav</p>
 

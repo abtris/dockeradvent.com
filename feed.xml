@@ -5,9 +5,131 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Dec 2015 08:06:49 +0100</pubDate>
-    <lastBuildDate>Tue, 22 Dec 2015 08:06:49 +0100</lastBuildDate>
+    <pubDate>Wed, 23 Dec 2015 08:47:42 +0100</pubDate>
+    <lastBuildDate>Wed, 23 Dec 2015 08:47:42 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Twenty Three - Docker tips and tricks</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+this is last but one post before Christmas.&lt;/p&gt;
+
+&lt;h3&gt;1. Get IP address of your container&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;docker inspect -f &amp;#39;&amp;#39; $ID
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker inspect -f &amp;#39;&amp;#39; 9dd74d9998bb
+
+{&amp;quot;Bridge&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;SandboxID&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;HairpinMode&amp;quot;:false,&amp;quot;LinkLocalIPv6Address&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;LinkLocalIPv6PrefixLen&amp;quot;:0,&amp;quot;Ports&amp;quot;:null,&amp;quot;SandboxKey&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;SecondaryIPAddresses&amp;quot;:null,&amp;quot;SecondaryIPv6Addresses&amp;quot;:null,&amp;quot;EndpointID&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Gateway&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;GlobalIPv6Address&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;GlobalIPv6PrefixLen&amp;quot;:0,&amp;quot;IPAddress&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;IPPrefixLen&amp;quot;:0,&amp;quot;IPv6Gateway&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;MacAddress&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Networks&amp;quot;:{&amp;quot;bridge&amp;quot;:{&amp;quot;EndpointID&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Gateway&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;IPAddress&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;IPPrefixLen&amp;quot;:0,&amp;quot;IPv6Gateway&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;GlobalIPv6Address&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;GlobalIPv6PrefixLen&amp;quot;:0,&amp;quot;MacAddress&amp;quot;:&amp;quot;&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;if you can have nice output you can use python or &lt;a href=&quot;https://stedolan.github.io/jq/&quot;&gt;jq&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker inspect -f &amp;#39;&amp;#39; $ID | python -mjson.tool
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;or&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker inspect -f &amp;#39;&amp;#39; $ID | jq
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;jq have nice colored output:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;Bridge&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;SandboxID&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;HairpinMode&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;LinkLocalIPv6Address&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;LinkLocalIPv6PrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;Ports&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;SandboxKey&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;SecondaryIPAddresses&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;SecondaryIPv6Addresses&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;EndpointID&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;GlobalIPv6Address&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;GlobalIPv6PrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPPrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPv6Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;MacAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;Networks&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;quot;bridge&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;EndpointID&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPPrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;IPv6Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;GlobalIPv6Address&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;GlobalIPv6PrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;MacAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I like &lt;code&gt;jq&lt;/code&gt; it&amp;#39;s quite useful for manipulating, selection data from JSON. It&amp;#39;s good to know this tool.&lt;/p&gt;
+
+&lt;p&gt;If you have one running container you can easy get ID from &lt;code&gt;docker ps&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ docker inspect -f &amp;#39;&amp;#39; $(docker ps -q)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;2. Cleanup your docker machine&lt;/h3&gt;
+
+&lt;p&gt;If you see message about running out of space. Cleanup machine.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# Delete all containers
+docker rm $(docker ps -a -q)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# Delete all images
+docker rmi $(docker images -q)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can remove only containers or both. Depends at your use case.&lt;/p&gt;
+
+&lt;h3&gt;3. Docker cheet sheet&lt;/h3&gt;
+
+&lt;p&gt;Print this or &lt;a href=&quot;https://github.com/wsargent/docker-cheat-sheet&quot;&gt;bookmark&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;4. Environment properties in container&lt;/h3&gt;
+
+&lt;p&gt;This is useful if you have &lt;code&gt;--link&lt;/code&gt; parameter. Get &lt;code&gt;CONTAINER_ID&lt;/code&gt; of running container using &lt;code&gt;docker ps&lt;/code&gt; and use &lt;code&gt;docker exec&lt;/code&gt; to show all environment properties.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$  docker exec &amp;lt;CONTAINER_ID&amp;gt; env
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=dda0a7c94a09
+TERM=xterm
+REDIS_PORT=tcp://172.17.0.2:6379
+REDIS_PORT_6379_TCP=tcp://172.17.0.2:6379
+REDIS_PORT_6379_TCP_ADDR=172.17.0.2
+REDIS_PORT_6379_TCP_PORT=6379
+REDIS_PORT_6379_TCP_PROTO=tcp
+REDIS_NAME=/jovial_ramanujan/redis
+REDIS_ENV_REDIS_VERSION=3.0.5
+REDIS_ENV_REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-3.0.5.tar.gz
+REDIS_ENV_REDIS_DOWNLOAD_SHA1=ad3ee178c42bfcfd310c72bbddffbbe35db9b4a6
+HOME=/root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you can show &lt;code&gt;env&lt;/code&gt; in image just run &lt;code&gt;docker run &amp;lt;IMAGE_NAME&amp;gt; env&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3&gt;5. Minimal docker image&lt;/h3&gt;
+
+&lt;p&gt;You can use empty image called &lt;a href=&quot;https://hub.docker.com/_/scratch/&quot;&gt;scratch&lt;/a&gt; or small image as &lt;a href=&quot;https://hub.docker.com/_/alpine/&quot;&gt;alpine&lt;/a&gt;. &lt;a href=&quot;http://alpinelinux.org/&quot;&gt;Alpine Linux&lt;/a&gt; is very small secure linux distribution. Image have 5MB and package repository to possibility install necessary things.&lt;/p&gt;
+
+&lt;p&gt;Use like you would any other base image:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; alpine:3.1
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apk add --update mysql-client &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/cache/apk/*
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;mysql&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This example has a virtual image size of only 16 MB. Compare that to our good friend Ubuntu:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; ubuntu:14.04
+&lt;span class=&quot;k&quot;&gt;RUN&lt;/span&gt; apt-get update &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y mysql-client &lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf /var/lib/apt/lists/*
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;mysql&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This yields us a virtual image size of about 232 MB image.&lt;/p&gt;
+
+&lt;p&gt;I think this is very useful.&lt;/p&gt;
+
+&lt;p&gt;See you tomorrow,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Wed, 23 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/23/day-twenty-three-docker-tips-and-tricks/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/23/day-twenty-three-docker-tips-and-tricks/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Twenty Two - Docker and monitoring</title>
@@ -490,51 +612,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Mon, 14 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Thirteen - Docker and TravisCI</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
-Docker is great for testing. In last post I write about &lt;a href=&quot;http://www.dockeradvent.com/2015/12/12/day-twelve-docker-and-circleci/&quot;&gt;CircleCI&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Travis CI&lt;/h2&gt;
-
-&lt;p&gt;TravisCI is most used in Open Source projects at GitHub.&lt;/p&gt;
-
-&lt;p&gt;To use Docker add the following settings to your &lt;code&gt;.travis.yml&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;sudo: required
-
-services:
-  - docker
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can use &lt;code&gt;docker-compose&lt;/code&gt; in similar way as in CircleCI.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;env:
-  DOCKER_COMPOSE_VERSION: 1.4.2
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` &amp;gt; docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I&amp;#39;m not sure about TravisCI and &lt;a href=&quot;https://docs.travis-ci.com/user/caching&quot;&gt;caching&lt;/a&gt; used for docker. TravisCI using docker for normal build too, if you use &lt;code&gt;sudo: false&lt;/code&gt; your build using docker at backend.&lt;/p&gt;
-
-&lt;h2&gt;Continues Engines&lt;/h2&gt;
-
-&lt;p&gt;Many CI systems exists for example &lt;a href=&quot;https://drone.io/&quot;&gt;drone.io&lt;/a&gt; is build at top of docker. It&amp;#39;s have only simple documentation with basics commands showing UI.&lt;/p&gt;
-
-&lt;p&gt;We have new generation CI as &lt;a href=&quot;http://devcenter.wercker.com/docs/pipelines/per-pipeline-containers.html&quot;&gt;Wercker&lt;/a&gt; or &lt;a href=&quot;https://buildkite.com/docs/guides/docker-containerized-builds&quot;&gt;BuildKite&lt;/a&gt; with pipelines and better support using docker.&lt;/p&gt;
-
-&lt;p&gt;Only future show us who win this battle for best continuous delivery tool.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Sun, 13 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/13/day-thirteen-docker-and-travisci/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/13/day-thirteen-docker-and-travisci/</guid>
         
         
       </item>

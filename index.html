@@ -92,6 +92,130 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/23/day-twenty-three-docker-tips-and-tricks/">
+        Day Twenty Three - Docker tips and tricks
+      </a>
+    </h1>
+
+    <span class="post-date">23 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+this is last but one post before Christmas.</p>
+
+<h3>1. Get IP address of your container</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">docker inspect -f &#39;&#39; $ID
+</code></pre></div>
+<p>example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker inspect -f &#39;&#39; 9dd74d9998bb
+
+{&quot;Bridge&quot;:&quot;&quot;,&quot;SandboxID&quot;:&quot;&quot;,&quot;HairpinMode&quot;:false,&quot;LinkLocalIPv6Address&quot;:&quot;&quot;,&quot;LinkLocalIPv6PrefixLen&quot;:0,&quot;Ports&quot;:null,&quot;SandboxKey&quot;:&quot;&quot;,&quot;SecondaryIPAddresses&quot;:null,&quot;SecondaryIPv6Addresses&quot;:null,&quot;EndpointID&quot;:&quot;&quot;,&quot;Gateway&quot;:&quot;&quot;,&quot;GlobalIPv6Address&quot;:&quot;&quot;,&quot;GlobalIPv6PrefixLen&quot;:0,&quot;IPAddress&quot;:&quot;&quot;,&quot;IPPrefixLen&quot;:0,&quot;IPv6Gateway&quot;:&quot;&quot;,&quot;MacAddress&quot;:&quot;&quot;,&quot;Networks&quot;:{&quot;bridge&quot;:{&quot;EndpointID&quot;:&quot;&quot;,&quot;Gateway&quot;:&quot;&quot;,&quot;IPAddress&quot;:&quot;&quot;,&quot;IPPrefixLen&quot;:0,&quot;IPv6Gateway&quot;:&quot;&quot;,&quot;GlobalIPv6Address&quot;:&quot;&quot;,&quot;GlobalIPv6PrefixLen&quot;:0,&quot;MacAddress&quot;:&quot;&quot;}}}
+</code></pre></div>
+<p>if you can have nice output you can use python or <a href="https://stedolan.github.io/jq/">jq</a>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker inspect -f &#39;&#39; $ID | python -mjson.tool
+</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker inspect -f &#39;&#39; $ID | jq
+</code></pre></div>
+<p>jq have nice colored output:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&quot;Bridge&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;SandboxID&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;HairpinMode&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;LinkLocalIPv6Address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;LinkLocalIPv6PrefixLen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;Ports&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;SandboxKey&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;SecondaryIPAddresses&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;SecondaryIPv6Addresses&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;EndpointID&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;GlobalIPv6Address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;GlobalIPv6PrefixLen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;IPAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;IPPrefixLen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;IPv6Gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;MacAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Networks&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;bridge&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;EndpointID&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;Gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;IPAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;IPPrefixLen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;IPv6Gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;GlobalIPv6Address&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;GlobalIPv6PrefixLen&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;MacAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>I like <code>jq</code> it&#39;s quite useful for manipulating, selection data from JSON. It&#39;s good to know this tool.</p>
+
+<p>If you have one running container you can easy get ID from <code>docker ps</code> command.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker inspect -f &#39;&#39; $(docker ps -q)
+</code></pre></div>
+<h3>2. Cleanup your docker machine</h3>
+
+<p>If you see message about running out of space. Cleanup machine.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># Delete all containers
+docker rm $(docker ps -a -q)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text"># Delete all images
+docker rmi $(docker images -q)
+</code></pre></div>
+<p>You can remove only containers or both. Depends at your use case.</p>
+
+<h3>3. Docker cheet sheet</h3>
+
+<p>Print this or <a href="https://github.com/wsargent/docker-cheat-sheet">bookmark</a>.</p>
+
+<h3>4. Environment properties in container</h3>
+
+<p>This is useful if you have <code>--link</code> parameter. Get <code>CONTAINER_ID</code> of running container using <code>docker ps</code> and use <code>docker exec</code> to show all environment properties.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$  docker exec &lt;CONTAINER_ID&gt; env
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=dda0a7c94a09
+TERM=xterm
+REDIS_PORT=tcp://172.17.0.2:6379
+REDIS_PORT_6379_TCP=tcp://172.17.0.2:6379
+REDIS_PORT_6379_TCP_ADDR=172.17.0.2
+REDIS_PORT_6379_TCP_PORT=6379
+REDIS_PORT_6379_TCP_PROTO=tcp
+REDIS_NAME=/jovial_ramanujan/redis
+REDIS_ENV_REDIS_VERSION=3.0.5
+REDIS_ENV_REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-3.0.5.tar.gz
+REDIS_ENV_REDIS_DOWNLOAD_SHA1=ad3ee178c42bfcfd310c72bbddffbbe35db9b4a6
+HOME=/root
+</code></pre></div>
+<p>If you can show <code>env</code> in image just run <code>docker run &lt;IMAGE_NAME&gt; env</code>.</p>
+
+<h3>5. Minimal docker image</h3>
+
+<p>You can use empty image called <a href="https://hub.docker.com/_/scratch/">scratch</a> or small image as <a href="https://hub.docker.com/_/alpine/">alpine</a>. <a href="http://alpinelinux.org/">Alpine Linux</a> is very small secure linux distribution. Image have 5MB and package repository to possibility install necessary things.</p>
+
+<p>Use like you would any other base image:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> alpine:3.1
+<span class="k">RUN</span> apk add --update mysql-client <span class="o">&amp;&amp;</span> rm -rf /var/cache/apk/*
+<span class="k">ENTRYPOINT</span> <span class="o">[</span><span class="s2">&quot;mysql&quot;</span><span class="o">]</span>
+</code></pre></div>
+<p>This example has a virtual image size of only 16 MB. Compare that to our good friend Ubuntu:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> ubuntu:14.04
+<span class="k">RUN</span> apt-get update <span class="err">\</span>
+    <span class="o">&amp;&amp;</span> apt-get install -y mysql-client <span class="err">\</span>
+    <span class="o">&amp;&amp;</span> rm -rf /var/lib/apt/lists/*
+<span class="k">ENTRYPOINT</span> <span class="o">[</span><span class="s2">&quot;mysql&quot;</span><span class="o">]</span>
+</code></pre></div>
+<p>This yields us a virtual image size of about 232 MB image.</p>
+
+<p>I think this is very useful.</p>
+
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/22/day-twenty-two-docker-and-monitoring/">
         Day Twenty Two - Docker and monitoring
       </a>
@@ -496,56 +620,6 @@ exit $RESULT
 
 <span class="k">ENTRYPOINT</span> /usr/local/bin/drafter
 <span class="k">CMD</span> <span class="s2">&quot;-h&quot;</span>
-</code></pre></div>
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/15/day-fifteen-container-lifecycle/">
-        Day Fifteen - Container Lifecycle
-      </a>
-    </h1>
-
-    <span class="post-date">15 Dec 2015</span>
-
-    <p>Hi everyone,<br>
- I can write some details about docker containers lifecycle.</p>
-
-<h2>Container statuses</h2>
-
-<ul>
-<li>running</li>
-<li>stopped</li>
-<li>paused</li>
-<li>killed</li>
-<li>removed</li>
-</ul>
-
-<h2>How change status</h2>
-
-<ul>
-<li>image -&gt; <code>docker run</code> -&gt; running</li>
-<li>running -&gt; <code>docker pause</code> -&gt; paused -&gt; <code>docker unpause</code> -&gt; running</li>
-<li>running -&gt; <code>docker stop</code> -&gt; stopped -&gt; <code>docker start</code> -&gt; running</li>
-<li>stopped -&gt; <code>docker rm</code> -&gt; removed</li>
-<li>running -&gt; <code>docker kill</code> -&gt; killed -&gt; <code>docker rm</code> -&gt; removed</li>
-<li>running -&gt; <code>docker rm --force</code> -&gt; removed</li>
-<li>running -&gt; <code>docker restart</code> -&gt; stopped -&gt; running</li>
-</ul>
-
-<h2>Docker container lifecycle schema</h2>
-
-<p><img src="/assets/docker-lifecycle-3.png" alt="Docker Container Lifecycle"></p>
-
-<p>You can see you have many containers, sometimes problems with space in VM. Docker consumes big amount of disk space. I use this script <code>docker-cleanup</code> for cleanup my VM. First command remove containers and second remove images.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
-# Delete all containers
-docker rm $(docker ps -a -q)
-# Delete all images
-docker rmi $(docker images -q)
 </code></pre></div>
 <p>See you tomorrow,<br>
 Ladislav</p>

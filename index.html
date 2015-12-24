@@ -92,6 +92,56 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/24/day-twenty-four-docker-advent-summary/">
+        Day Twenty Four - Docker Advent Summary 2015
+      </a>
+    </h1>
+
+    <span class="post-date">24 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+this is last post for year 2015.</p>
+
+<p>Here is summary all posts in 2015:</p>
+
+<ul>
+<li><a href="http://www.dockeradvent.com/2015-12-01-day-one-what-is-docker">Day One - What&#39;s docker?</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-02-day-two-open-container-ecosystem">Day Two - Open Container Ekosystem</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-03-day-three-docker-install-upgrade">Day Three - Docker install and upgrade</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-04-day-four-docker-machine">Day Four - Docker Machine</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-05-day-five-docker-compose-part-1">Day Five - Docker Compose Part 1</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-06-day-six-dockerhub">Day Six - Docker Hub</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-07-day-seven-dockerfile">Day Seven - Dockerfile</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-08-day-eight-docker-compose-part-2">Day Eight - Docker Compose Part 2</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-09-day-nine-docker-registry">Day Nine - Docker Registry</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-10-day-ten-docker-swarm">Day Ten - Docker Swarm</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-11-day-eleven-docker-version-manager">Day Eleven - Docker Version Manager</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-12-day-twelve-docker-and-circleci">Day Twelve - CircleCI and Docker</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-13-day-thirteen-docker-and-travisci">Day Thirteen - Docker and TravisCI</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-14-day-fourteen-docker-lifecycle">Day Fourteen - Docker Lifecycle</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-15-day-fifteen-container-lifecycle">Day Fifteen - Container Lifecycle</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-16-day-sixteen-using-docker-for-cli-tools">Day Sixteen - Using docker for CLI Tools</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-17-day-seventeen-docker-and-sphinx-documentation">Day Seventeen - Docker and Sphinx documentation</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-18-day-eighteen-docker-and-heroku">Day Eighteen - Docker and Heroku</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-19-day-nineteen-docker-and-aws-ecs">Day Nineteen - Docker and AWS ECS</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-20-day-twenty-docker-and-tutum">Day Twenty - Docker and Tutum</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-21-day-twenty-one-docker-and-logging">Day Twenty One - Docker and logging</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-22-day-twenty-two-docker-and-monitoring">Day Twenty Two - Docker and monitoring</a></li>
+<li><a href="http://www.dockeradvent.com/2015-12-23-day-twenty-three-docker-tips-and-tricks">Day Twenty Three - Docker tips and tricks</a></li>
+<li><a href="http://www.dockeradvent.com/2015/12/24/day-twenty-four-docker-advent-summary/">Day Twenty Four - Docker Advent Summary 2015</a></li>
+</ul>
+
+<p>I hope, these posts can be useful. The posts order is chaotic. I think next year I have more time and some co-authors to make this better.</p>
+
+<p>In 2016 have to docker show us how deploy docker container fast and scalable. Problems I see in containers size and I hope many containers change base from Ubuntu to Alpine.</p>
+
+<p>See you in 2016,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/23/day-twenty-three-docker-tips-and-tricks/">
         Day Twenty Three - Docker tips and tricks
       </a>
@@ -523,104 +573,6 @@ fi
 
 <p>If you like write the docs, please check <a href="http://www.writethedocs.org/">Write the Docs</a> conferences and meetups.</p>
 
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/16/day-sixteen-using-docker-for-cli-tools/">
-        Day Sixteen - Using docker for CLI Tools
-      </a>
-    </h1>
-
-    <span class="post-date">16 Dec 2015</span>
-
-    <p>Hi everyone,<br>
-I like one thing at docker and that is isolation. For example we have <a href="https://github.com/apiaryio/polls-api">project Polls API</a> written in Python. For testing API we use tool named <a href="http://dredd.readthedocs.org/en/latest/">Dredd</a> written in NodeJS. I can&#39;t install NodeJS to our system. But you can easy use Docker to solve this problem.</p>
-
-<p>Here is <code>circle.yml</code> file for project:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.8.3-circleci&#39;</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo chmod 0755 /usr/bin/docker</span>
-  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
-<span class="l-Scalar-Plain">dependencies</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">cache_directories</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="s">&quot;~/bin/docker-compose/&quot;</span>
-  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker info</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker version</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/ &amp;&amp; curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose --version</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose pull</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker pull apiaryio/dredd</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose build</span>
-<span class="l-Scalar-Plain">test</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose up -d web</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py migrate</span>
-  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py test</span>
-  <span class="l-Scalar-Plain">post</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">./scripts/dredd</span>
-</code></pre></div>
-<p>and bash script for running dredd is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
-# set -x
-which docker-compose &gt; /dev/null 1&gt;&amp;1
-if [ $? -eq 0 ]; then
-  DOCKER_COMPOSE=&#39;docker-compose&#39;
-else
-  if [ -f ~/bin/docker-compose/docker-compose ]; then
-    DOCKER_COMPOSE=&quot;$HOME/bin/docker-compose/docker-compose&quot;
-  else
-    echo &quot;Cannot find docker-compose!&quot;
-    exit 1
-  fi
-fi
-# Sync the database
-$DOCKER_COMPOSE run -e DATABASE_URL=sqlite:///dredd.sqlite shell &quot;python manage.py migrate&quot;
-# Run the dev server
-$DOCKER_COMPOSE up -d web
-IPWEB=`docker ps  | grep pollsapi_web | cut -d &#39; &#39; -f1 | xargs docker inspect  | grep IPAddress\&quot;: | cut -d &quot;:&quot; -f2 | tr -d &quot;\&quot;&quot; | tr -d &quot;,&quot; | tr -d &#39;[[:space:]]&#39;`
-# Run dredd
-docker run -v $(pwd):/root -w /root apiaryio/dredd dredd apiary.apib http://$IPWEB:8080
-RESULT=$?
-exit $RESULT
-</code></pre></div>
-<p>You can see setup database using docker-compose. After running web, I get IP address for python server and using this address as parameter for running dredd command.</p>
-
-<p>If you can create image for some tools you can make it as I did for Dredd.</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">from</span> node:0.12
-
-<span class="k">RUN</span> npm install -g dredd
-
-<span class="k">CMD</span> dredd
-</code></pre></div>
-<p>It&#39;s easy and depends on your tool. Sometimes is better use <code>ENTRYPOINT</code> and <code>CMD</code>. Dredd works out of box without parameters using <code>dredd.yml</code> config. For example API Blueprint parser <a href="https://github.com/apiaryio/drafter">drafter</a> waiting for input from stdin. There is better using <code>ENTRYPOINT</code> and <code>CMD</code> with <code>-h</code> as default parameter.</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> apiaryio/base-dev-cpp:1.0.0
-<span class="k">MAINTAINER</span> Apiary <span class="s2">&quot;sre@apiary.io&quot;</span>
-
-
-<span class="k">RUN</span> locale-gen en_US.UTF-8
-<span class="k">RUN</span> <span class="nb">echo</span> <span class="s2">&quot;LC_ALL=en_US.UTF-8&quot;</span> &gt;&gt; /etc/default/locale
-<span class="k">RUN</span> dpkg-reconfigure locales
-
-<span class="k">ADD</span> ./ /drafter
-
-<span class="k">WORKDIR</span> /drafter
-
-<span class="c"># It&#39;s tempting to put ./configure into RUN, but then you have timestamp issues</span>
-
-<span class="k">RUN</span> ./configure <span class="o">&amp;&amp;</span> make all <span class="o">&amp;&amp;</span> make install
-
-<span class="k">ENTRYPOINT</span> /usr/local/bin/drafter
-<span class="k">CMD</span> <span class="s2">&quot;-h&quot;</span>
-</code></pre></div>
 <p>See you tomorrow,<br>
 Ladislav</p>
 

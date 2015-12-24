@@ -92,6 +92,104 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2015/12/16/day-sixteen-using-docker-for-cli-tools/">
+        Day Sixteen - Using docker for CLI Tools
+      </a>
+    </h1>
+
+    <span class="post-date">16 Dec 2015</span>
+
+    <p>Hi everyone,<br>
+I like one thing at docker and that is isolation. For example we have <a href="https://github.com/apiaryio/polls-api">project Polls API</a> written in Python. For testing API we use tool named <a href="http://dredd.readthedocs.org/en/latest/">Dredd</a> written in NodeJS. I can&#39;t install NodeJS to our system. But you can easy use Docker to solve this problem.</p>
+
+<p>Here is <code>circle.yml</code> file for project:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">machine</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">echo &#39;DOCKER_OPTS=&quot;-s btrfs -e lxc -D --userland-proxy=false&quot;&#39; | sudo tee -a /etc/default/docker</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo curl -L -o /usr/bin/docker &#39;https://s3-external-1.amazonaws.com/circle-downloads/docker-1.8.3-circleci&#39;</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">sudo chmod 0755 /usr/bin/docker</span>
+  <span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker</span>
+<span class="l-Scalar-Plain">dependencies</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">cache_directories</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="s">&quot;~/bin/docker-compose/&quot;</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker info</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker version</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">if [[ ! -e ~/bin/docker-compose ]]; then mkdir ~/bin/docker-compose/ &amp;&amp; curl -L https://github.com/docker/compose/releases/download/1.4.2/docker-compose-`uname -s`-`uname -m` &gt; ~/bin/docker-compose/docker-compose &amp;&amp; chmod +x ~/bin/docker-compose/docker-compose; fi</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose --version</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose pull</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">docker pull apiaryio/dredd</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose build</span>
+<span class="l-Scalar-Plain">test</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pre</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose up -d web</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py migrate</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">~/bin/docker-compose/docker-compose run shell python manage.py test</span>
+  <span class="l-Scalar-Plain">post</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">./scripts/dredd</span>
+</code></pre></div>
+<p>and bash script for running dredd is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+# set -x
+which docker-compose &gt; /dev/null 1&gt;&amp;1
+if [ $? -eq 0 ]; then
+  DOCKER_COMPOSE=&#39;docker-compose&#39;
+else
+  if [ -f ~/bin/docker-compose/docker-compose ]; then
+    DOCKER_COMPOSE=&quot;$HOME/bin/docker-compose/docker-compose&quot;
+  else
+    echo &quot;Cannot find docker-compose!&quot;
+    exit 1
+  fi
+fi
+# Sync the database
+$DOCKER_COMPOSE run -e DATABASE_URL=sqlite:///dredd.sqlite shell &quot;python manage.py migrate&quot;
+# Run the dev server
+$DOCKER_COMPOSE up -d web
+IPWEB=`docker ps  | grep pollsapi_web | cut -d &#39; &#39; -f1 | xargs docker inspect  | grep IPAddress\&quot;: | cut -d &quot;:&quot; -f2 | tr -d &quot;\&quot;&quot; | tr -d &quot;,&quot; | tr -d &#39;[[:space:]]&#39;`
+# Run dredd
+docker run -v $(pwd):/root -w /root apiaryio/dredd dredd apiary.apib http://$IPWEB:8080
+RESULT=$?
+exit $RESULT
+</code></pre></div>
+<p>You can see setup database using docker-compose. After running web, I get IP address for python server and using this address as parameter for running dredd command.</p>
+
+<p>If you can create image for some tools you can make it as I did for Dredd.</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">from</span> node:0.12
+
+<span class="k">RUN</span> npm install -g dredd
+
+<span class="k">CMD</span> dredd
+</code></pre></div>
+<p>It&#39;s easy and depends on your tool. Sometimes is better use <code>ENTRYPOINT</code> and <code>CMD</code>. Dredd works out of box without parameters using <code>dredd.yml</code> config. For example API Blueprint parser <a href="https://github.com/apiaryio/drafter">drafter</a> waiting for input from stdin. There is better using <code>ENTRYPOINT</code> and <code>CMD</code> with <code>-h</code> as default parameter.</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> apiaryio/base-dev-cpp:1.0.0
+<span class="k">MAINTAINER</span> Apiary <span class="s2">&quot;sre@apiary.io&quot;</span>
+
+
+<span class="k">RUN</span> locale-gen en_US.UTF-8
+<span class="k">RUN</span> <span class="nb">echo</span> <span class="s2">&quot;LC_ALL=en_US.UTF-8&quot;</span> &gt;&gt; /etc/default/locale
+<span class="k">RUN</span> dpkg-reconfigure locales
+
+<span class="k">ADD</span> ./ /drafter
+
+<span class="k">WORKDIR</span> /drafter
+
+<span class="c"># It&#39;s tempting to put ./configure into RUN, but then you have timestamp issues</span>
+
+<span class="k">RUN</span> ./configure <span class="o">&amp;&amp;</span> make all <span class="o">&amp;&amp;</span> make install
+
+<span class="k">ENTRYPOINT</span> /usr/local/bin/drafter
+<span class="k">CMD</span> <span class="s2">&quot;-h&quot;</span>
+</code></pre></div>
+<p>See you tomorrow,<br>
+Ladislav</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2015/12/15/day-fifteen-container-lifecycle/">
         Day Fifteen - Container Lifecycle
       </a>
@@ -564,102 +662,6 @@ docker run --entrypoint htpasswd registry:2 -Bbn testuser testpassword &gt; auth
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker login docker-registry.company.com
 </code></pre></div>
 <p>In AWS use <a href="https://aws.amazon.com/elasticloadbalancing/">Elastic Load Balancer (ELB)</a> to use <code>https</code> and forward port <code>443</code> into <code>5000</code> at ECS.</p>
-
-<p>See you tomorrow,<br>
-Ladislav</p>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/12/08/day-eight-docker-compose-part-2/">
-        Day Eight - Docker Compose Part 2
-      </a>
-    </h1>
-
-    <span class="post-date">08 Dec 2015</span>
-
-    <p>Hello everyone,<br>
-I&#39;m back with Docker Compose. In <a href="http://www.dockeradvent.com/2015/12/05/day-five-docker-compose-part-1/">previous post</a> we have some basics. Today, I can show how you can combine <code>Dockerfile</code> and <code>docker-compose.yml</code> file. This is useful for development. Can&#39;t be used in production.</p>
-
-<p>My example is simple Ruby application. I can use Redis for caching and queues.
-I can use image with Redis from Docker Hub. I use hosted Redis in production and this is only for development. But app is specific. I can use Sinatra framework and use last Ruby.
- We can look at Docker Hub if exists <a href="https://hub.docker.com/_/ruby/">official image for Ruby</a>. Yes, here is. I choose using them and create <code>Dockerfile</code> to extend this image for my application. This is my <code>Dockerfile</code>:</p>
-
-<p>Ruby dockerfile is:</p>
-<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span> ruby:2.2
-
-<span class="c"># throw errors if Gemfile has been modified since Gemfile.lock</span>
-<span class="k">RUN</span> bundle config --global frozen <span class="m">1</span>
-
-<span class="k">RUN</span> mkdir -p /usr/src/app
-<span class="k">WORKDIR</span> /usr/src/app
-
-ONBUILD COPY Gemfile /usr/src/app/
-ONBUILD COPY Gemfile.lock /usr/src/app/
-<span class="n-Keyword">ONBUILD</span><span class="w"> </span><span class="k">RUN</span> bundle install
-
-ONBUILD COPY . /usr/src/app
-</code></pre></div>
-<p>my <code>Dockerfile</code> is easy:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">FROM ruby:2.2-onbuild
-
-EXPOSE 4567
-
-WORKDIR /usr/src/app
-
-
-ENTRYPOINT [&quot;/usr/local/bin/ruby&quot;]
-CMD [&quot;server.rb&quot;]
-</code></pre></div>
-<p>I have to test if build works:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">docker built -t abtris/sinatra .
-</code></pre></div>
-<p>and integrate with <code>docker-compose.yml</code></p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">cache</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">redis</span>
-<span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">.</span>
-  <span class="l-Scalar-Plain">links</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">cache</span>
-  <span class="l-Scalar-Plain">expose</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">4567</span>
-</code></pre></div>
-<p>and you run this with <code>docker-compose up</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ docker-compose up
-Creating sinatra_cache_1
-Creating sinatra_web_1
-Attaching to sinatra_cache_1, sinatra_web_1
-cache_1 | 1:C 08 Dec 13:22:32.153 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
-cache_1 |                 _._
-cache_1 |            _.-``__ &#39;&#39;-._
-cache_1 |       _.-``    `.  `_.  &#39;&#39;-._           Redis 3.0.5 (00000000/0) 64 bit
-cache_1 |   .-`` .-```.  ```\/    _.,_ &#39;&#39;-._
-cache_1 |  (    &#39;      ,       .-`  | `,    )     Running in standalone mode
-cache_1 |  |`-._`-...-` __...-.``-._|&#39;` _.-&#39;|     Port: 6379
-cache_1 |  |    `-._   `._    /     _.-&#39;    |     PID: 1
-cache_1 |   `-._    `-._  `-./  _.-&#39;    _.-&#39;
-cache_1 |  |`-._`-._    `-.__.-&#39;    _.-&#39;_.-&#39;|
-cache_1 |  |    `-._`-._        _.-&#39;_.-&#39;    |           http://redis.io
-cache_1 |   `-._    `-._`-.__.-&#39;_.-&#39;    _.-&#39;
-cache_1 |  |`-._`-._    `-.__.-&#39;    _.-&#39;_.-&#39;|
-cache_1 |  |    `-._`-._        _.-&#39;_.-&#39;    |
-cache_1 |   `-._    `-._`-.__.-&#39;_.-&#39;    _.-&#39;
-cache_1 |       `-._    `-.__.-&#39;    _.-&#39;
-cache_1 |           `-._        _.-&#39;
-cache_1 |               `-.__.-&#39;
-cache_1 |
-cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
-cache_1 | 1:M 08 Dec 13:22:32.154 # Server started, Redis version 3.0.5
-cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &#39;vm.overcommit_memory = 1&#39; to /etc/sysctl.conf and then reboot or run the command &#39;sysctl vm.overcommit_memory=1&#39; for this to take effect.
-cache_1 | 1:M 08 Dec 13:22:32.154 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &#39;echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled&#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
-cache_1 | 1:M 08 Dec 13:22:32.154 * The server is now ready to accept connections on port 6379
-web_1   | [2015-12-08 13:22:32] INFO  WEBrick 1.3.1
-web_1   | [2015-12-08 13:22:32] INFO  ruby 2.2.3 (2015-08-18) [x86_64-linux]
-web_1   | == Sinatra (v1.4.6) has taken the stage on 4567 for development with backup from WEBrick
-web_1   | [2015-12-08 13:22:32] INFO  WEBrick::HTTPServer#start: pid=1 port=4567
-</code></pre></div>
-<p>Application works <code>open http://$(docker-machine ip dev)</code> launch browser and you can see your application.</p>
 
 <p>See you tomorrow,<br>
 Ladislav</p>

@@ -5,9 +5,57 @@
     <description>Made by &lt;a href=&quot;https://twitter.com/abtris&quot; target=&quot;_blank&quot;&gt;@abtris&lt;/a&gt;.</description>
     <link>http://www.dockeradvent.com//</link>
     <atom:link href="http://www.dockeradvent.com//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Dec 2015 08:48:02 +0100</pubDate>
-    <lastBuildDate>Wed, 23 Dec 2015 08:48:02 +0100</lastBuildDate>
+    <pubDate>Thu, 24 Dec 2015 07:55:09 +0100</pubDate>
+    <lastBuildDate>Thu, 24 Dec 2015 07:55:09 +0100</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Day Twenty Four - Docker Advent Summary 2015</title>
+        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
+this is last post for year 2015.&lt;/p&gt;
+
+&lt;p&gt;Here is summary all posts in 2015:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-01-day-one-what-is-docker&quot;&gt;Day One - What&amp;#39;s docker?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-02-day-two-open-container-ecosystem&quot;&gt;Day Two - Open Container Ekosystem&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-03-day-three-docker-install-upgrade&quot;&gt;Day Three - Docker install and upgrade&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-04-day-four-docker-machine&quot;&gt;Day Four - Docker Machine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-05-day-five-docker-compose-part-1&quot;&gt;Day Five - Docker Compose Part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-06-day-six-dockerhub&quot;&gt;Day Six - Docker Hub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-07-day-seven-dockerfile&quot;&gt;Day Seven - Dockerfile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-08-day-eight-docker-compose-part-2&quot;&gt;Day Eight - Docker Compose Part 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-09-day-nine-docker-registry&quot;&gt;Day Nine - Docker Registry&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-10-day-ten-docker-swarm&quot;&gt;Day Ten - Docker Swarm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-11-day-eleven-docker-version-manager&quot;&gt;Day Eleven - Docker Version Manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-12-day-twelve-docker-and-circleci&quot;&gt;Day Twelve - CircleCI and Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-13-day-thirteen-docker-and-travisci&quot;&gt;Day Thirteen - Docker and TravisCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-14-day-fourteen-docker-lifecycle&quot;&gt;Day Fourteen - Docker Lifecycle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-15-day-fifteen-container-lifecycle&quot;&gt;Day Fifteen - Container Lifecycle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-16-day-sixteen-using-docker-for-cli-tools&quot;&gt;Day Sixteen - Using docker for CLI Tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-17-day-seventeen-docker-and-sphinx-documentation&quot;&gt;Day Seventeen - Docker and Sphinx documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-18-day-eighteen-docker-and-heroku&quot;&gt;Day Eighteen - Docker and Heroku&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-19-day-nineteen-docker-and-aws-ecs&quot;&gt;Day Nineteen - Docker and AWS ECS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-20-day-twenty-docker-and-tutum&quot;&gt;Day Twenty - Docker and Tutum&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-21-day-twenty-one-docker-and-logging&quot;&gt;Day Twenty One - Docker and logging&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-22-day-twenty-two-docker-and-monitoring&quot;&gt;Day Twenty Two - Docker and monitoring&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015-12-23-day-twenty-three-docker-tips-and-tricks&quot;&gt;Day Twenty Three - Docker tips and tricks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.dockeradvent.com/2015/12/24/day-twenty-four-docker-advent-summary/&quot;&gt;Day Twenty Four - Docker Advent Summary 2015&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I hope, these posts can be useful. The posts order is chaotic. I think next year I have more time and some co-authors to make this better.&lt;/p&gt;
+
+&lt;p&gt;In 2016 have to docker show us how deploy docker container fast and scalable. Problems I see in containers size and I hope many containers change base from Ubuntu to Alpine.&lt;/p&gt;
+
+&lt;p&gt;See you in 2016,&lt;br&gt;
+Ladislav&lt;/p&gt;
+</description>
+        <pubDate>Thu, 24 Dec 2015 11:00:00 +0100</pubDate>
+        <link>http://www.dockeradvent.com//2015/12/24/day-twenty-four-docker-advent-summary/</link>
+        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/24/day-twenty-four-docker-advent-summary/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Day Twenty Three - Docker tips and tricks</title>
@@ -573,45 +621,6 @@ Ladislav&lt;/p&gt;
         <pubDate>Tue, 15 Dec 2015 11:00:00 +0100</pubDate>
         <link>http://www.dockeradvent.com//2015/12/15/day-fifteen-container-lifecycle/</link>
         <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/15/day-fifteen-container-lifecycle/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Day Fourteen - Docker Lifecycle</title>
-        <description>&lt;p&gt;Hi everyone,&lt;br&gt;
- I can write some details about docker containers. How images and containers born and die.&lt;/p&gt;
-
-&lt;h2&gt;Steps in lifecycle&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;You have to &lt;code&gt;build&lt;/code&gt; &lt;strong&gt;image&lt;/strong&gt;. Make &lt;a href=&quot;http://localhost:4000/2015/12/07/day-seven-dockerfile/&quot;&gt;&lt;code&gt;Dockerfile&lt;/code&gt;&lt;/a&gt; and run &lt;code&gt;docker build&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-&lt;li&gt;you can run &lt;code&gt;docker build .&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;or you add tag name &lt;code&gt;docker build -t username/my-imagename .&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;or you can have &lt;code&gt;Dockerfile&lt;/code&gt; somewhere at path &lt;code&gt;docker build -t username/my-imagename -f /path/Dockerfile&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;If you run image by &lt;code&gt;docker run&lt;/code&gt; you create &lt;strong&gt;container&lt;/strong&gt;. You can check them by &lt;code&gt;docker ps&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Container can be in different status, you can stop them by &lt;code&gt;docker stop&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;If you make some changes by using terminal &lt;code&gt;docker run -it &amp;lt;image-name&amp;gt; /bin/bash&lt;/code&gt; or &lt;code&gt;docker exec -it &amp;lt;container-id&amp;gt; /bin/bash&lt;/code&gt;. You can change this &lt;strong&gt;container&lt;/strong&gt; into &lt;strong&gt;image&lt;/strong&gt;. You have to use &lt;code&gt;docker commit&lt;/code&gt; &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/commit/&quot;&gt;command&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Docker lifecycle schema&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/docker-lifecycle-2.png&quot; alt=&quot;Docker Container Lifecycle&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Next, I write post about details and all commands and statuses docker container.&lt;/p&gt;
-
-&lt;p&gt;See you tomorrow,&lt;br&gt;
-Ladislav&lt;/p&gt;
-</description>
-        <pubDate>Mon, 14 Dec 2015 11:00:00 +0100</pubDate>
-        <link>http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</link>
-        <guid isPermaLink="true">http://www.dockeradvent.com//2015/12/14/day-fourteen-docker-lifecycle/</guid>
         
         
       </item>
